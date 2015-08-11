@@ -44,10 +44,9 @@ class RoadPositions:
    
     FORWARD_LIMIT = 200
     REAR_LIMIT = -200
-    
+    COLLISION_HORIZON = FORWARD_LIMIT + 150
     BEYOND_HORIZON = 400 
     BEHIND_REAR_HORIZON = -800
-    COLLISION_HORIZON = Window.WIDTH + 100
 
 class Speed_old:
     ONE_METER = 36
@@ -80,6 +79,23 @@ class Steering:
     TURN_LEFT = -1
     TURN_RIGHT = 1
     
+def box_collision(box1_x, box1_y, box1_w, box1_h, box2_x, box2_y, box2_w, box2_h):
+    box1_x = box1_x - box1_w
+    box1_y = box1_y + box1_h
+    box1_w = box1_w*2
+    box1_h = box1_h*2
+    box2_x = box2_x - box2_w
+    box2_y = box2_y + box2_h
+    box2_w = box2_w*2
+    box2_h = box2_h*2
+    if ((box1_x < box2_x + box2_w)
+            and (box1_x + box1_w > box2_x)
+            and (box1_y < box2_y + box2_h) #if box is below passanger side of car
+            and (box1_y + box1_h > box2_y)): #if box overlaps car by the side
+        return True
+    else:
+        return False
+
 class VehicleModel:
     def __init__(self, model, wheel, wheel_count):
         self.model = model
@@ -177,18 +193,12 @@ class Car:
 
 
     def check_collision_box(self, box_x, box_y, box_w, box_h, car):
-        box_x = box_x - box_w
-        box_y = box_y + box_h
-        box_w = box_w*2
-        box_h = box_h*2
-        if ((box_x < car.horizontal_position + car.width) #if box is before end of car
-                and (box_x + box_w > car.horizontal_position) #if front of box is ahead of car back
-                and (box_y < car.vertical_position + car.height) #if box is below passanger side of car
-                and (box_y + box_h > car.vertical_position)): #if box overlaps car by the side
-            return True
-        else:
-            return False
-
+        box2_x = car.horizontal_position
+        box2_y = car.vertical_position
+        box2_w = car.width_offset
+        box2_h = car.height_offset
+        return box_collision(box_x, box_y, box_w, box_h, box2_x, box2_y, box2_w, box2_h)
+        
     def ahead(self, other):
         box_x = other.horizontal_position
         box_y = other.vertical_position
@@ -638,22 +648,10 @@ class Game():
         else:
             self.npvs.append(NPV(self.available_vehicles[random.randrange(len(self.available_vehicles))], lane, speed))
 
-    def check_collision_box(self, box_x, box_y, box_w, box_h, car2_x, car2_y, car2_w, car2_h):
-        box_x = box_x - box_w
-        box_y = box_y + box_h
-        box_w = box_w*2
-        box_h = box_h*2
-        car2_x -= car2_w
-        car2_y -= car2_y 
-        car2_w *=2
-        car2_h *=2
-        if ((box_x < car2_x + car2_w) #if box is before end of car
-                and (box_x + box_w > car2_x) #if front of box is ahead of car back
-                and (box_y < car2_y + car2_h) #if box is below passanger side of car
-                and (box_y + box_h > car2_y)): #if box overlaps car by the side
-            return True
-        else:
+    def check_collision_box(self, car1_x, car1_y, car1_w, car1_h, car2_x, car2_y, car2_w, car2_h):
+        if(car1_x > RoadPositions.COLLISION_HORIZON or car2_x > RoadPositions.COLLISION_HORIZON): #If the cars have not yet appeared on screen then give them a chance of sorting it out
             return False
+        return box_collision(car1_x, car1_y, car1_w, car1_h, car2_x, car2_y, car2_w, car2_h) 
 
     def update(self):
         current_time = pygame.time.get_ticks()
@@ -682,6 +680,26 @@ class Game():
             npv.update(time_delta)
         
         #Check collisions
+        #(between player and non-players)
+        for player in self.players:
+            if player.hydraulics:
+                continue
+            for npv in self.npvs[:]:
+                if self.check_collision_box(player.horizontal_position, player.vertical_position, player.width_offset, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
+                    npv.wobble()
+                    if not player.shield:
+                        if not npv.crashed:
+                            #ParticleManager.add_new_emmitter(Minus10Points(player.horizontal_position, player.vertical_position, -player.speed, 0.2))
+                            player.score -= 60
+                            #if(player.crash_handler == None):
+                            #    player.crash_handler = PlayerCrashHandler(player, npv.speed)
+                    if not npv.crashed:
+                        npv.crashed = True
+                        #ParticleManager.add_new_emmitter(SmokeEmitter( npv.horizontal_position, npv.vertical_position-npv.height_offset, -npv.speed, 0))
+                #if player.fire_phaser:
+                #    if self.check_collision_box(player.horizontal_position, player.vertical_position, RoadPositions.COLLISION_HORIZON/2, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
+                #        ParticleManager.add_new_emmitter(SmokeEmitter( npv.horizontal_position, npv.vertical_position-npv.height_offset, 0, 0))
+                #        self.npvs.remove(npv)
         
         #(between non-players themselves)
         for i in range(len(self.npvs) - 1):
