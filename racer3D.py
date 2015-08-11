@@ -9,6 +9,7 @@ from OpenGL.GLU import *
 import ms3d
 
 import random
+import math
 
 #1 MS3D Unit = 1 meter = 20 OpenGL units
 
@@ -44,22 +45,9 @@ class RoadPositions:
    
     FORWARD_LIMIT = 200
     REAR_LIMIT = -200
-    COLLISION_HORIZON = FORWARD_LIMIT + 150
-    BEYOND_HORIZON = 400 
-    BEHIND_REAR_HORIZON = -800
-
-class Speed_old:
-    ONE_METER = 36
-    KMH_TO_MS = 0.2777
-    MS_TO_PMIL =  0.036 #m/s tp pixels per milisecond
-    KMH_TO_PMIL = KMH_TO_MS*MS_TO_PMIL
-    SIXTY_KMH = 60*KMH_TO_PMIL
-    ONE_KMH = KMH_TO_PMIL
-    ONE_RADMIL = 0.001 
-    MAX_KMH = 80
-    MAX_WOBBLE_ROTATION = 0.52359
-    MAX_SPEED = MAX_KMH*ONE_KMH
-    BASE_CRASH_SPEED_DECREASE = (10*ONE_KMH) 
+    COLLISION_HORIZON = 300
+    BEYOND_HORIZON = 500 
+    BEHIND_REAR_HORIZON = -400
 
 class Speed:
     ONE_METER = 20
@@ -73,7 +61,10 @@ class Speed:
     RAD_TO_DEGREE = 57.2958
     MAX_WOBBLE_ROTATION = 0.52359*RAD_TO_DEGREE
     ONE_RADMIL = 0.001*RAD_TO_DEGREE
-    
+    PLAYER_ACCELERATE_SPEED = MAX_SPEED + 30*ONE_KMH
+    PLAYER_BRAKE_SPEED = MAX_SPEED - 30*ONE_KMH
+    PLAYER_LATERAL_SPEED = 30*ONE_KMH
+
 class Steering:
     CENTERED = 0
     TURN_LEFT = -1
@@ -88,13 +79,38 @@ def box_collision(box1_x, box1_y, box1_w, box1_h, box2_x, box2_y, box2_w, box2_h
     box2_y = box2_y + box2_h
     box2_w = box2_w*2
     box2_h = box2_h*2
-    if ((box1_x < box2_x + box2_w)
+    return ((box1_x < box2_x + box2_w)
             and (box1_x + box1_w > box2_x)
-            and (box1_y < box2_y + box2_h) #if box is below passanger side of car
-            and (box1_y + box1_h > box2_y)): #if box overlaps car by the side
+            and (box1_y < box2_y + box2_h)
+            and (box1_y + box1_h > box2_y))
+
+def circle_collision(circle1_pos, circle1_radius, circle2_pos, circle2_radius, impact_vector):
+    dx = circle2_pos[0] - circle1_pos[0]
+    dy = circle2_pos[1] - circle1_pos[1]
+    radius = circle1_radius + circle2_radius
+    collision = ((dx*dx) + (dy*dy) < (radius*radius))
+    #WARNING: Dont Try to improve this code without reading the comments in car_circle_collision and understanding the consequences!!!
+    if collision:
+        impact_vector.append(dx)
+        impact_vector.append(dy)
+    return collision
+
+def car_circle_collision(car1, car2, impact_vector=[]):
+    car1_rear_circle = ( car1.vehicle.rear_circle[0]+car1.horizontal_position, car1.vehicle.rear_circle[1] + car1.vertical_position)
+    car1_front_circle = ( car1.vehicle.front_circle[0]+car1.horizontal_position, car1.vehicle.front_circle[1] + car1.vertical_position)
+    car2_rear_circle = ( car2.vehicle.rear_circle[0]+car2.horizontal_position, car2.vehicle.rear_circle[1] + car2.vertical_position)
+    car2_front_circle =  ( car2.vehicle.front_circle[0]+car2.horizontal_position, car2.vehicle.front_circle[1] + car2.vertical_position)
+    #Apparently the "or" goes on even if one of the operands is already known to be True! That messes up the impact vector
+    #WARNING: Dont Try to improve this code without reading the previous line and understanding the consequences!!!
+    if circle_collision(car1_rear_circle, car1.vehicle.radius, car2_rear_circle, car2.vehicle.radius, impact_vector):
         return True
-    else:
-        return False
+    if circle_collision(car1_rear_circle, car1.vehicle.radius, car2_front_circle, car2.vehicle.radius, impact_vector):
+        return True
+    if circle_collision(car1_front_circle, car1.vehicle.radius, car2_rear_circle, car2.vehicle.radius, impact_vector):
+        return True
+    return circle_collision(car1_front_circle, car1.vehicle.radius, car2_front_circle, car2.vehicle.radius, impact_vector) 
+            
+    
 
 class VehicleModel:
     def __init__(self, model, wheel, wheel_count):
@@ -120,9 +136,9 @@ class VehicleModel:
         self.width_offset = self.width/2
 
     def calculate_collision_circles(self):
-        self.rear_circle.append(-self.width/4) 
+        self.rear_circle.append(-self.width_offset+self.radius) 
         self.rear_circle.append(0)
-        self.front_circle.append(+self.width/4)
+        self.front_circle.append(+self.width_offset - self.radius)
         self.front_circle.append(0)
 
 
@@ -169,6 +185,7 @@ class Car:
         self.height_offset = self.vehicle.height_offset
         self.width_offset = self.vehicle.width_offset
         self.speed = speed
+        self.lateral_speed = 0
         self.rotation = 0
         self.wheels = []
 
@@ -200,7 +217,7 @@ class Car:
         return box_collision(box_x, box_y, box_w, box_h, box2_x, box2_y, box2_w, box2_h)
         
     def ahead(self, other):
-        box_x = other.horizontal_position
+        box_x = other.horizontal_position + 5*Speed.ONE_METER
         box_y = other.vertical_position
         box_h = other.height_offset
         box_w = other.width_offset + 5*Speed.ONE_METER #Distance to check for vehicles ahead
@@ -250,16 +267,26 @@ class Player(Car):
         elif self.down and self.vertical_position > RoadPositions.LOWER_LIMIT + self.height_offset:
             self.vertical_position -= 5 if not self.shrunk else 2
         
-        if self.forward and self.horizontal_position < RoadPositions.FORWARD_LIMIT:
-            self.horizontal_position += 5 if not self.shrunk else 2
-        elif self.braking and self.horizontal_position > RoadPositions.REAR_LIMIT:
-            self.horizontal_position -= 5 if not self.shrunk else 2
+        if self.forward:
+            self.speed = Speed.PLAYER_ACCELERATE_SPEED
+        elif self.braking: 
+            self.speed = Speed.PLAYER_BRAKE_SPEED
+        elif not (self.braking or self.forward):
+            self.speed = Speed.MAX_SPEED
 
-        if self.speed < Speed.MAX_SPEED:
-            displacement = (Speed.MAX_SPEED - self.speed)*time_delta
-            self.horizontal_position -= displacement if (self.horizontal_position - displacement) >= 0 else 0 
+        if self.speed != Speed.MAX_SPEED:
+            displacement = (self.speed-Speed.MAX_SPEED)*time_delta
+            if (self.horizontal_position + displacement >= RoadPositions.FORWARD_LIMIT):
+                #self.horizontal_position = RoadPositions.FORWARD_LIMIT - 1
+                self.speed = Speed.MAX_SPEED
+            elif (self.horizontal_position + displacement <= RoadPositions.REAR_LIMIT):
+                #self.horizontal_position = RoadPositions.REAR_LIMIT - 1
+                self.speed = Speed.MAX_SPEED
+            #else:
+                #self.horizontal_position += displacement 
 
-        
+        horizontal_position_delta = time_delta*(self.speed-Speed.MAX_SPEED)
+        self.horizontal_position += horizontal_position_delta 
 
         #if self.fire_phaser:
         #    if self.phaser_gaining_intensity:
@@ -336,7 +363,7 @@ class NPV(Car): #NPV - Non Player Vehicle
         for car in cars:
             if car == self:
                 continue
-            if car.ahead(self) and car.slower(self):
+            if (car.ahead(self) and car.slower(self)) or (self.horizontal_position > RoadPositions.COLLISION_HORIZON and car_circle_collision(self, car)):
                 if not self.change_lane(cars):
                     self.match_speed_of(car)
 
@@ -355,12 +382,11 @@ class NPV(Car): #NPV - Non Player Vehicle
             return False
         return True
 
+    
     def is_lane_free(self, cars, lane):
-        if len(cars) == 0:
-            return True
         box_x = self.horizontal_position;
         box_y = lane;  
-        box_w = self.width_offset + 20 #give it some clearance
+        box_w = self.width_offset + 100 #give it some clearance
         box_h = self.height_offset
         for car in cars:
             if car == self:
@@ -397,6 +423,9 @@ class NPV(Car): #NPV - Non Player Vehicle
             self.angular_speed -= (0.3*Speed.ONE_RADMIL)
         self.skiding = True
         self.swerve()
+
+    def applyCollisionForces(self, impact_vector):
+        pass #TODO implement me!
 
     def wobble(self):
         self.wobbling = True
@@ -595,6 +624,7 @@ class Game():
         #glLightfv(GL_LIGHT0, GL_POSITION, (0,10,0,1))
 
         gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 2400)
+        #gluPerspective(90, Window.WIDTH/Window.HEIGHT, 1, 2400)
         gluLookAt(-200,450,0, RoadPositions.MIDDLE_LANE,0,0, 0,1,0)
         
         
@@ -648,6 +678,11 @@ class Game():
         else:
             self.npvs.append(NPV(self.available_vehicles[random.randrange(len(self.available_vehicles))], lane, speed))
 
+    def check_collision_circle(self, car1, car2):
+        if(car1.horizontal_position > RoadPositions.COLLISION_HORIZON or car2.horizontal_position > RoadPositions.COLLISION_HORIZON): #If the cars have not yet appeared on screen then give them a chance of sorting it out
+            return False
+        return car_circle_collision(car1, car2)
+
     def check_collision_box(self, car1_x, car1_y, car1_w, car1_h, car2_x, car2_y, car2_w, car2_h):
         if(car1_x > RoadPositions.COLLISION_HORIZON or car2_x > RoadPositions.COLLISION_HORIZON): #If the cars have not yet appeared on screen then give them a chance of sorting it out
             return False
@@ -673,10 +708,10 @@ class Game():
         if len(self.npvs) < 5:
             if self.spawn_delay <= 0:
                 self.generateRandomNPV()
-                self.spawn_delay = 900
+                self.spawn_delay = 1300
         #Recalculate their position
         for npv in self.npvs:
-            npv.check_overtake_need(self.npvs)
+            npv.check_overtake_need(self.npvs + self.players)
             npv.update(time_delta)
         
         #Check collisions
@@ -685,7 +720,9 @@ class Game():
             if player.hydraulics:
                 continue
             for npv in self.npvs[:]:
-                if self.check_collision_box(player.horizontal_position, player.vertical_position, player.width_offset, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
+                #if self.check_collision_box(player.horizontal_position, player.vertical_position, player.width_offset, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
+                impact_vector = []
+                if car_circle_collision(player, npv, impact_vector):    
                     npv.wobble()
                     if not player.shield:
                         if not npv.crashed:
@@ -704,7 +741,7 @@ class Game():
         #(between non-players themselves)
         for i in range(len(self.npvs) - 1):
             for j in range(i+1, len(self.npvs)):
-                if self.check_collision_box(self.npvs[i].horizontal_position, self.npvs[i].vertical_position, self.npvs[i].width_offset, self.npvs[i].height_offset, self.npvs[j].horizontal_position, self.npvs[j].vertical_position, self.npvs[j].width_offset, self.npvs[j].height_offset):
+                if self.check_collision_circle(self.npvs[i], self.npvs[j]):
                     self.npv_collision(self.npvs[i], self.npvs[j])
 
         for player in self.players:
@@ -740,7 +777,8 @@ class Game():
             npv.draw()
 
         pygame.display.flip()
-
+    
+    
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             self.on_key_press(event.key)
