@@ -1,5 +1,5 @@
-import pygame_sdl2
-pygame_sdl2.import_as_pygame()
+#import pygame2
+#pygame_sdl2.import_as_pygame()
 import pygame
 from pygame.locals import *
 
@@ -13,9 +13,12 @@ import random
 #1 MS3D Unit = 1 meter = 20 OpenGL units
 
 class Window:
-    WIDTH = 1920
-    HEIGHT = 1080
-    FULLSCREEN = True
+    #WIDTH = 1920
+    #HEIGHT = 1080
+    #FULLSCREEN = True
+    WIDTH = 1024
+    HEIGHT = 512
+    FULLSCREEN = False
 
     VERSION = "v0.1"
 
@@ -514,6 +517,7 @@ class Game():
 
     def __init__(self):
         pygame.init()
+        pygame.display.init()
         self.init_display()
 
         self.available_vehicles = []
@@ -542,10 +546,14 @@ class Game():
 
     def init_display(self):
         display = (Window.WIDTH, Window.HEIGHT)
+        #pygame.display.gl_set_attribute(pygame.GL_SWAP_CONTROL, 1)
+        #pygame.display.gl_set_attribute(pygame.GL_STENCIL_SIZE, 4)
+        pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
+        pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, 8)
         if Window.FULLSCREEN:
-            pygame.display.set_mode(display, DOUBLEBUF | OPENGL | pygame.HWSURFACE | pygame.FULLSCREEN)
+            pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL | pygame.HWSURFACE | pygame.FULLSCREEN)
         else:
-            pygame.display.set_mode(display, DOUBLEBUF | OPENGL | pygame.HWSURFACE)# | pygame.FULLSCREEN)
+            pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL | pygame.HWSURFACE)# | pygame.FULLSCREEN)
 
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
@@ -554,6 +562,7 @@ class Game():
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         glEnable(GL_TEXTURE_2D);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
+        #glEnable(GL_MULTISAMPLE)
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
 
