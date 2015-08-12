@@ -1,0 +1,2580 @@
+First pass:  enumerate scene...
+
+Processing Node Bounds with parent ROOT
+Bounding box found
+Processing Node __mainTree with parent ROOT
+Found subtree starting at Node "__mainTree"
+
+Second pass:  put shape structure together...
+
+Adding detail named "detail1" of size 1 to subtree "__mainTree".
+Adding detail named "detail2" of size 2 to subtree "__mainTree".
+Adding detail named "detail3" of size 3 to subtree "__mainTree".
+Adding detail named "detail4" of size 4 to subtree "__mainTree".
+Adding detail named "detail0" of size 0 to subtree "__mainTree".
+Adding detail named "detail6" of size 6 to subtree "__mainTree".
+Adding detail named "detail7" of size 7 to subtree "__mainTree".
+Adding detail named "detail5" of size 5 to subtree "__mainTree".
+Adding detail named "detail100" of size 100 to subtree "__mainTree".
+Adding node "__mainTree" with parent "__mainTree" to subtree rooted on node "__mainTree".
+Adding node "__meshes" with parent "__mainTree" to subtree rooted on node "__mainTree".
+Adding node "hub0" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "hub1" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "hub2" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "hub3" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "mount0" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "mount1" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "M3" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "Brakelighs" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "Braking0" with parent "Brakelighs" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Braking".
+Adding mesh of size 0 to object "Braking".
+Adding node "GlowR" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "DisksGlowRight0" with parent "GlowR" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "DisksGlowRight".
+Adding mesh of size 0 to object "DisksGlowRight".
+Adding node "GlowL" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "DisksGlowLeft0" with parent "GlowL" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "DisksGlowLeft".
+Adding mesh of size 0 to object "DisksGlowLeft".
+Adding node "Root" with parent "__meshes" to subtree rooted on node "__mainTree".
+Adding node "Base1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Base".
+Adding mesh of size 1 to object "Base".
+Adding node "Base2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "Base".
+Adding node "Base3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "Base".
+Adding node "Base4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "Base".
+Adding node "BLightL0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "BLightL".
+Adding mesh of size 0 to object "BLightL".
+Adding node "BLightR0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "BLightR".
+Adding mesh of size 0 to object "BLightR".
+Adding node "Body1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Body".
+Adding mesh of size 1 to object "Body".
+Adding node "Body2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "Body".
+Adding node "Body3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "Body".
+Adding node "Roof0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Roof".
+Adding mesh of size 0 to object "Roof".
+Adding node "Body6" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 6 to object "Body".
+Adding node "Body7" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 7 to object "Body".
+Adding node "BumperF1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "BumperF".
+Adding mesh of size 1 to object "BumperF".
+Adding node "BumperF2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "BumperF".
+Adding node "BumperF3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "BumperF".
+Adding node "BumperF4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "BumperF".
+Adding node "BumperF5" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 5 to object "BumperF".
+Adding node "BumperF6" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 6 to object "BumperF".
+Adding node "BumperF7" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 7 to object "BumperF".
+Adding node "BumperR1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "BumperR".
+Adding mesh of size 1 to object "BumperR".
+Adding node "BumperR2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "BumperR".
+Adding node "BumperR3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "BumperR".
+Adding node "BumperR4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "BumperR".
+Adding node "BumperR5" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 5 to object "BumperR".
+Adding node "DoorL1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "DoorL".
+Adding mesh of size 1 to object "DoorL".
+Adding node "DoorL3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "DoorL".
+Adding node "DoorL4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "DoorL".
+Adding node "DoorL5" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 5 to object "DoorL".
+Adding node "DoorL6" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 6 to object "DoorL".
+Adding node "DoorL7" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 7 to object "DoorL".
+Adding node "DoorR1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "DoorR".
+Adding mesh of size 1 to object "DoorR".
+Adding node "DoorR3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "DoorR".
+Adding node "DoorR4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "DoorR".
+Adding node "DoorR5" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 5 to object "DoorR".
+Adding node "DoorR6" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 6 to object "DoorR".
+Adding node "DoorR7" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 7 to object "DoorR".
+Adding node "Exhaust1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Exhaust".
+Adding mesh of size 1 to object "Exhaust".
+Adding node "Exhaust2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "Exhaust".
+Adding node "Exhaust3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "Exhaust".
+Adding node "Exhaust4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "Exhaust".
+Adding node "FenderL1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "FenderL".
+Adding mesh of size 1 to object "FenderL".
+Adding node "FenderL2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "FenderL".
+Adding node "FenderL3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "FenderL".
+Adding node "FenderL4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "FenderL".
+Adding node "FenderL5" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 5 to object "FenderL".
+Adding node "FenderL6" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 6 to object "FenderL".
+Adding node "FenderR1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "FenderR".
+Adding mesh of size 1 to object "FenderR".
+Adding node "FenderR2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "FenderR".
+Adding node "FenderR3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "FenderR".
+Adding node "FenderR4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "FenderR".
+Adding node "FenderR5" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 5 to object "FenderR".
+Adding node "FenderR6" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 6 to object "FenderR".
+Adding node "HLightL0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "HLightL".
+Adding mesh of size 0 to object "HLightL".
+Adding node "HLightLG0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "HLightLG".
+Adding mesh of size 0 to object "HLightLG".
+Adding node "HLightR0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "HLightR".
+Adding mesh of size 0 to object "HLightR".
+Adding node "HLightRG0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "HLightRG".
+Adding mesh of size 0 to object "HLightRG".
+Adding node "Hood1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Hood".
+Adding mesh of size 1 to object "Hood".
+Adding node "Hood2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "Hood".
+Adding node "Hood3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "Hood".
+Adding node "Hood5" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 5 to object "Hood".
+Adding node "MirrorL1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "MirrorL".
+Adding mesh of size 1 to object "MirrorL".
+Adding node "MirrorL2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "MirrorL".
+Adding node "MirrorR1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "MirrorR".
+Adding mesh of size 1 to object "MirrorR".
+Adding node "MirrorR2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "MirrorR".
+Adding node "SeatL0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "SeatL".
+Adding mesh of size 0 to object "SeatL".
+Adding node "SeatR0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "SeatR".
+Adding mesh of size 0 to object "SeatR".
+Adding node "SkirtL1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "SkirtL".
+Adding mesh of size 1 to object "SkirtL".
+Adding node "SkirtL2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "SkirtL".
+Adding node "SkirtL4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "SkirtL".
+Adding node "SkirtR1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "SkirtR".
+Adding mesh of size 1 to object "SkirtR".
+Adding node "SkirtR2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "SkirtR".
+Adding node "SkirtR4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "SkirtR".
+Adding node "Spoiler0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Spoiler".
+Adding mesh of size 0 to object "Spoiler".
+Adding node "Trunk1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Trunk".
+Adding mesh of size 1 to object "Trunk".
+Adding node "Trunk2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "Trunk".
+Adding node "Trunk3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "Trunk".
+Adding node "Trunk4" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 4 to object "Trunk".
+Adding node "WindF1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "WindF".
+Adding mesh of size 1 to object "WindF".
+Adding node "WindF2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 2 to object "WindF".
+Adding node "WindFL1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "WindFL".
+Adding mesh of size 1 to object "WindFL".
+Adding node "WindFR2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "WindFR".
+Adding mesh of size 2 to object "WindFR".
+Adding node "WindR1" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "WindR".
+Adding mesh of size 1 to object "WindR".
+Adding node "WindR3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "WindR".
+Adding node "WindRL2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "WindRL".
+Adding mesh of size 2 to object "WindRL".
+Adding node "WindRL3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "WindRL".
+Adding node "WindRR2" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "WindRR".
+Adding mesh of size 2 to object "WindRR".
+Adding node "WindRR3" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding mesh of size 3 to object "WindRR".
+Adding node "LicenseR0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "LicenseR".
+Adding mesh of size 0 to object "LicenseR".
+Adding node "Disks0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Disks".
+Adding mesh of size 0 to object "Disks".
+Adding node "Calipers0" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "Calipers".
+Adding mesh of size 0 to object "Calipers".
+Adding node "bodyLOD100" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "bodyLOD".
+Adding mesh of size 100 to object "bodyLOD".
+Adding node "glass_blackLOD100" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "glass_blackLOD".
+Adding mesh of size 100 to object "glass_blackLOD".
+Adding node "CarbonLOD100" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "CarbonLOD".
+Adding mesh of size 100 to object "CarbonLOD".
+Adding node "chassisLOD100" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "chassisLOD".
+Adding mesh of size 100 to object "chassisLOD".
+Adding node "lightLOD100" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "lightLOD".
+Adding mesh of size 100 to object "lightLOD".
+Adding node "BrakeLOD100" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "BrakeLOD".
+Adding mesh of size 100 to object "BrakeLOD".
+Adding node "BadgesLOD100" with parent "Root" to subtree rooted on node "__mainTree".
+Attaching object to node.
+Adding object named "BadgesLOD".
+Adding mesh of size 100 to object "BadgesLOD".
+
+Third pass:  Collapsing unneeded nodes...
+
+Removing node "__mainTree"
+Removing node "__meshes"
+
+Add default object states...
+
+Adding object state to 1 detail level(s) of mesh "Braking".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=4.38279, z=-1.36303
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "DisksGlowRight".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=-1.30016, y=0.00000, z=-0.58952
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "DisksGlowLeft".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=1.17484, y=0.00000, z=-0.65202
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 4 detail level(s) of mesh "Base".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 7 detail level(s) of mesh "BumperF".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=4:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=5:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=6:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 6 detail level(s) of mesh "DoorL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=4:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=5:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 6 detail level(s) of mesh "DoorR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=4:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=5:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 4 detail level(s) of mesh "Exhaust".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 4 detail level(s) of mesh "Hood".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 2 detail level(s) of mesh "MirrorL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 2 detail level(s) of mesh "MirrorR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 2 detail level(s) of mesh "WindF".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 2 detail level(s) of mesh "WindR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 2 detail level(s) of mesh "WindRL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 2 detail level(s) of mesh "WindRR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "glass_blackLOD".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "BLightL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "BLightR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 4 detail level(s) of mesh "Trunk".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "BrakeLOD".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 5 detail level(s) of mesh "Body".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=4:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "Calipers".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "Roof".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "CarbonLOD".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "chassisLOD".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 5 detail level(s) of mesh "BumperR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=4:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 6 detail level(s) of mesh "FenderL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=4:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=5:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 6 detail level(s) of mesh "FenderR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=3:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=4:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=5:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "HLightL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "HLightR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "lightLOD".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "HLightLG".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "HLightRG".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "WindFL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "WindFR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "SeatL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "SeatR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 3 detail level(s) of mesh "SkirtL".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 3 detail level(s) of mesh "SkirtR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=1:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+Object offset transform for mesh dl=2:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "Spoiler".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "bodyLOD".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "LicenseR".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "Disks".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding object state to 1 detail level(s) of mesh "BadgesLOD".
+Adding frame.
+Object is visible.
+Object offset transform for mesh dl=0:
+    scale:            x=1.00000, y=1.00000, z=1.00000
+    stretch rotation: x=0.00000, y=0.00000, z=0.00000, w=1.00000
+    translation:      x=0.00000, y=0.00000, z=0.00000
+    actual rotation:  x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+
+Add default node states...
+
+Adding node rotation at time 0.000000 for node "hub0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "hub0".
+  translation:     x=1.78558, y=2.83265, z=0.42894
+---------------------------------
+Adding node rotation at time 0.000000 for node "hub1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "hub1".
+  translation:     x=-1.78379, y=2.83610, z=0.39946
+---------------------------------
+Adding node rotation at time 0.000000 for node "hub2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "hub2".
+  translation:     x=-1.78379, y=-2.99000, z=0.39248
+---------------------------------
+Adding node rotation at time 0.000000 for node "hub3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "hub3".
+  translation:     x=1.79231, y=-2.99413, z=0.43133
+---------------------------------
+Adding node rotation at time 0.000000 for node "mount0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "mount0".
+  translation:     x=-0.73750, y=-0.38457, z=0.55441
+---------------------------------
+Adding node rotation at time 0.000000 for node "mount1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "mount1".
+  translation:     x=0.75385, y=-0.38791, z=0.55133
+---------------------------------
+Adding node rotation at time 0.000000 for node "M3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "M3".
+  translation:     x=0.00000, y=2.79722, z=1.52923
+---------------------------------
+Adding node rotation at time 0.000000 for node "Brakelighs".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Brakelighs".
+  translation:     x=0.00000, y=-4.38279, z=1.36303
+---------------------------------
+Adding node rotation at time 0.000000 for node "Braking0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Braking0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "GlowR".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "GlowR".
+  translation:     x=1.30016, y=0.00000, z=0.58952
+---------------------------------
+Adding node rotation at time 0.000000 for node "DisksGlowRight0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DisksGlowRight0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "GlowL".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "GlowL".
+  translation:     x=-1.17484, y=0.00000, z=0.65202
+---------------------------------
+Adding node rotation at time 0.000000 for node "DisksGlowLeft0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DisksGlowLeft0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Root".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Root".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Base1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Base1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Base2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Base2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Base3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Base3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Base4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Base4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BLightL0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BLightL0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BLightR0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BLightR0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Body1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Body1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Body2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Body2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Body3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Body3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Roof0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Roof0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Body6".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Body6".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Body7".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Body7".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperF1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperF1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperF2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperF2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperF3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperF3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperF4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperF4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperF5".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperF5".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperF6".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperF6".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperF7".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperF7".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperR1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperR1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperR2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperR2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperR3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperR3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperR4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperR4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BumperR5".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BumperR5".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorL1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorL1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorL3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorL3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorL4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorL4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorL5".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorL5".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorL6".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorL6".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorL7".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorL7".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorR1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorR1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorR3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorR3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorR4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorR4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorR5".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorR5".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorR6".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorR6".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "DoorR7".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "DoorR7".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Exhaust1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Exhaust1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Exhaust2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Exhaust2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Exhaust3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Exhaust3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Exhaust4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Exhaust4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderL1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderL1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderL2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderL2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderL3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderL3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderL4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderL4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderL5".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderL5".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderL6".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderL6".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderR1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderR1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderR2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderR2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderR3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderR3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderR4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderR4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderR5".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderR5".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "FenderR6".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "FenderR6".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "HLightL0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "HLightL0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "HLightLG0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "HLightLG0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "HLightR0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "HLightR0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "HLightRG0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "HLightRG0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Hood1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Hood1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Hood2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Hood2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Hood3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Hood3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Hood5".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Hood5".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "MirrorL1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "MirrorL1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "MirrorL2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "MirrorL2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "MirrorR1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "MirrorR1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "MirrorR2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "MirrorR2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "SeatL0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "SeatL0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "SeatR0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "SeatR0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "SkirtL1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "SkirtL1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "SkirtL2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "SkirtL2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "SkirtL4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "SkirtL4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "SkirtR1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "SkirtR1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "SkirtR2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "SkirtR2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "SkirtR4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "SkirtR4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Spoiler0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Spoiler0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Trunk1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Trunk1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Trunk2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Trunk2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Trunk3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Trunk3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Trunk4".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Trunk4".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindF1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindF1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindF2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindF2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindFL1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindFL1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindFR2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindFR2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindR1".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindR1".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindR3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindR3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindRL2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindRL2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindRL3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindRL3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindRR2".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindRR2".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "WindRR3".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "WindRR3".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "LicenseR0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "LicenseR0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Disks0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Disks0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "Calipers0".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "Calipers0".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "bodyLOD100".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "bodyLOD100".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "glass_blackLOD100".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "glass_blackLOD100".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "CarbonLOD100".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "CarbonLOD100".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "chassisLOD100".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "chassisLOD100".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "lightLOD100".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "lightLOD100".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BrakeLOD100".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BrakeLOD100".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+Adding node rotation at time 0.000000 for node "BadgesLOD100".
+  rotation:     x=0.00000, y=0.00000, z=0.00000, w=1.00000
+---------------------------------
+Adding node translation at time 0.000000 for node "BadgesLOD100".
+  translation:     x=0.00000, y=0.00000, z=0.00000
+---------------------------------
+
+Adding 0 sequences...
+
+
+Optimizing meshes...
+
+Optimizing mesh "Braking" detail level 0.
+339 verts before joining verts
+339 verts after joining verts
+583 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+27 strips with average length 28.22 (range 3 to 118) and 125 reversals
+
+Optimizing mesh "DisksGlowRight" detail level 0.
+96 verts before joining verts
+36 verts after joining verts
+32 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+18 strips with average length 3.78 (range 3 to 6) and 0 reversals
+
+Optimizing mesh "DisksGlowLeft" detail level 0.
+96 verts before joining verts
+36 verts after joining verts
+32 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+18 strips with average length 3.78 (range 3 to 6) and 0 reversals
+
+Optimizing mesh "Base" detail level 1.
+243 verts before joining verts
+243 verts after joining verts
+262 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+38 strips with average length 10.39 (range 3 to 60) and 57 reversals
+
+Optimizing mesh "Base" detail level 2.
+5 verts before joining verts
+5 verts after joining verts
+3 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+2 strips with average length 3.50 (range 3 to 4) and 0 reversals
+
+Optimizing mesh "Base" detail level 3.
+651 verts before joining verts
+651 verts after joining verts
+760 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+91 strips with average length 11.90 (range 3 to 61) and 141 reversals
+
+Optimizing mesh "Base" detail level 4.
+218 verts before joining verts
+218 verts after joining verts
+278 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+29 strips with average length 14.24 (range 4 to 35) and 77 reversals
+
+Optimizing mesh "BumperF" detail level 1.
+895 verts before joining verts
+895 verts after joining verts
+1524 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+101 strips with average length 19.53 (range 3 to 103) and 247 reversals
+
+Optimizing mesh "BumperF" detail level 2.
+18 verts before joining verts
+18 verts after joining verts
+10 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 4.00 (range 4 to 4) and 0 reversals
+
+Optimizing mesh "BumperF" detail level 3.
+44 verts before joining verts
+44 verts after joining verts
+34 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+10 strips with average length 6.00 (range 4 to 10) and 6 reversals
+
+Optimizing mesh "BumperF" detail level 4.
+504 verts before joining verts
+504 verts after joining verts
+560 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+58 strips with average length 12.83 (range 4 to 185) and 68 reversals
+
+Optimizing mesh "BumperF" detail level 5.
+60 verts before joining verts
+60 verts after joining verts
+48 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+13 strips with average length 6.38 (range 3 to 24) and 9 reversals
+
+Optimizing mesh "BumperF" detail level 6.
+42 verts before joining verts
+42 verts after joining verts
+38 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 15.00 (range 9 to 22) and 14 reversals
+
+Optimizing mesh "BumperF" detail level 7.
+636 verts before joining verts
+636 verts after joining verts
+556 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+129 strips with average length 7.29 (range 3 to 60) and 126 reversals
+
+Optimizing mesh "DoorL" detail level 1.
+146 verts before joining verts
+146 verts after joining verts
+230 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+6 strips with average length 46.67 (range 4 to 96) and 38 reversals
+
+Optimizing mesh "DoorL" detail level 3.
+64 verts before joining verts
+64 verts after joining verts
+60 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 19.75 (range 9 to 28) and 11 reversals
+
+Optimizing mesh "DoorL" detail level 4.
+14 verts before joining verts
+14 verts after joining verts
+10 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 4.75 (range 4 to 7) and 1 reversals
+
+Optimizing mesh "DoorL" detail level 5.
+38 verts before joining verts
+38 verts after joining verts
+36 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+3 strips with average length 19.33 (range 3 to 51) and 16 reversals
+
+Optimizing mesh "DoorL" detail level 6.
+30 verts before joining verts
+30 verts after joining verts
+38 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 13.75 (range 3 to 32) and 9 reversals
+
+Optimizing mesh "DoorL" detail level 7.
+13 verts before joining verts
+13 verts after joining verts
+8 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 3.60 (range 3 to 4) and 0 reversals
+
+Optimizing mesh "DoorR" detail level 1.
+146 verts before joining verts
+146 verts after joining verts
+230 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+9 strips with average length 31.78 (range 4 to 85) and 38 reversals
+
+Optimizing mesh "DoorR" detail level 3.
+64 verts before joining verts
+64 verts after joining verts
+60 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 19.25 (range 10 to 25) and 9 reversals
+
+Optimizing mesh "DoorR" detail level 4.
+14 verts before joining verts
+14 verts after joining verts
+10 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 4.50 (range 4 to 6) and 0 reversals
+
+Optimizing mesh "DoorR" detail level 5.
+38 verts before joining verts
+38 verts after joining verts
+36 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+3 strips with average length 19.67 (range 3 to 52) and 17 reversals
+
+Optimizing mesh "DoorR" detail level 6.
+30 verts before joining verts
+30 verts after joining verts
+38 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 11.00 (range 3 to 17) and 7 reversals
+
+Optimizing mesh "DoorR" detail level 7.
+13 verts before joining verts
+13 verts after joining verts
+8 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 3.60 (range 3 to 4) and 0 reversals
+
+Optimizing mesh "Exhaust" detail level 1.
+256 verts before joining verts
+256 verts after joining verts
+384 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+14 strips with average length 32.57 (range 4 to 88) and 44 reversals
+
+Optimizing mesh "Exhaust" detail level 2.
+24 verts before joining verts
+24 verts after joining verts
+16 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+12 strips with average length 3.33 (range 3 to 4) and 0 reversals
+
+Optimizing mesh "Exhaust" detail level 3.
+58 verts before joining verts
+58 verts after joining verts
+56 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+10 strips with average length 9.20 (range 4 to 15) and 16 reversals
+
+Optimizing mesh "Exhaust" detail level 4.
+124 verts before joining verts
+124 verts after joining verts
+164 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+9 strips with average length 24.22 (range 5 to 64) and 36 reversals
+
+Optimizing mesh "Hood" detail level 1.
+604 verts before joining verts
+604 verts after joining verts
+1038 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+45 strips with average length 28.89 (range 3 to 230) and 172 reversals
+
+Optimizing mesh "Hood" detail level 2.
+189 verts before joining verts
+189 verts after joining verts
+211 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+18 strips with average length 15.22 (range 4 to 43) and 27 reversals
+
+Optimizing mesh "Hood" detail level 3.
+31 verts before joining verts
+31 verts after joining verts
+36 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+2 strips with average length 30.50 (range 11 to 50) and 21 reversals
+
+Optimizing mesh "Hood" detail level 5.
+8 verts before joining verts
+8 verts after joining verts
+4 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+2 strips with average length 4.00 (range 4 to 4) and 0 reversals
+
+Optimizing mesh "MirrorL" detail level 1.
+83 verts before joining verts
+83 verts after joining verts
+102 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+17 strips with average length 8.59 (range 3 to 22) and 10 reversals
+
+Optimizing mesh "MirrorL" detail level 2.
+290 verts before joining verts
+290 verts after joining verts
+364 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+48 strips with average length 11.13 (range 4 to 95) and 74 reversals
+
+Optimizing mesh "MirrorR" detail level 1.
+83 verts before joining verts
+83 verts after joining verts
+102 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+18 strips with average length 8.11 (range 3 to 23) and 8 reversals
+
+Optimizing mesh "MirrorR" detail level 2.
+290 verts before joining verts
+290 verts after joining verts
+364 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+45 strips with average length 11.82 (range 3 to 52) and 78 reversals
+
+Optimizing mesh "WindF" detail level 1.
+66 verts before joining verts
+66 verts after joining verts
+88 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+14 strips with average length 9.86 (range 3 to 41) and 22 reversals
+
+Optimizing mesh "WindF" detail level 2.
+85 verts before joining verts
+85 verts after joining verts
+86 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+2 strips with average length 53.50 (range 11 to 96) and 17 reversals
+
+Optimizing mesh "WindR" detail level 1.
+71 verts before joining verts
+71 verts after joining verts
+88 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+12 strips with average length 11.42 (range 3 to 41) and 25 reversals
+
+Optimizing mesh "WindR" detail level 3.
+86 verts before joining verts
+86 verts after joining verts
+88 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+2 strips with average length 51.50 (range 30 to 73) and 11 reversals
+
+Optimizing mesh "WindRL" detail level 2.
+23 verts before joining verts
+23 verts after joining verts
+25 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 10.50 (range 4 to 22) and 9 reversals
+
+Optimizing mesh "WindRL" detail level 3.
+38 verts before joining verts
+38 verts after joining verts
+38 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+1 strips with average length 46.00 (range 46 to 46) and 6 reversals
+
+Optimizing mesh "WindRR" detail level 2.
+23 verts before joining verts
+23 verts after joining verts
+25 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 8.80 (range 4 to 13) and 9 reversals
+
+Optimizing mesh "WindRR" detail level 3.
+38 verts before joining verts
+38 verts after joining verts
+38 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+1 strips with average length 49.00 (range 49 to 49) and 9 reversals
+
+Optimizing mesh "glass_blackLOD" detail level 100.
+123 verts before joining verts
+123 verts after joining verts
+118 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+9 strips with average length 17.44 (range 4 to 44) and 21 reversals
+
+Optimizing mesh "BLightL" detail level 0.
+116 verts before joining verts
+116 verts after joining verts
+205 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+6 strips with average length 46.17 (range 17 to 77) and 60 reversals
+
+Optimizing mesh "BLightR" detail level 0.
+116 verts before joining verts
+116 verts after joining verts
+205 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+13 strips with average length 21.31 (range 4 to 100) and 46 reversals
+
+Optimizing mesh "Trunk" detail level 1.
+519 verts before joining verts
+519 verts after joining verts
+878 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+56 strips with average length 20.25 (range 3 to 175) and 144 reversals
+
+Optimizing mesh "Trunk" detail level 2.
+132 verts before joining verts
+132 verts after joining verts
+128 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+6 strips with average length 26.83 (range 4 to 43) and 21 reversals
+
+Optimizing mesh "Trunk" detail level 3.
+37 verts before joining verts
+37 verts after joining verts
+40 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 17.25 (range 4 to 50) and 21 reversals
+
+Optimizing mesh "Trunk" detail level 4.
+102 verts before joining verts
+102 verts after joining verts
+170 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+6 strips with average length 37.33 (range 6 to 68) and 42 reversals
+
+Optimizing mesh "BrakeLOD" detail level 100.
+210 verts before joining verts
+210 verts after joining verts
+266 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+16 strips with average length 22.44 (range 4 to 65) and 61 reversals
+
+Optimizing mesh "Body" detail level 1.
+730 verts before joining verts
+730 verts after joining verts
+1182 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+64 strips with average length 23.55 (range 3 to 180) and 197 reversals
+
+Optimizing mesh "Body" detail level 2.
+82 verts before joining verts
+82 verts after joining verts
+76 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+6 strips with average length 16.33 (range 8 to 33) and 10 reversals
+
+Optimizing mesh "Body" detail level 3.
+252 verts before joining verts
+252 verts after joining verts
+228 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+22 strips with average length 14.14 (range 4 to 43) and 39 reversals
+
+Optimizing mesh "Body" detail level 6.
+1033 verts before joining verts
+1033 verts after joining verts
+854 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+225 strips with average length 6.46 (range 3 to 36) and 149 reversals
+
+Optimizing mesh "Body" detail level 7.
+478 verts before joining verts
+478 verts after joining verts
+516 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+55 strips with average length 12.82 (range 3 to 49) and 79 reversals
+
+Optimizing mesh "Calipers" detail level 0.
+372 verts before joining verts
+372 verts after joining verts
+236 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+96 strips with average length 4.67 (range 3 to 13) and 20 reversals
+
+Optimizing mesh "Roof" detail level 0.
+74 verts before joining verts
+74 verts after joining verts
+112 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+12 strips with average length 12.08 (range 4 to 24) and 9 reversals
+
+Optimizing mesh "CarbonLOD" detail level 100.
+30 verts before joining verts
+30 verts after joining verts
+40 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+9 strips with average length 6.78 (range 4 to 13) and 3 reversals
+
+Optimizing mesh "chassisLOD" detail level 100.
+3620 verts before joining verts
+3500 verts after joining verts
+2596 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+877 strips with average length 5.42 (range 3 to 78) and 402 reversals
+
+Optimizing mesh "BumperR" detail level 1.
+886 verts before joining verts
+886 verts after joining verts
+1570 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+91 strips with average length 22.32 (range 3 to 262) and 279 reversals
+
+Optimizing mesh "BumperR" detail level 2.
+20 verts before joining verts
+20 verts after joining verts
+10 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 4.00 (range 4 to 4) and 0 reversals
+
+Optimizing mesh "BumperR" detail level 3.
+64 verts before joining verts
+64 verts after joining verts
+60 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 19.50 (range 13 to 26) and 10 reversals
+
+Optimizing mesh "BumperR" detail level 4.
+66 verts before joining verts
+66 verts after joining verts
+68 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 21.80 (range 4 to 67) and 31 reversals
+
+Optimizing mesh "BumperR" detail level 5.
+34 verts before joining verts
+34 verts after joining verts
+30 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 12.50 (range 9 to 16) and 12 reversals
+
+Optimizing mesh "FenderL" detail level 1.
+229 verts before joining verts
+229 verts after joining verts
+391 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+19 strips with average length 25.79 (range 3 to 91) and 61 reversals
+
+Optimizing mesh "FenderL" detail level 2.
+78 verts before joining verts
+78 verts after joining verts
+70 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+8 strips with average length 12.63 (range 4 to 28) and 15 reversals
+
+Optimizing mesh "FenderL" detail level 3.
+36 verts before joining verts
+36 verts after joining verts
+44 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 16.50 (range 12 to 24) and 14 reversals
+
+Optimizing mesh "FenderL" detail level 4.
+4 verts before joining verts
+4 verts after joining verts
+2 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+1 strips with average length 4.00 (range 4 to 4) and 0 reversals
+
+Optimizing mesh "FenderL" detail level 5.
+26 verts before joining verts
+26 verts after joining verts
+24 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+2 strips with average length 19.50 (range 19 to 20) and 11 reversals
+
+Optimizing mesh "FenderL" detail level 6.
+79 verts before joining verts
+79 verts after joining verts
+100 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+8 strips with average length 17.13 (range 4 to 60) and 21 reversals
+
+Optimizing mesh "FenderR" detail level 1.
+229 verts before joining verts
+229 verts after joining verts
+391 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+17 strips with average length 28.35 (range 4 to 136) and 57 reversals
+
+Optimizing mesh "FenderR" detail level 2.
+78 verts before joining verts
+78 verts after joining verts
+70 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+8 strips with average length 12.75 (range 4 to 29) and 16 reversals
+
+Optimizing mesh "FenderR" detail level 3.
+36 verts before joining verts
+36 verts after joining verts
+44 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 16.00 (range 12 to 27) and 12 reversals
+
+Optimizing mesh "FenderR" detail level 4.
+4 verts before joining verts
+4 verts after joining verts
+2 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+1 strips with average length 4.00 (range 4 to 4) and 0 reversals
+
+Optimizing mesh "FenderR" detail level 5.
+26 verts before joining verts
+26 verts after joining verts
+24 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+2 strips with average length 19.50 (range 18 to 21) and 11 reversals
+
+Optimizing mesh "FenderR" detail level 6.
+75 verts before joining verts
+75 verts after joining verts
+100 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 33.00 (range 4 to 65) and 24 reversals
+
+Optimizing mesh "HLightL" detail level 0.
+299 verts before joining verts
+299 verts after joining verts
+348 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+28 strips with average length 17.68 (range 3 to 50) and 91 reversals
+
+Optimizing mesh "HLightR" detail level 0.
+299 verts before joining verts
+299 verts after joining verts
+348 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+27 strips with average length 18.07 (range 3 to 88) and 86 reversals
+
+Optimizing mesh "lightLOD" detail level 100.
+42 verts before joining verts
+42 verts after joining verts
+48 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 19.25 (range 4 to 35) and 21 reversals
+
+Optimizing mesh "HLightLG" detail level 0.
+36 verts before joining verts
+36 verts after joining verts
+47 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 13.20 (range 6 to 19) and 9 reversals
+
+Optimizing mesh "HLightRG" detail level 0.
+36 verts before joining verts
+36 verts after joining verts
+47 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+6 strips with average length 11.67 (range 4 to 31) and 11 reversals
+
+Optimizing mesh "WindFL" detail level 1.
+21 verts before joining verts
+21 verts after joining verts
+23 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+5 strips with average length 7.60 (range 5 to 10) and 5 reversals
+
+Optimizing mesh "WindFR" detail level 2.
+21 verts before joining verts
+21 verts after joining verts
+23 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 9.75 (range 4 to 18) and 8 reversals
+
+Optimizing mesh "SeatL" detail level 0.
+99 verts before joining verts
+99 verts after joining verts
+124 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+21 strips with average length 9.48 (range 3 to 39) and 33 reversals
+
+Optimizing mesh "SeatR" detail level 0.
+99 verts before joining verts
+99 verts after joining verts
+124 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+16 strips with average length 11.75 (range 4 to 39) and 32 reversals
+
+Optimizing mesh "SkirtL" detail level 1.
+179 verts before joining verts
+179 verts after joining verts
+311 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+18 strips with average length 22.39 (range 3 to 108) and 56 reversals
+
+Optimizing mesh "SkirtL" detail level 2.
+38 verts before joining verts
+38 verts after joining verts
+34 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 11.25 (range 7 to 14) and 3 reversals
+
+Optimizing mesh "SkirtL" detail level 4.
+19 verts before joining verts
+19 verts after joining verts
+15 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 6.75 (range 4 to 11) and 4 reversals
+
+Optimizing mesh "SkirtR" detail level 1.
+179 verts before joining verts
+179 verts after joining verts
+311 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+18 strips with average length 22.06 (range 3 to 128) and 50 reversals
+
+Optimizing mesh "SkirtR" detail level 2.
+38 verts before joining verts
+38 verts after joining verts
+34 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 11.25 (range 6 to 15) and 3 reversals
+
+Optimizing mesh "SkirtR" detail level 4.
+19 verts before joining verts
+19 verts after joining verts
+15 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+4 strips with average length 7.00 (range 4 to 10) and 5 reversals
+
+Optimizing mesh "Spoiler" detail level 0.
+132 verts before joining verts
+132 verts after joining verts
+198 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+13 strips with average length 19.15 (range 3 to 63) and 25 reversals
+
+Optimizing mesh "bodyLOD" detail level 100.
+2292 verts before joining verts
+2289 verts after joining verts
+2349 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+354 strips with average length 9.70 (range 3 to 94) and 378 reversals
+
+Optimizing mesh "LicenseR" detail level 0.
+20 verts before joining verts
+20 verts after joining verts
+30 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+1 strips with average length 42.00 (range 42 to 42) and 10 reversals
+
+Optimizing mesh "Disks" detail level 0.
+192 verts before joining verts
+72 verts after joining verts
+64 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+36 strips with average length 3.78 (range 3 to 6) and 0 reversals
+
+Optimizing mesh "BadgesLOD" detail level 100.
+102 verts before joining verts
+102 verts after joining verts
+65 faces before stripping
+Using Quick, dirty, & ugly stripping method.
+35 strips with average length 3.89 (range 3 to 6) and 1 reversals
+
+Shape Hierarchy:
+
+   Details:
+      detail100, Subtree 0, objectDetail 0, size 100
+      detail7, Subtree 0, objectDetail 1, size 7
+      detail6, Subtree 0, objectDetail 2, size 6
+      detail5, Subtree 0, objectDetail 3, size 5
+      detail4, Subtree 0, objectDetail 4, size 4
+      detail3, Subtree 0, objectDetail 5, size 3
+      detail2, Subtree 0, objectDetail 6, size 2
+      detail1, Subtree 0, objectDetail 7, size 1
+      detail0, Subtree 0, objectDetail 8, size 0
+
+   Subtrees:
+      Subtree 0
+         hub0
+         hub1
+         hub2
+         hub3
+         mount0
+         mount1
+         M3
+         Brakelighs
+            Braking0 --> Object Braking with following details:  0
+         GlowR
+            DisksGlowRight0 --> Object DisksGlowRight with following details:  0
+         GlowL
+            DisksGlowLeft0 --> Object DisksGlowLeft with following details:  0
+         Root
+            Base1
+            Base2
+            Base3
+            Base4 --> Object Base with following details:  4 3 2 1
+            BLightL0 --> Object BLightL with following details:  0
+            BLightR0 --> Object BLightR with following details:  0
+            Body1
+            Body2
+            Body3
+            Roof0 --> Object Roof with following details:  0
+            Body6
+            Body7 --> Object Body with following details:  7 6 3 2 1
+            BumperF1
+            BumperF2
+            BumperF3
+            BumperF4
+            BumperF5
+            BumperF6
+            BumperF7 --> Object BumperF with following details:  7 6 5 4 3 2 1
+            BumperR1
+            BumperR2
+            BumperR3
+            BumperR4
+            BumperR5 --> Object BumperR with following details:  5 4 3 2 1
+            DoorL1
+            DoorL3
+            DoorL4
+            DoorL5
+            DoorL6
+            DoorL7 --> Object DoorL with following details:  7 6 5 4 3 1
+            DoorR1
+            DoorR3
+            DoorR4
+            DoorR5
+            DoorR6
+            DoorR7 --> Object DoorR with following details:  7 6 5 4 3 1
+            Exhaust1
+            Exhaust2
+            Exhaust3
+            Exhaust4 --> Object Exhaust with following details:  4 3 2 1
+            FenderL1
+            FenderL2
+            FenderL3
+            FenderL4
+            FenderL5
+            FenderL6 --> Object FenderL with following details:  6 5 4 3 2 1
+            FenderR1
+            FenderR2
+            FenderR3
+            FenderR4
+            FenderR5
+            FenderR6 --> Object FenderR with following details:  6 5 4 3 2 1
+            HLightL0 --> Object HLightL with following details:  0
+            HLightLG0 --> Object HLightLG with following details:  0
+            HLightR0 --> Object HLightR with following details:  0
+            HLightRG0 --> Object HLightRG with following details:  0
+            Hood1
+            Hood2
+            Hood3
+            Hood5 --> Object Hood with following details:  5 3 2 1
+            MirrorL1
+            MirrorL2 --> Object MirrorL with following details:  2 1
+            MirrorR1
+            MirrorR2 --> Object MirrorR with following details:  2 1
+            SeatL0 --> Object SeatL with following details:  0
+            SeatR0 --> Object SeatR with following details:  0
+            SkirtL1
+            SkirtL2
+            SkirtL4 --> Object SkirtL with following details:  4 2 1
+            SkirtR1
+            SkirtR2
+            SkirtR4 --> Object SkirtR with following details:  4 2 1
+            Spoiler0 --> Object Spoiler with following details:  0
+            Trunk1
+            Trunk2
+            Trunk3
+            Trunk4 --> Object Trunk with following details:  4 3 2 1
+            WindF1
+            WindF2 --> Object WindF with following details:  2 1
+            WindFL1 --> Object WindFL with following details:  1
+            WindFR2 --> Object WindFR with following details:  2
+            WindR1
+            WindR3 --> Object WindR with following details:  3 1
+            WindRL2
+            WindRL3 --> Object WindRL with following details:  3 2
+            WindRR2
+            WindRR3 --> Object WindRR with following details:  3 2
+            LicenseR0 --> Object LicenseR with following details:  0
+            Disks0 --> Object Disks with following details:  0
+            Calipers0 --> Object Calipers with following details:  0
+            bodyLOD100 --> Object bodyLOD with following details:  100
+            glass_blackLOD100 --> Object glass_blackLOD with following details:  100
+            CarbonLOD100 --> Object CarbonLOD with following details:  100
+            chassisLOD100 --> Object chassisLOD with following details:  100
+            lightLOD100 --> Object lightLOD with following details:  100
+            BrakeLOD100 --> Object BrakeLOD with following details:  100
+            BadgesLOD100 --> Object BadgesLOD with following details:  100
+
+   Sequences:
+
+   Material list:
+   material #0: "brakeLights".
+   material #1: "common_disk_glow".
+   material #2: "WINDOW FRONT".
+   material #3: "BMW M3 E92 BRAKELIGHT".
+   material #4: "BMW M3 E92 MISC".
+   material #5: "common_carbon04_diffuse".
+   material #6: "BOTTOM".
+   material #7: "BMW M3 E92 ENGINE".
+   material #8: "BMW M3 E92 HEADLIGHT".
+   material #9: "WINDOW MASK".
+   material #10: "BMW M3 E92 INTERIOR".
+   material #11: "Copy of New Bitmap Image".
+   material #12: "49e682df".
+   material #13: "common_disk01_diffuse".
+   material #14: "BMW M3 E92 BADGING".
+   material #15: "images".

@@ -111,6 +111,9 @@ class ms3d(_object):
 
     def getJointPosition(self, jointName):
         return _ms3d.ms3d_getJointPosition(self, jointName)
+
+    def changeTexture(self, groupName, textureFile):
+        return _ms3d.ms3d_changeTexture(self, groupName, textureFile)
 ms3d_swigregister = _ms3d.ms3d_swigregister
 ms3d_swigregister(ms3d)
 
