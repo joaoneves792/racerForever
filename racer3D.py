@@ -61,9 +61,11 @@ class Speed:
     RAD_TO_DEGREE = 57.2958
     MAX_WOBBLE_ROTATION = 0.52359*RAD_TO_DEGREE
     ONE_RADMIL = 0.001*RAD_TO_DEGREE
-    PLAYER_ACCELERATE_SPEED = MAX_SPEED + 30*ONE_KMH
-    PLAYER_BRAKE_SPEED = MAX_SPEED - 30*ONE_KMH
+    ONE_DEGREE_MIL = 1
+    PLAYER_ACCELERATE_SPEED = 30*ONE_KMH
+    PLAYER_BRAKE_SPEED = 30*ONE_KMH
     PLAYER_LATERAL_SPEED = 30*ONE_KMH
+    PLAYER_LATERAL_SPEED_SHRUNK = 15*ONE_KMH
 
 class Steering:
     CENTERED = 0
@@ -88,18 +90,28 @@ def circle_collision(circle1_pos, circle1_radius, circle2_pos, circle2_radius, i
     dx = circle2_pos[0] - circle1_pos[0]
     dy = circle2_pos[1] - circle1_pos[1]
     radius = circle1_radius + circle2_radius
-    collision = ((dx*dx) + (dy*dy) < (radius*radius))
+    pyth = ((dx*dx) + (dy*dy))
+    collision = (pyth < (radius*radius))
     #WARNING: Dont Try to improve this code without reading the comments in car_circle_collision and understanding the consequences!!!
     if collision:
         impact_vector.append(dx)
         impact_vector.append(dy)
+        impact_vector.append((radius - math.sqrt(pyth))/radius)
     return collision
 
-def car_circle_collision(car1, car2, impact_vector=[]):
-    car1_rear_circle = ( car1.vehicle.rear_circle[0]+car1.horizontal_position, car1.vehicle.rear_circle[1] + car1.vertical_position)
-    car1_front_circle = ( car1.vehicle.front_circle[0]+car1.horizontal_position, car1.vehicle.front_circle[1] + car1.vertical_position)
-    car2_rear_circle = ( car2.vehicle.rear_circle[0]+car2.horizontal_position, car2.vehicle.rear_circle[1] + car2.vertical_position)
-    car2_front_circle =  ( car2.vehicle.front_circle[0]+car2.horizontal_position, car2.vehicle.front_circle[1] + car2.vertical_position)
+#angle is in degrees
+def rotate_2d_vector(vector, angle):
+    cs = math.cos(math.pi*angle/180)
+    sn = math.sin(math.pi*angle/180)
+    x = vector[0]
+    y = vector[1]
+    return [x*cs-y*sn, x*sn+y*cs]
+
+def car_circle_collision(car1, car2, impact_vector=[], car1_x_offset=0, car1_y_offset=0):
+    car1_rear_circle = ( car1.rear_circle[0]+car1.horizontal_position+car1_x_offset, car1.rear_circle[1] + car1.vertical_position+car1_y_offset)
+    car1_front_circle = ( car1.front_circle[0]+car1.horizontal_position+car1_x_offset, car1.front_circle[1] + car1.vertical_position+car1_y_offset)
+    car2_rear_circle = ( car2.rear_circle[0]+car2.horizontal_position, car2.rear_circle[1] + car2.vertical_position)
+    car2_front_circle =  ( car2.front_circle[0]+car2.horizontal_position, car2.vehicle.front_circle[1] + car2.vertical_position)
     #Apparently the "or" goes on even if one of the operands is already known to be True! That messes up the impact vector
     #WARNING: Dont Try to improve this code without reading the previous line and understanding the consequences!!!
     if circle_collision(car1_rear_circle, car1.vehicle.radius, car2_rear_circle, car2.vehicle.radius, impact_vector):
@@ -108,10 +120,10 @@ def car_circle_collision(car1, car2, impact_vector=[]):
         return True
     if circle_collision(car1_front_circle, car1.vehicle.radius, car2_rear_circle, car2.vehicle.radius, impact_vector):
         return True
-    return circle_collision(car1_front_circle, car1.vehicle.radius, car2_front_circle, car2.vehicle.radius, impact_vector) 
+    if circle_collision(car1_front_circle, car1.vehicle.radius, car2_front_circle, car2.vehicle.radius, impact_vector):
+        return True
+    return False
             
-    
-
 class VehicleModel:
     def __init__(self, model, wheel, wheel_count):
         self.model = model
@@ -124,7 +136,7 @@ class VehicleModel:
         self.calculate_dimensions()
         self.rear_circle = []
         self.front_circle = []
-        self.radius = self.height_offset
+        self.radius = self.height_offset+5
         self.calculate_collision_circles()
 
     def calculate_dimensions(self):
@@ -186,6 +198,8 @@ class Car:
         self.width_offset = self.vehicle.width_offset
         self.speed = speed
         self.lateral_speed = 0
+        self.rear_circle = self.vehicle.rear_circle[:]
+        self.front_circle = self.vehicle.front_circle[:]
         self.rotation = 0
         self.wheels = []
 
@@ -194,6 +208,8 @@ class Car:
 
 
     def update(self,time_delta):
+        self.front_circle = rotate_2d_vector(self.front_circle, self.rotation)
+        self.rear_circle = rotate_2d_vector(self.rear_circle, self.rotation)
         self.update_car(time_delta) 
         for wheel in self.wheels:
             wheel.update()
@@ -235,10 +251,18 @@ class Player(Car):
         super(Player, self).__init__(model, z, x, speed)
         self.player_id = player_id
         self.draw_rotation = False
-        self.up = False
-        self.down = False
-        self.forward = False
+        self.left = False
+        self.right = False
+        self.apply_throttle = False
+        self.apply_brakes = False
+        self.apply_left = False
+        self.apply_right = False
+        self.release_throttle = False
+        self.release_brakes = False
+        self.release_left = False
+        self.release_right = False
         self.braking = False
+        self.throttling = False
         self.crash_handler = None
         self.score = 0
         self.score_hundreds = 0
@@ -251,7 +275,16 @@ class Player(Car):
         self.fire_phaser = False
         self.phaser_alpha = 0
         self.phaser_gaining_intensity = True
+        self.crashed_into = []
 
+
+    def applyCollisionForces(self, other, other_speed, other_lateral_speed, impact_vector):
+        self.speed += (other_speed - self.speed)
+        self.lateral_speed += (other_lateral_speed - self.lateral_speed)
+        if not (other in self.crashed_into):
+            self.crashed_into.append(other)
+        self.skiding = True
+    
     def update_car(self, time_delta):
         #for i in range(self.score_hundreds - int(self.score / 100)):
         #    ParticleManager.add_new_emmitter(Minus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id]*Speed.MAX_SPEED))
@@ -262,31 +295,78 @@ class Player(Car):
         #    ParticleManager.add_new_emmitter(Plus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id]*Speed.MAX_SPEED))
         
         #Adjust postition to user input
-        if self.up and self.vertical_position < RoadPositions.UPPER_LIMIT - self.height_offset:
-            self.vertical_position += 5 if not self.shrunk else 2
-        elif self.down and self.vertical_position > RoadPositions.LOWER_LIMIT + self.height_offset:
-            self.vertical_position -= 5 if not self.shrunk else 2
-        
-        if self.forward:
-            self.speed = Speed.PLAYER_ACCELERATE_SPEED
-        elif self.braking: 
-            self.speed = Speed.PLAYER_BRAKE_SPEED
-        elif not (self.braking or self.forward):
-            self.speed = Speed.MAX_SPEED
+        if self.apply_left:
+            self.lateral_speed += Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
+            self.apply_left = False
+            self.left = True
+        if self.apply_right:
+            self.lateral_speed -= Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
+            self.apply_right = False
+            self.right = True
+        if self.release_left:
+            #self.lateral_speed -= Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
+            self.lateral_speed = 0
+            self.release_left = False
+            self.left = False
+        if self.release_right:
+            #self.lateral_speed += Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
+            self.lateral_speed = 0
+            self.release_right = False
+            self.right = False
 
-        if self.speed != Speed.MAX_SPEED:
-            displacement = (self.speed-Speed.MAX_SPEED)*time_delta
-            if (self.horizontal_position + displacement >= RoadPositions.FORWARD_LIMIT):
-                #self.horizontal_position = RoadPositions.FORWARD_LIMIT - 1
-                self.speed = Speed.MAX_SPEED
-            elif (self.horizontal_position + displacement <= RoadPositions.REAR_LIMIT):
-                #self.horizontal_position = RoadPositions.REAR_LIMIT - 1
-                self.speed = Speed.MAX_SPEED
-            #else:
-                #self.horizontal_position += displacement 
+        if self.apply_throttle:
+            self.speed += Speed.PLAYER_ACCELERATE_SPEED
+            self.apply_throttle = False
+            self.throttling = True
+        
+        if self.apply_brakes: 
+            self.speed -= Speed.PLAYER_BRAKE_SPEED
+            self.apply_brakes = False
+            self.braking = True
+
+        if self.release_throttle:
+            self.speed -= Speed.PLAYER_ACCELERATE_SPEED
+            self.release_throttle = False
+            self.throttling = False
+
+        if self.release_brakes:
+            self.speed += Speed.PLAYER_BRAKE_SPEED
+            self.release_brakes = False
+            self.braking = False
+
+        if self.speed < Speed.MAX_SPEED and not self.braking:
+            if self.throttling:
+                speed_increase = Speed.ONE_KMH*time_delta
+                self.speed = (self.speed + speed_increase) if (self.speed + speed_increase) < (Speed.MAX_SPEED+Speed.PLAYER_ACCELERATE_SPEED) else Speed.PLAYER_ACCELERATE_SPEED
+            else:
+                speed_increase = Speed.ONE_KMH*0.03*time_delta
+                self.speed = (self.speed + speed_increase) if (self.speed + speed_increase) < Speed.MAX_SPEED else Speed.MAX_SPEED
+
 
         horizontal_position_delta = time_delta*(self.speed-Speed.MAX_SPEED)
+        vertical_position_delta = time_delta*(self.lateral_speed)
+        
+        #Corrections so as to not get stuck!
+        for car in self.crashed_into:
+            impactvector = []
+            if car_circle_collision(self, car, impactvector, horizontal_position_delta, vertical_position_delta):
+                if impactvector[2] > 0:
+                    horizontal_position_delta -= (impactvector[0]*impactvector[2])
+                    car.horizontal_position += impactvector[0]*impactvector[2]
+                    car.vertical_position += impactvector[1]*impactvector[2]
+
         self.horizontal_position += horizontal_position_delta 
+        self.vertical_position += vertical_position_delta
+
+
+        if self.horizontal_position > RoadPositions.FORWARD_LIMIT:
+            self.horizontal_position = RoadPositions.FORWARD_LIMIT
+        if self.horizontal_position < RoadPositions.REAR_LIMIT:
+            self.horizontal_position = RoadPositions.REAR_LIMIT
+        if self.vertical_position > RoadPositions.UPPER_LIMIT-self.height_offset:
+            self.vertical_position = RoadPositions.UPPER_LIMIT-self.height_offset
+        if self.vertical_position < RoadPositions.LOWER_LIMIT+self.height_offset:
+            self.vertical_position = RoadPositions.LOWER_LIMIT+self.height_offset
 
         #if self.fire_phaser:
         #    if self.phaser_gaining_intensity:
@@ -346,8 +426,8 @@ class NPV(Car): #NPV - Non Player Vehicle
     def __init__(self, model, x, speed):
         super(NPV, self).__init__(model, RoadPositions.BEYOND_HORIZON, x, speed)
         self.angular_speed = 0
-        self.wobbling = False
-        self.wobbling_side = True #True = Left False=Right
+        #self.rotating = False
+        #self.rotation_side = True #True = Left False=Right
         self.original_lane = self.vertical_position
         self.switching_to_left_lane = False
         self.switching_to_right_lane = False
@@ -356,6 +436,7 @@ class NPV(Car): #NPV - Non Player Vehicle
         self.skid_marks_y = 0
         self.skid_mark = None
         self.crashed = False
+        self.rotation_lateral_speed_increase = 0
 
     def check_overtake_need(self, cars):
         if self.skiding or (self.switching_to_left_lane or self.switching_to_right_lane):
@@ -409,29 +490,15 @@ class NPV(Car): #NPV - Non Player Vehicle
             self.skiding = True
             self.skid_marks_x = self.horizontal_position - 50
 
-    def hit_from_behind(self):
-        if self.speed > 0:
-            self.speed = (Speed.MAX_KMH - 5)*Speed.ONE_KMH
-        elif self.speed == 0:
-            self.speed = Speed.SIXTY_KMH
-        elif self.speed < 0: #ambulances
-            self.speed += 10*Speed.ONE_KMH
-            
-        if random.randrange(2) == 0:
-            self.angular_speed += (0.5*Speed.ONE_RADMIL)
+    def applyCollisionForces(self, other, other_speed, other_lateral_speed, impact_vector):
+        self.speed += (other_speed - self.speed)
+        self.lateral_speed += (other_lateral_speed - self.lateral_speed)
+        if impact_vector[1] > 0:
+            self.angular_speed += 0.6*Speed.ONE_DEGREE_MIL*(impact_vector[1]/(self.vehicle.radius*2))
         else:
-            self.angular_speed -= (0.3*Speed.ONE_RADMIL)
-        self.skiding = True
-        self.swerve()
-
-    def applyCollisionForces(self, impact_vector):
-        pass #TODO implement me!
-
-    def wobble(self):
-        self.wobbling = True
-        self.wobbling_side = (random.randrange(2) == 0)
-        self.skiding = True
-        self.swerve()
+            self.angular_speed -= 0.6*Speed.ONE_DEGREE_MIL*(impact_vector[1]/(self.vehicle.radius*2))
+        #self.skiding = True
+        self.crashed = True
 
     def draw_car(self):
         glPushMatrix()
@@ -447,62 +514,76 @@ class NPV(Car): #NPV - Non Player Vehicle
         #    cr.paint()
         #    cr.restore()
         
-        #cr.save()
-        #cr.translate(self.horizontal_position, self.vertical_position - self.height_offset);
-        #x = self.width / 2.0
-        #y = self.height / 2.0
-        #cr.translate(x, y)
-        #cr.rotate(self.rotation)
-        #cr.translate(-x, -y)
-        #cr.set_source_surface(self.model, 0, 0)
-        #cr.paint()
-        #cr.restore()
-    
-
     def update_car(self, time_delta):
         player_speed = Speed.MAX_SPEED
         horizontal_position_delta = time_delta*(self.speed-player_speed)
         self.horizontal_position += horizontal_position_delta 
-        self.rotation += time_delta*self.angular_speed
-        if self.rotation != 0:
-            self.speed -= 1*Speed.ONE_KMH if self.speed > 3*Speed.ONE_KMH else 0
         
-        if self.wobbling:
-            if self.rotation >= Speed.MAX_WOBBLE_ROTATION or self.rotation <= -Speed.MAX_WOBBLE_ROTATION:
-                self.wobbling_side = not self.wobbling_side
-                self.angular_speed = 0
-            if self.wobbling_side == True:
-                self.angular_speed += 0.2*Speed.ONE_RADMIL
+        if self.angular_speed > 0 and self.angular_speed > 0.5*Speed.ONE_DEGREE_MIL:
+            self.angular_speed = 0.5*Speed.ONE_DEGREE_MIL
+        elif self.angular_speed < 0 and self.angular_speed < -0.5*Speed.ONE_DEGREE_MIL:
+            self.angular_speed = -0.5*Speed.ONE_DEGREE_MIL
+        
+        if self.crashed:
+            self.speed = self.speed - (0.05*Speed.ONE_KMH*time_delta) if self.speed > 0 else 0
+            if self.lateral_speed > 0:
+                self.lateral_speed = self.lateral_speed - (0.02*Speed.ONE_KMH*time_delta) if self.lateral_speed > 0 else 0
             else:
-                self.angular_speed -= 0.2*Speed.ONE_RADMIL
+                self.lateral_speed = self.lateral_speed + (0.02*Speed.ONE_KMH*time_delta) if self.lateral_speed < 0 else 0
+            if self.angular_speed > 0:
+                self.angular_speed = self.angular_speed - (0.01*Speed.ONE_DEGREE_MIL*time_delta) if self.angular_speed > 0 else 0
+            else:
+                self.angular_speed = self.angular_speed + (0.01*Speed.ONE_DEGREE_MIL*time_delta) if self.angular_speed < 0 else 0
 
-        lateral_speed = 5*(float(self.speed)/float(Speed.MAX_SPEED))
+        
+        if(self.speed > 0):
+            self.rotation += time_delta*self.angular_speed
+
+        lateral_speed = Speed.PLAYER_LATERAL_SPEED#*(float(self.speed)/float(Speed.MAX_SPEED))
         if self.switching_to_left_lane:
             if self.original_lane == RoadPositions.RIGHT_LANE:
                 if self.vertical_position >= RoadPositions.MIDDLE_LANE:
                     self.switching_to_left_lane = False
                     self.vertical_position = RoadPositions.MIDDLE_LANE
                 else:
-                    self.vertical_position += lateral_speed
+                    self.lateral_speed = lateral_speed
             else:
                 if self.vertical_position >= RoadPositions.LEFT_LANE:
                     self.switching_to_left_lane = False
                     self.vertical_position = RoadPositions.LEFT_LANE
                 else:
-                    self.vertical_position += lateral_speed
+                    self.lateral_speed = lateral_speed
         elif self.switching_to_right_lane:
             if self.original_lane == RoadPositions.LEFT_LANE:
                 if self.vertical_position <= RoadPositions.MIDDLE_LANE:
                     self.switching_to_right_lane = False
                     self.vertical_position = RoadPositions.MIDDLE_LANE
                 else:
-                    self.vertical_position -= lateral_speed
+                    self.lateral_speed = -lateral_speed
             else:
                 if self.vertical_position <= RoadPositions.RIGHT_LANE:
                     self.switching_to_right_lane = False
                     self.vertical_position = RoadPositions.RIGHT_LANE
                 else:
-                    self.vertical_position -= lateral_speed
+                    self.lateral_speed = -lateral_speed
+        elif (not self.crashed):
+            self.lateral_speed = 0
+
+        if self.rotation > 0 and self.rotation_lateral_speed_increase < 1*Speed.ONE_KMH:
+            self.rotation_lateral_speed_increase += math.sin(self.rotation)*0.1*Speed.ONE_KMH*time_delta
+            self.lateral_speed -= self.rotation_lateral_speed_increase
+        if self.rotation < 0 and self.rotation_lateral_speed_increase < 1*Speed.ONE_KMH:
+            self.rotation_lateral_speed_increase += math.sin(self.rotation)*0.1*Speed.ONE_KMH*time_delta
+            self.lateral_speed += self.rotation_lateral_speed_increase
+
+        vertical_position_delta = time_delta*(self.lateral_speed)
+        self.vertical_position += vertical_position_delta
+        
+        if self.vertical_position > RoadPositions.UPPER_LIMIT:
+            self.vertical_position = RoadPositions.UPPER_LIMIT
+        if self.vertical_position < RoadPositions.LOWER_LIMIT:
+            self.vertical_position = RoadPositions.LOWER_LIMIT
+        
         #if self.skiding:
         #    if self.skid_mark == None and self.switching_to_left_lane:
         #        self.skid_mark = SkidMarks.SKID_LEFT
@@ -547,6 +628,7 @@ class Game():
         GALLARDO = None
         RS4 = None
         Charger = None
+        Murci = None
 
     class Wheels:
         GALLARDO = None
@@ -650,6 +732,11 @@ class Game():
         charger = VehicleModel(self.CarModels.Charger, self.Wheels.Charger, 4)
         fill_wheel_positions(charger, self.CarModels.Charger)
         self.available_vehicles.append(charger)
+        
+        self.CarModels.Murci = ms3d.ms3d("./Murci/MurcielagoPlay.ms3d")
+        murci = VehicleModel(self.CarModels.Murci, self.Wheels.GALLARDO, 4)
+        fill_wheel_positions(murci, self.CarModels.Murci)
+        self.available_vehicles.append(murci)
     
     
     def generateEmergencyVehicle(self, vertical_position):
@@ -678,10 +765,10 @@ class Game():
         else:
             self.npvs.append(NPV(self.available_vehicles[random.randrange(len(self.available_vehicles))], lane, speed))
 
-    def check_collision_circle(self, car1, car2):
+    def check_collision_circle(self, car1, car2, impact_vector):
         if(car1.horizontal_position > RoadPositions.COLLISION_HORIZON or car2.horizontal_position > RoadPositions.COLLISION_HORIZON): #If the cars have not yet appeared on screen then give them a chance of sorting it out
             return False
-        return car_circle_collision(car1, car2)
+        return car_circle_collision(car1, car2, impact_vector)
 
     def check_collision_box(self, car1_x, car1_y, car1_w, car1_h, car2_x, car2_y, car2_w, car2_h):
         if(car1_x > RoadPositions.COLLISION_HORIZON or car2_x > RoadPositions.COLLISION_HORIZON): #If the cars have not yet appeared on screen then give them a chance of sorting it out
@@ -703,6 +790,9 @@ class Game():
         for npv in self.npvs[:]:  #Mind the [:] its there so we iterate on a copy of the list
             if npv.horizontal_position <= RoadPositions.BEHIND_REAR_HORIZON:
                 self.npvs.remove(npv)
+                for player in self.players:
+                    if npv in player.crashed_into:
+                        player.crashed_into.remove(npv)
                 #Just a reminder this is only feasable because were using really small lists THIS DOES NOT SCALE WELL!!
         #create new NPVs
         if len(self.npvs) < 5:
@@ -723,7 +813,7 @@ class Game():
                 #if self.check_collision_box(player.horizontal_position, player.vertical_position, player.width_offset, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
                 impact_vector = []
                 if car_circle_collision(player, npv, impact_vector):    
-                    npv.wobble()
+                    self.applyCollisionForces(player, npv, impact_vector)
                     if not player.shield:
                         if not npv.crashed:
                             #ParticleManager.add_new_emmitter(Minus10Points(player.horizontal_position, player.vertical_position, -player.speed, 0.2))
@@ -741,28 +831,23 @@ class Game():
         #(between non-players themselves)
         for i in range(len(self.npvs) - 1):
             for j in range(i+1, len(self.npvs)):
-                if self.check_collision_circle(self.npvs[i], self.npvs[j]):
-                    self.npv_collision(self.npvs[i], self.npvs[j])
+                impact_vector = []
+                if self.check_collision_circle(self.npvs[i], self.npvs[j], impact_vector):
+                    self.applyCollisionForces(self.npvs[i], self.npvs[j], impact_vector)
 
         for player in self.players:
             player.update(time_delta)
 
         self.last_update_timestamp = current_time
     
-    def npv_collision(self, car1, car2):
-        if(car1.vertical_position == car2.vertical_position):
-            if(car1.horizontal_position <= car2.horizontal_position):
-                car2.hit_from_behind()
-            else:
-                car1.hit_from_behind()
-        else:
-            if (not car1.crashed) and (not car2.crashed):
-                #ParticleManager.add_new_emmitter(SmokeEmitter(car1.horizontal_position, car1.vertical_position-car1.height_offset, -car1.speed, 0))
-                car1.crashed = True
-                car2.crashed = True
-            car1.wobble()
-            car2.wobble()
+    def applyCollisionForces(self, car1, car2, impact_vector):
+        car1_speed = car1.speed
+        car1_lateral_speed = car1.lateral_speed
+        car2_speed = car2.speed
+        car2_lateral_speed = car2.lateral_speed
 
+        car1.applyCollisionForces(car2, car2_speed, car2_lateral_speed, impact_vector)
+        car2.applyCollisionForces(car1, car1_speed, car1_lateral_speed, impact_vector)
 
     def draw(self):
         
@@ -791,27 +876,27 @@ class Game():
     def on_key_press(self, key):
         for i in range(len(self.players)):
             if key == KeyboardKeys.KEY_LEFT[i]:
-                self.players[i].braking = True
+                self.players[i].apply_brakes = True
             elif key == KeyboardKeys.KEY_RIGHT[i]:
-                self.players[i].forward = True
+                self.players[i].apply_throttle = True
             elif key == KeyboardKeys.KEY_UP[i]:
-                self.players[i].up = True
+                self.players[i].apply_left = True
                 self.players[i].steer(Steering.TURN_LEFT)
             elif key == KeyboardKeys.KEY_DOWN[i]:
-                self.players[i].down = True
+                self.players[i].apply_right = True
                 self.players[i].steer(Steering.TURN_RIGHT)
     
     def on_key_release(self, key):
         for i in range(len(self.players)):
             if key == KeyboardKeys.KEY_LEFT[i]:
-                self.players[i].braking = False
+                self.players[i].release_brakes = True
             elif key == KeyboardKeys.KEY_RIGHT[i]:
-                self.players[i].forward = False
+                self.players[i].release_throttle = True 
             elif key == KeyboardKeys.KEY_UP[i]:
-                self.players[i].up = False
+                self.players[i].release_left = True
                 self.players[i].steer(Steering.CENTERED)
             elif key == KeyboardKeys.KEY_DOWN[i]:
-                self.players[i].down = False
+                self.players[i].release_right = True
                 self.players[i].steer(Steering.CENTERED)
 
 game = Game()
