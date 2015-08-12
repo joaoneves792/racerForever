@@ -55,13 +55,14 @@ class Speed:
     MS_TO_GLMIL = 0.02
     KMH_TO_GLMIL = KMH_TO_MS*MS_TO_GLMIL
     ONE_KMH = KMH_TO_GLMIL
-    MAX_KMH = 80
+    MAX_KMH = 120
     MAX_SPEED = MAX_KMH*ONE_KMH
     BASE_CRASH_SPEED_DECREASE = (10*ONE_KMH) 
     RAD_TO_DEGREE = 57.2958
     MAX_WOBBLE_ROTATION = 0.52359*RAD_TO_DEGREE
     ONE_RADMIL = 0.001*RAD_TO_DEGREE
     ONE_DEGREE_MIL = 1
+    DEGREES_TO_RADIANS = 0.017453
     PLAYER_ACCELERATE_SPEED = 30*ONE_KMH
     PLAYER_BRAKE_SPEED = 30*ONE_KMH
     PLAYER_LATERAL_SPEED = 30*ONE_KMH
@@ -435,6 +436,8 @@ class NPV(Car): #NPV - Non Player Vehicle
         self.skid_mark = None
         self.crashed = False
         self.rotation_lateral_speed_increase = 0
+        self.capsized = False
+        self.capsized_angle = 0
 
     def check_overtake_need(self, cars):
         if self.skiding or (self.switching_to_left_lane or self.switching_to_right_lane):
@@ -500,6 +503,9 @@ class NPV(Car): #NPV - Non Player Vehicle
 
     def draw_car(self):
         glPushMatrix()
+        if self.capsized:
+            glTranslate(0, 20*abs(math.sin(0.5*self.capsized_angle*Speed.DEGREES_TO_RADIANS)), 0)
+            glRotatef(self.capsized_angle, 1, 0, 0)
         glRotatef(self.rotation, 0, 1, 0)
         self.vehicle.model.draw()
         self.draw_wheels()
@@ -523,7 +529,7 @@ class NPV(Car): #NPV - Non Player Vehicle
             else:
                 self.lateral_speed = self.lateral_speed + lateral_speed_delta if self.lateral_speed + lateral_speed_delta < 0 else 0
 
-            angular_speed_delta = (0.01*Speed.ONE_DEGREE_MIL*time_delta) 
+            angular_speed_delta = (0.003*Speed.ONE_DEGREE_MIL*time_delta) 
             if self.angular_speed > 0:
                 self.angular_speed = self.angular_speed - angular_speed_delta if self.angular_speed - angular_speed_delta > 0 else 0
             else:
@@ -534,6 +540,26 @@ class NPV(Car): #NPV - Non Player Vehicle
             elif self.angular_speed < -0.5*Speed.ONE_DEGREE_MIL:
                 self.angular_speed = -0.5*Speed.ONE_DEGREE_MIL
 
+            if (self.rotation >= 90 or self.rotation <= -90) and self.speed >= Speed.MAX_SPEED*3/4:
+                self.capsized = True
+
+            if self.capsized:
+                self.angular_speed = 0
+                self.speed = self.speed - (0.1*Speed.ONE_KMH*time_delta) if self.speed - (0.1*Speed.ONE_KMH*time_delta)> 0 else 0
+                if self.rotation < 0 and self.speed > 0:
+                    self.capsized_angle -= 0.8*Speed.ONE_DEGREE_MIL*time_delta
+                elif self.rotation > 0 and self.speed > 0:
+                    self.capsized_angle += 0.8*Speed.ONE_DEGREE_MIL*time_delta
+
+                if self.speed == 0:
+                    if(self.capsized_angle%360 < 45 and self.capsized_angle%360 > -45):
+                        self.capsized_angle =  0
+                    elif(self.capsized_angle%360 < 125 and self.capsized_angle > 0):
+                        self.capsized_angle = 90
+                    elif(self.capsized_angle%360 > -125 and self.capsized_angle < 0):
+                        self.capsized_angle = -90
+                    else:
+                        self.capsized_angle = 180
         
         if(self.speed > 0):
             self.rotation += time_delta*self.angular_speed
@@ -826,6 +852,8 @@ class Game():
             if player.hydraulics:
                 continue
             for npv in self.npvs[:]:
+                if npv.capsized:
+                    continue
                 #if self.check_collision_box(player.horizontal_position, player.vertical_position, player.width_offset, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
                 impact_vector = []
                 if car_circle_collision(player, npv, impact_vector):    
