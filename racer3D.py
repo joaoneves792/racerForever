@@ -202,6 +202,7 @@ class Car:
         self.front_circle = self.vehicle.front_circle[:]
         self.rotation = 0
         self.wheels = []
+        self.crashed_into = []
 
         for i in range(vehicle.wheel_count):
             self.wheels.append(self.Wheel(i, vehicle.wheel, vehicle.wheel_positions[i]))
@@ -275,14 +276,11 @@ class Player(Car):
         self.fire_phaser = False
         self.phaser_alpha = 0
         self.phaser_gaining_intensity = True
-        self.crashed_into = []
 
 
     def applyCollisionForces(self, other, other_speed, other_lateral_speed, impact_vector):
         self.speed += (other_speed - self.speed)
         self.lateral_speed += (other_lateral_speed - self.lateral_speed)
-        if not (other in self.crashed_into):
-            self.crashed_into.append(other)
         self.skiding = True
     
     def update_car(self, time_delta):
@@ -516,24 +514,25 @@ class NPV(Car): #NPV - Non Player Vehicle
         
     def update_car(self, time_delta):
         player_speed = Speed.MAX_SPEED
-        horizontal_position_delta = time_delta*(self.speed-player_speed)
-        self.horizontal_position += horizontal_position_delta 
-        
-        if self.angular_speed > 0 and self.angular_speed > 0.5*Speed.ONE_DEGREE_MIL:
-            self.angular_speed = 0.5*Speed.ONE_DEGREE_MIL
-        elif self.angular_speed < 0 and self.angular_speed < -0.5*Speed.ONE_DEGREE_MIL:
-            self.angular_speed = -0.5*Speed.ONE_DEGREE_MIL
         
         if self.crashed:
             self.speed = self.speed - (0.05*Speed.ONE_KMH*time_delta) if self.speed > 0 else 0
+            lateral_speed_delta = (0.02*Speed.ONE_KMH*time_delta) 
             if self.lateral_speed > 0:
-                self.lateral_speed = self.lateral_speed - (0.02*Speed.ONE_KMH*time_delta) if self.lateral_speed > 0 else 0
+                self.lateral_speed = self.lateral_speed - lateral_speed_delta if self.lateral_speed - lateral_speed_delta > 0 else 0
             else:
-                self.lateral_speed = self.lateral_speed + (0.02*Speed.ONE_KMH*time_delta) if self.lateral_speed < 0 else 0
+                self.lateral_speed = self.lateral_speed + lateral_speed_delta if self.lateral_speed + lateral_speed_delta < 0 else 0
+
+            angular_speed_delta = (0.01*Speed.ONE_DEGREE_MIL*time_delta) 
             if self.angular_speed > 0:
-                self.angular_speed = self.angular_speed - (0.01*Speed.ONE_DEGREE_MIL*time_delta) if self.angular_speed > 0 else 0
+                self.angular_speed = self.angular_speed - angular_speed_delta if self.angular_speed - angular_speed_delta > 0 else 0
             else:
-                self.angular_speed = self.angular_speed + (0.01*Speed.ONE_DEGREE_MIL*time_delta) if self.angular_speed < 0 else 0
+                self.angular_speed = self.angular_speed + angular_speed_delta if self.angular_speed + angular_speed_delta < 0 else 0
+        
+            if self.angular_speed > 0.5*Speed.ONE_DEGREE_MIL:
+                self.angular_speed = 0.5*Speed.ONE_DEGREE_MIL
+            elif self.angular_speed < -0.5*Speed.ONE_DEGREE_MIL:
+                self.angular_speed = -0.5*Speed.ONE_DEGREE_MIL
 
         
         if(self.speed > 0):
@@ -569,15 +568,32 @@ class NPV(Car): #NPV - Non Player Vehicle
         elif (not self.crashed):
             self.lateral_speed = 0
 
-        if self.rotation > 0 and self.rotation_lateral_speed_increase < 1*Speed.ONE_KMH:
-            self.rotation_lateral_speed_increase += math.sin(self.rotation)*0.1*Speed.ONE_KMH*time_delta
-            self.lateral_speed -= self.rotation_lateral_speed_increase
-        if self.rotation < 0 and self.rotation_lateral_speed_increase < 1*Speed.ONE_KMH:
-            self.rotation_lateral_speed_increase += math.sin(self.rotation)*0.1*Speed.ONE_KMH*time_delta
-            self.lateral_speed += self.rotation_lateral_speed_increase
 
+        #if self.crashed:
+        #    rotation_lateral_speed_increase_delta = math.sin(self.rotation)*0.01*Speed.ONE_KMH*time_delta
+        #
+        #    if self.rotation > 0 and self.lateral_speed - (self.rotation_lateral_speed_increase + rotation_lateral_speed_increase_delta) > -1*Speed.ONE_KMH:
+        #        self.rotation_lateral_speed_increase += rotation_lateral_speed_increase_delta
+        #        self.lateral_speed -= self.rotation_lateral_speed_increase
+        #    if self.rotation < 0 and self.lateral_speed + self.rotation_lateral_speed_increase + rotation_lateral_speed_increase_delta < 1*Speed.ONE_KMH:
+        #        self.rotation_lateral_speed_increase += rotation_lateral_speed_increase_delta
+        #        self.lateral_speed += self.rotation_lateral_speed_increase
+       
+        horizontal_position_delta = time_delta*(self.speed-player_speed)
         vertical_position_delta = time_delta*(self.lateral_speed)
+
+        #Corrections so as to not get stuck!
+        for car in self.crashed_into:
+            impactvector = []
+            if car_circle_collision(self, car, impactvector, horizontal_position_delta, vertical_position_delta):
+                if impactvector[2] > 0:
+                    horizontal_position_delta -= (impactvector[0]*impactvector[2])
+                    vertical_position_delta -= (impactvector[1]*impactvector[2])
+                    car.horizontal_position += impactvector[0]*impactvector[2]
+                    car.vertical_position += impactvector[1]*impactvector[2]
+
         self.vertical_position += vertical_position_delta
+        self.horizontal_position += horizontal_position_delta 
         
         if self.vertical_position > RoadPositions.UPPER_LIMIT:
             self.vertical_position = RoadPositions.UPPER_LIMIT
@@ -801,7 +817,7 @@ class Game():
                 self.spawn_delay = 1300
         #Recalculate their position
         for npv in self.npvs:
-            npv.check_overtake_need(self.npvs + self.players)
+            npv.check_overtake_need(self.npvs)# + self.players)
             npv.update(time_delta)
         
         #Check collisions
@@ -845,7 +861,9 @@ class Game():
         car1_lateral_speed = car1.lateral_speed
         car2_speed = car2.speed
         car2_lateral_speed = car2.lateral_speed
-
+        
+        if not (car2 in car1.crashed_into):
+            car1.crashed_into.append(car2)
         car1.applyCollisionForces(car2, car2_speed, car2_lateral_speed, impact_vector)
         car2.applyCollisionForces(car1, car1_speed, car1_lateral_speed, impact_vector)
 
