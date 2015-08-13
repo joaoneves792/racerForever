@@ -678,12 +678,14 @@ class Game():
         Charger = None
         Murci = None
         M3 = None
+        NSX = None
 
     class Wheels:
         GALLARDO = None
         RS4 = None
         Charger = None
         M3 = None
+        NSX = None
 
     def __init__(self):
         pygame.init()
@@ -833,6 +835,12 @@ class Game():
         m3 = VehicleModel(self.CarModels.M3, self.Wheels.M3, 4)
         fill_wheel_positions(m3, self.CarModels.M3)
         self.available_vehicles.append(m3)
+        
+        self.CarModels.NSX = ms3d.ms3d("./NSX/NSXplay.ms3d")
+        self.Wheels.NSX = ms3d.ms3d("./NSX/NSXWheel.ms3d")
+        nsx = VehicleModel(self.CarModels.NSX, self.Wheels.NSX, 4)
+        fill_wheel_positions(nsx, self.CarModels.NSX)
+        self.available_vehicles.append(nsx)
     
     
     def generateEmergencyVehicle(self, vertical_position):
