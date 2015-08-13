@@ -77,6 +77,7 @@ class Steering:
 class SkidMarks:
     SKID_LEFT = None
     SKID_RIGHT = None
+    SKID_STRAIGHT = None
 
 def box_collision(box1_x, box1_y, box1_w, box1_h, box2_x, box2_y, box2_w, box2_h):
     box1_x = box1_x - box1_w
@@ -633,10 +634,12 @@ class NPV(Car): #NPV - Non Player Vehicle
             self.vertical_position = RoadPositions.LOWER_LIMIT
         
         if self.skiding:
-            if self.skid_mark == None and self.lateral_speed >= 0:
+            if self.skid_mark == None and self.lateral_speed > 0:
                 self.skid_mark = SkidMarks.SKID_LEFT
             elif self.skid_mark == None and self.lateral_speed < 0:
                 self.skid_mark = SkidMarks.SKID_RIGHT
+            elif self.skid_mark == None and self.lateral_speed == 0:
+                self.skid_mark = SkidMarks.SKID_STRAIGHT
             if self.skid_marks_y == 0:
                 self.skid_marks_y = self.vertical_position
             if self.skid_marks_x == 0:
@@ -656,8 +659,37 @@ class Road():
         for i in range(-self.num_of_tiles//2, self.num_of_tiles//2):
             self.z.append(z+i*self.length)
         #self.z = [z-3*, z-2*RoadPositions.LENGTH, z-RoadPositions.LENGTH,  z, z+RoadPositions.LENGTH, z+2*RoadPositions.LENGTH];
+        self.night = False
 
     def draw(self):
+        
+        if self.night:
+                glDisable(GL_LIGHT0)
+                glEnable(GL_LIGHT1)
+                glEnable(GL_LIGHT2)
+                glEnable(GL_LIGHT3)
+
+                glLightfv(GL_LIGHT1, GL_AMBIENT, (1, 1, 0, 1))
+                glLightfv(GL_LIGHT1, GL_DIFFUSE, (1, 1, 0, 1))
+                glLightfv(GL_LIGHT1, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
+                glLightfv(GL_LIGHT1, GL_POSITION, (RoadPositions.LEFT_LANE,50,-100,1))
+                glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, 30)
+                glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0,0,-100))
+
+                glLightfv(GL_LIGHT2, GL_AMBIENT, (1, 1, 0, 1))
+                glLightfv(GL_LIGHT2, GL_DIFFUSE, (1, 1, 0, 1))
+                glLightfv(GL_LIGHT2, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
+                glLightfv(GL_LIGHT2, GL_POSITION, (RoadPositions.LEFT_LANE,50,0,1))
+                glLightfv(GL_LIGHT2, GL_SPOT_CUTOFF, 30)
+                glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, (0,0, 0))
+        
+                glLightfv(GL_LIGHT3, GL_AMBIENT, (1, 1, 0, 1))
+                glLightfv(GL_LIGHT3, GL_DIFFUSE, (1, 1, 0, 1))
+                glLightfv(GL_LIGHT3, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
+                glLightfv(GL_LIGHT3, GL_POSITION, (RoadPositions.LEFT_LANE,50,100,1))
+                glLightfv(GL_LIGHT3, GL_SPOT_CUTOFF, 30)
+                glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, (0,0, 100))
+
         for z in self.z:
             glPushMatrix()
             glTranslatef(0, 0, z)
@@ -671,21 +703,6 @@ class Road():
             self.z[i] -= time_delta*Speed.MAX_SPEED
 
 class Game():
-
-    class CarModels:
-        GALLARDO = None
-        RS4 = None
-        Charger = None
-        Murci = None
-        M3 = None
-        NSX = None
-
-    class Wheels:
-        GALLARDO = None
-        RS4 = None
-        Charger = None
-        M3 = None
-        NSX = None
 
     def __init__(self):
         pygame.init()
@@ -738,24 +755,10 @@ class Game():
         glEnable(GL_LIGHTING);
         glEnable(GL_LIGHT0);
 
-        glLightfv(GL_LIGHT0, GL_AMBIENT, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT0, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-        glLightfv(GL_LIGHT0, GL_POSITION, (0,0,-1,1))
-                                                                    
         glClearDepth(1);
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
-
-        glLightfv(GL_LIGHT0, GL_AMBIENT, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT0, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-        glLightfv(GL_LIGHT0, GL_POSITION, (RoadPositions.MIDDLE_LANE,100,0,1))
-        #glLightfv(GL_LIGHT0, GL_POSITION, (0,10,0,1))
-
         gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 2400)
         #gluPerspective(90, Window.WIDTH/Window.HEIGHT, 1, 2400)
         gluLookAt(-200,450,0, RoadPositions.MIDDLE_LANE,0,0, 0,1,0)
@@ -768,80 +771,30 @@ class Game():
         glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, 45)
         glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0,0,-100))
 
-        #self.night()
-
-        
-    def night(self):
-        glDisable(GL_LIGHT0)
-        glEnable(GL_LIGHT1)
-        glEnable(GL_LIGHT2)
-        glEnable(GL_LIGHT3)
-
-        glLightfv(GL_LIGHT1, GL_AMBIENT, (1, 1, 0, 1))
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, (1, 1, 0, 1))
-        glLightfv(GL_LIGHT1, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-        glLightfv(GL_LIGHT1, GL_POSITION, (RoadPositions.LEFT_LANE,50,-100,1))
-        glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, 30)
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0,0,-100))
-
-        glLightfv(GL_LIGHT2, GL_AMBIENT, (1, 1, 0, 1))
-        glLightfv(GL_LIGHT2, GL_DIFFUSE, (1, 1, 0, 1))
-        glLightfv(GL_LIGHT2, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-        glLightfv(GL_LIGHT2, GL_POSITION, (RoadPositions.LEFT_LANE,50,0,1))
-        glLightfv(GL_LIGHT2, GL_SPOT_CUTOFF, 30)
-        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, (0,0, 0))
-        
-        glLightfv(GL_LIGHT3, GL_AMBIENT, (1, 1, 0, 1))
-        glLightfv(GL_LIGHT3, GL_DIFFUSE, (1, 1, 0, 1))
-        glLightfv(GL_LIGHT3, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-        glLightfv(GL_LIGHT3, GL_POSITION, (RoadPositions.LEFT_LANE,50,100,1))
-        glLightfv(GL_LIGHT3, GL_SPOT_CUTOFF, 30)
-        glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, (0,0, 100))
-
-
     def load_resources(self):
         def fill_wheel_positions(vehicle, model):
             for i in range(vehicle.wheel_count):
                 vehicle.wheel_positions.append(model.getJointPosition("hub"+str(i)))
+    
+        def load_vehicle(car_model, wheel_model, num_wheels):
+            ms3d_car = ms3d.ms3d(car_model)
+            ms3d_wheel = ms3d.ms3d(wheel_model)
+            vehicle = VehicleModel(ms3d_car, ms3d_wheel, num_wheels)
+            fill_wheel_positions(vehicle, ms3d_car)
+            return vehicle
 
         SkidMarks.SKID_LEFT = ms3d.ms3d("./skid_left.ms3d")
         SkidMarks.SKID_RIGHT = ms3d.ms3d("./skid_right.ms3d")
+        SkidMarks.SKID_STRAIGHT = ms3d.ms3d("./skid_straight.ms3d")
 
-        self.CarModels.GALLARDO = ms3d.ms3d("./Gallardo/gallardo_play.ms3d")
-        self.Wheels.GALLARDO = ms3d.ms3d("./Gallardo/gallardoWheel.ms3d")
-        gallardo = VehicleModel(self.CarModels.GALLARDO, self.Wheels.GALLARDO, 4)
-        fill_wheel_positions(gallardo, self.CarModels.GALLARDO)
-        self.available_player_vehicles.append(gallardo)
 
-        self.CarModels.RS4 = ms3d.ms3d("./RS4/RS4.ms3d")
-        self.Wheels.RS4 = ms3d.ms3d("./RS4/RS4Wheel.ms3d")
-        rs4 = VehicleModel(self.CarModels.RS4, self.Wheels.RS4, 4)
-        fill_wheel_positions(rs4, self.CarModels.RS4)
-        self.available_vehicles.append(rs4)
-        
-        self.CarModels.Charger = ms3d.ms3d("./charger/charger_play.ms3d")
-        self.Wheels.Charger = ms3d.ms3d("./charger/ChargerWheel.ms3d")
-        charger = VehicleModel(self.CarModels.Charger, self.Wheels.Charger, 4)
-        fill_wheel_positions(charger, self.CarModels.Charger)
-        self.available_vehicles.append(charger)
-        
-        self.CarModels.Murci = ms3d.ms3d("./Murci/MurcielagoPlay.ms3d")
-        murci = VehicleModel(self.CarModels.Murci, self.Wheels.GALLARDO, 4)
-        fill_wheel_positions(murci, self.CarModels.Murci)
-        self.available_vehicles.append(murci)
-        
-        self.CarModels.M3 = ms3d.ms3d("./M3E92/M3play.ms3d")
-        self.Wheels.M3 = ms3d.ms3d("./M3E92/M3E92Wheel.ms3d")
-        m3 = VehicleModel(self.CarModels.M3, self.Wheels.M3, 4)
-        fill_wheel_positions(m3, self.CarModels.M3)
-        self.available_vehicles.append(m3)
-        
-        self.CarModels.NSX = ms3d.ms3d("./NSX/NSXplay.ms3d")
-        self.Wheels.NSX = ms3d.ms3d("./NSX/NSXWheel.ms3d")
-        nsx = VehicleModel(self.CarModels.NSX, self.Wheels.NSX, 4)
-        fill_wheel_positions(nsx, self.CarModels.NSX)
-        self.available_vehicles.append(nsx)
-    
+        self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
+
+        self.available_vehicles.append(load_vehicle("./RS4/RS4.ms3d", "./RS4/RS4Wheel.ms3d", 4))
+        self.available_vehicles.append(load_vehicle("./charger/charger_play.ms3d", "./charger/ChargerWheel.ms3d", 4))
+        self.available_vehicles.append(load_vehicle("./Murci/MurcielagoPlay.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
+        self.available_vehicles.append(load_vehicle("./M3E92/M3play.ms3d", "./M3E92/M3E92Wheel.ms3d", 4))
+        self.available_vehicles.append(load_vehicle("./NSX/NSXplay.ms3d", "./NSX/NSXWheel.ms3d" , 4))
     
     def generateEmergencyVehicle(self, vertical_position):
             pass
