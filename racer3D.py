@@ -739,7 +739,14 @@ class Road():
             self.lights = False
 
 
+        intensity = 2*math.sin(self.sun_angle)
         if self.lights:
+            if self.time > 42500 and self.time < 50000:
+                glLightfv(GL_LIGHT1, GL_AMBIENT, (1-intensity, 1-intensity, 1-intensity, 1))
+                glLightfv(GL_LIGHT2, GL_AMBIENT, (1-intensity, 1-intensity, 1-intensity, 1))
+                glLightfv(GL_LIGHT3, GL_AMBIENT, (1-intensity, 1-intensity, 1-intensity, 1))
+                glLightfv(GL_LIGHT4, GL_AMBIENT, (1-intensity, 1-intensity, 1-intensity, 1))
+            
             glLightfv(GL_LIGHT1, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[0]+self.lights_offset, 1));
             glLightfv(GL_LIGHT2, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[1]+self.lights_offset, 1));
             glLightfv(GL_LIGHT3, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[2]+self.lights_offset, 1));
@@ -747,7 +754,6 @@ class Road():
 
         if self.sun:
             sin = math.sin(self.sun_angle)
-            intensity = 2*math.sin(self.sun_angle)
             color = (8*sin, 4*sin, 2*sin, intensity)
             glLightfv(GL_LIGHT0, GL_AMBIENT, (intensity, intensity, intensity, intensity))
             glLightfv(GL_LIGHT0, GL_DIFFUSE, color)
