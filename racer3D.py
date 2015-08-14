@@ -227,6 +227,8 @@ class Car:
             wheel.update()
 
     def draw(self):
+        if self.horizontal_position-self.width_offset > RoadPositions.FORWARD_LIMIT:
+            pass
         if self.skid_mark != None:
             glPushMatrix()
             glDisable(GL_LIGHTING)
@@ -650,45 +652,104 @@ class NPV(Car): #NPV - Non Player Vehicle
 
 class Road():
     def __init__(self, z=0):
-        self.road = ms3d.ms3d("./road2.ms3d")
+        self.road = ms3d.ms3d("./road4.ms3d")
         self.length = 600 #calculated by measuring it in milkshape (see comment at beginning of file!)
-        self.num_of_tiles = 6 #Needs to be a pair number!!
+        self.num_of_tiles = 4 #Needs to be a pair number!!
         self.maximum_rear_pos = ((-(self.num_of_tiles//2))-1)*self.length
         self.maximum_front_pos = ((self.num_of_tiles//2)-1)*self.length
         self.z = []
+        self.num_of_lights = 4
+        self.lights_offset = self.length/2
+        self.lights_cutoff = 70
         for i in range(-self.num_of_tiles//2, self.num_of_tiles//2):
             self.z.append(z+i*self.length)
-        #self.z = [z-3*, z-2*RoadPositions.LENGTH, z-RoadPositions.LENGTH,  z, z+RoadPositions.LENGTH, z+2*RoadPositions.LENGTH];
-        self.night = False
+        self.lights = False
+        self.sun = True
+        self.switch_lights_off = False
+        self.switch_lights_on = False
+        self.sunrise = False
+        self.sunset = False
+        self.time = 30000
+        self.sun_angle = math.pi/2
 
+        self.setup_lights()
+      
+    def setup_lights(self):
+        lamp_ambient = (0.5, 0.5, 0.2, 0.5)
+        lamp_diffuse = (1, 1, 0.799, 0.5)
+        lamp_specular = (0.1, 0.1, 0.1, 1)
+        lamp_direction = (0, -1, 0)
+        
+        glEnable(GL_LIGHTING);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, (1, 1, 1, 1))
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, (1, 1, 1, 1))
+        glLightfv(GL_LIGHT0, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
+        
+        glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, self.lights_cutoff)
+        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lamp_direction)
+        glLightfv(GL_LIGHT1, GL_AMBIENT, lamp_ambient)
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, lamp_diffuse)
+        glLightfv(GL_LIGHT1, GL_SPECULAR, lamp_specular)
+        glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, self.lights_cutoff) 
+        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lamp_direction)
+        glLightfv(GL_LIGHT2, GL_AMBIENT, lamp_ambient)
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, lamp_diffuse)
+        glLightfv(GL_LIGHT2, GL_SPECULAR, lamp_specular)
+        glLightfv(GL_LIGHT2, GL_SPOT_CUTOFF, self.lights_cutoff)
+        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, lamp_direction)
+        glLightfv(GL_LIGHT3, GL_AMBIENT, lamp_ambient)
+        glLightfv(GL_LIGHT3, GL_DIFFUSE, lamp_diffuse)
+        glLightfv(GL_LIGHT3, GL_SPECULAR, lamp_specular)
+        glLightfv(GL_LIGHT3, GL_SPOT_CUTOFF, self.lights_cutoff)
+        glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, lamp_direction)
+        glLightfv(GL_LIGHT4, GL_AMBIENT, lamp_ambient)
+        glLightfv(GL_LIGHT4, GL_DIFFUSE, lamp_diffuse)
+        glLightfv(GL_LIGHT4, GL_SPECULAR, lamp_specular)
+        glLightfv(GL_LIGHT4, GL_SPOT_CUTOFF, self.lights_cutoff)
+        glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, lamp_direction)
+
+        glLightfv(GL_LIGHT0, GL_POSITION, (0,200,0,1))
+
+        glEnable(GL_LIGHT0)
     def draw(self):
         
-        if self.night:
-                glDisable(GL_LIGHT0)
-                glEnable(GL_LIGHT1)
-                glEnable(GL_LIGHT2)
-                glEnable(GL_LIGHT3)
+        if self.sunrise:
+            glEnable(GL_LIGHT0)
+            self.sunrise = False
+            self.sun = True
 
-                glLightfv(GL_LIGHT1, GL_AMBIENT, (1, 1, 0, 1))
-                glLightfv(GL_LIGHT1, GL_DIFFUSE, (1, 1, 0, 1))
-                glLightfv(GL_LIGHT1, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-                glLightfv(GL_LIGHT1, GL_POSITION, (RoadPositions.LEFT_LANE,50,-100,1))
-                glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, 30)
-                glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0,0,-100))
+        if self.sunset:
+            glDisable(GL_LIGHT0)
+            self.sunset = False
+            self.sun = False
 
-                glLightfv(GL_LIGHT2, GL_AMBIENT, (1, 1, 0, 1))
-                glLightfv(GL_LIGHT2, GL_DIFFUSE, (1, 1, 0, 1))
-                glLightfv(GL_LIGHT2, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-                glLightfv(GL_LIGHT2, GL_POSITION, (RoadPositions.LEFT_LANE,50,0,1))
-                glLightfv(GL_LIGHT2, GL_SPOT_CUTOFF, 30)
-                glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, (0,0, 0))
-        
-                glLightfv(GL_LIGHT3, GL_AMBIENT, (1, 1, 0, 1))
-                glLightfv(GL_LIGHT3, GL_DIFFUSE, (1, 1, 0, 1))
-                glLightfv(GL_LIGHT3, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-                glLightfv(GL_LIGHT3, GL_POSITION, (RoadPositions.LEFT_LANE,50,100,1))
-                glLightfv(GL_LIGHT3, GL_SPOT_CUTOFF, 30)
-                glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, (0,0, 100))
+        if self.switch_lights_on:
+            glEnable(GL_LIGHT1)
+            glEnable(GL_LIGHT2)
+            glEnable(GL_LIGHT3)
+            glEnable(GL_LIGHT4)
+            self.switch_lights_on = False
+            self.lights = True
+
+        if self.switch_lights_off:
+            glDisable(GL_LIGHT1)
+            glDisable(GL_LIGHT2)
+            glDisable(GL_LIGHT3)
+            glDisable(GL_LIGHT4)
+            self.switch_lights_off = False
+            self.lights = False
+
+
+        if self.lights:
+            glLightfv(GL_LIGHT1, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[0]+self.lights_offset, 1));
+            glLightfv(GL_LIGHT2, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[1]+self.lights_offset, 1));
+            glLightfv(GL_LIGHT3, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[2]+self.lights_offset, 1));
+            glLightfv(GL_LIGHT4, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[3]+self.lights_offset, 1));
+
+        if self.sun:
+            glLightfv(GL_LIGHT0, GL_POSITION, (0, self.sun_height, self.sun_pos, 1))
+
+
 
         for z in self.z:
             glPushMatrix()
@@ -696,11 +757,45 @@ class Road():
             self.road.draw()
             glPopMatrix()
 
+
+
     def advance(self, time_delta):
         for i in range(self.num_of_tiles):
             if self.z[i] <= self.maximum_rear_pos:
                 self.z[i] = self.maximum_front_pos - (self.maximum_rear_pos-self.z[i]) #Dont forget the correction factor because of big time_deltas
             self.z[i] -= time_delta*Speed.MAX_SPEED
+
+        if self.sun_angle >= 2*math.pi:
+            self.sun_angle = 0
+        self.sun_angle += 0.000104719*time_delta
+
+        self.sun_height = 100*math.sin(self.sun_angle)
+        self.sun_pos = self.length*math.cos(self.sun_angle)
+
+
+        if not self.lights:
+            time_delta = time_delta/2
+        else:
+            time_delta = time_delta*2
+
+        self.time += time_delta
+        #print(self.time)
+        if self.time >= 60000:
+            self.time = 0
+
+        if not self.sun:
+            if self.time > 15000 and self.time < 50000:
+                self.sunrise = True
+        else:
+            if self.time > 50000:
+                self.sunset = True
+
+        if not self.lights:
+            if self.time > 45000 and self.time:
+                self.switch_lights_on = True
+        else:           
+            if self.time > 20000 and self.time < 45000:
+                self.switch_lights_off = True
 
 class Game():
 
@@ -752,24 +847,17 @@ class Game():
         glEnable(GL_TEXTURE_2D);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
         #glEnable(GL_MULTISAMPLE)
-        glEnable(GL_LIGHTING);
-        glEnable(GL_LIGHT0);
 
         glClearDepth(1);
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
-        gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 2400)
+        glMatrixMode(GL_PROJECTION)
         #gluPerspective(90, Window.WIDTH/Window.HEIGHT, 1, 2400)
+        gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 2400)
         gluLookAt(-200,450,0, RoadPositions.MIDDLE_LANE,0,0, 0,1,0)
+        glMatrixMode(GL_MODELVIEW)
         
-        glLightfv(GL_LIGHT0, GL_AMBIENT, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT0, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-        #glLightfv(GL_LIGHT0, GL_POSITION, (0,0,-1,0))
-        glLightfv(GL_LIGHT0, GL_POSITION, (0,100,0,1))
-        glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, 45)
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, (0,0,-100))
 
     def load_resources(self):
         def fill_wheel_positions(vehicle, model):
