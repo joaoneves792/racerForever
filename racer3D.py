@@ -652,7 +652,7 @@ class NPV(Car): #NPV - Non Player Vehicle
 
 class Road():
     def __init__(self, z=0):
-        self.road = ms3d.ms3d("./road4.ms3d")
+        self.road = ms3d.ms3d("./road5.ms3d")
         self.length = 600 #calculated by measuring it in milkshape (see comment at beginning of file!)
         self.num_of_tiles = 4 #Needs to be a pair number!!
         self.maximum_rear_pos = ((-(self.num_of_tiles//2))-1)*self.length
@@ -681,10 +681,9 @@ class Road():
         lamp_direction = (0, -1, 0)
         
         glEnable(GL_LIGHTING);
-        glLightfv(GL_LIGHT0, GL_AMBIENT, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT0, GL_SPECULAR, (0.5, 0.5, 0.5, 0.5))
-        
+       
+        glLightModelfv(GL_LIGHT_MODEL_COLOR_CONTROL, GL_SINGLE_COLOR)
+
         glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, self.lights_cutoff)
         glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lamp_direction)
         glLightfv(GL_LIGHT1, GL_AMBIENT, lamp_ambient)
@@ -747,7 +746,13 @@ class Road():
             glLightfv(GL_LIGHT4, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[3]+self.lights_offset, 1));
 
         if self.sun:
-            glLightfv(GL_LIGHT0, GL_POSITION, (0, self.sun_height, self.sun_pos, 1))
+            sin = math.sin(self.sun_angle)
+            intensity = 2*math.sin(self.sun_angle)
+            color = (8*sin, 4*sin, 2*sin, intensity)
+            glLightfv(GL_LIGHT0, GL_AMBIENT, (intensity, intensity, intensity, intensity))
+            glLightfv(GL_LIGHT0, GL_DIFFUSE, color)
+            glLightfv(GL_LIGHT0, GL_SPECULAR, color)
+            glLightfv(GL_LIGHT0, GL_POSITION, (0, 100*self.sun_height, self.length*self.sun_pos, 1))
 
 
 
@@ -765,36 +770,37 @@ class Road():
                 self.z[i] = self.maximum_front_pos - (self.maximum_rear_pos-self.z[i]) #Dont forget the correction factor because of big time_deltas
             self.z[i] -= time_delta*Speed.MAX_SPEED
 
+
+
+        if self.lights:
+            time_delta = time_delta*2
+        else:
+            time_delta = time_delta/4
+
+        self.time += time_delta
+        
         if self.sun_angle >= 2*math.pi:
             self.sun_angle = 0
         self.sun_angle += 0.000104719*time_delta
 
-        self.sun_height = 100*math.sin(self.sun_angle)
-        self.sun_pos = self.length*math.cos(self.sun_angle)
-
-
-        if not self.lights:
-            time_delta = time_delta/2
-        else:
-            time_delta = time_delta*2
-
-        self.time += time_delta
-        #print(self.time)
+        self.sun_height = math.sin(self.sun_angle)
+        self.sun_pos = math.cos(self.sun_angle)
+        
         if self.time >= 60000:
             self.time = 0
 
         if not self.sun:
-            if self.time > 15000 and self.time < 50000:
+            if self.time > 15000 and self.time < 50000 and self.sun_angle >= 0:
                 self.sunrise = True
         else:
-            if self.time > 50000:
+            if self.time > 50000 and self.sun_angle >= math.pi:
                 self.sunset = True
 
         if not self.lights:
-            if self.time > 45000 and self.time:
+            if self.time > 42500 and self.time:
                 self.switch_lights_on = True
         else:           
-            if self.time > 20000 and self.time < 45000:
+            if self.time > 20000 and self.time < 42500:
                 self.switch_lights_off = True
 
 class Game():
@@ -946,7 +952,7 @@ class Game():
                 self.spawn_delay = 1300
         #Recalculate their position
         for npv in self.npvs:
-            npv.check_overtake_need(self.npvs)# + self.players)
+            npv.check_overtake_need(self.npvs + self.players)
             npv.update(time_delta)
         
         #Check collisions
