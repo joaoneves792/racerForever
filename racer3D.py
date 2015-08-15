@@ -675,38 +675,22 @@ class Road():
         self.setup_lights()
       
     def setup_lights(self):
-        lamp_ambient = (0.5, 0.5, 0.2, 0.5)
-        lamp_diffuse = (1, 1, 0.799, 0.5)
-        lamp_specular = (0.1, 0.1, 0.1, 1)
+        self.lamp_ambient = (0.5, 0.5, 0.2, 0.5)
+        self.lamp_diffuse = (1, 1, 0.799, 0.5)
+        self.lamp_specular = (0.1, 0.1, 0.1, 1)
         lamp_direction = (0, -1, 0)
         
         glEnable(GL_LIGHTING);
        
         glLightModelfv(GL_LIGHT_MODEL_COLOR_CONTROL, GL_SINGLE_COLOR)
 
-        glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, self.lights_cutoff)
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lamp_direction)
-        glLightfv(GL_LIGHT1, GL_AMBIENT, lamp_ambient)
-        glLightfv(GL_LIGHT1, GL_DIFFUSE, lamp_diffuse)
-        glLightfv(GL_LIGHT1, GL_SPECULAR, lamp_specular)
-        glLightfv(GL_LIGHT1, GL_SPOT_CUTOFF, self.lights_cutoff) 
-        glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, lamp_direction)
-        glLightfv(GL_LIGHT2, GL_AMBIENT, lamp_ambient)
-        glLightfv(GL_LIGHT2, GL_DIFFUSE, lamp_diffuse)
-        glLightfv(GL_LIGHT2, GL_SPECULAR, lamp_specular)
-        glLightfv(GL_LIGHT2, GL_SPOT_CUTOFF, self.lights_cutoff)
-        glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, lamp_direction)
-        glLightfv(GL_LIGHT3, GL_AMBIENT, lamp_ambient)
-        glLightfv(GL_LIGHT3, GL_DIFFUSE, lamp_diffuse)
-        glLightfv(GL_LIGHT3, GL_SPECULAR, lamp_specular)
-        glLightfv(GL_LIGHT3, GL_SPOT_CUTOFF, self.lights_cutoff)
-        glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, lamp_direction)
-        glLightfv(GL_LIGHT4, GL_AMBIENT, lamp_ambient)
-        glLightfv(GL_LIGHT4, GL_DIFFUSE, lamp_diffuse)
-        glLightfv(GL_LIGHT4, GL_SPECULAR, lamp_specular)
-        glLightfv(GL_LIGHT4, GL_SPOT_CUTOFF, self.lights_cutoff)
-        glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, lamp_direction)
-
+        for light in range(GL_LIGHT1, GL_LIGHT4+1):
+            glLightfv(light, GL_AMBIENT, self.lamp_ambient)
+            glLightfv(light, GL_DIFFUSE, self.lamp_diffuse)
+            glLightfv(light, GL_SPECULAR, self.lamp_specular)
+            glLightfv(light, GL_SPOT_CUTOFF, self.lights_cutoff) 
+            glLightfv(light, GL_SPOT_DIRECTION, lamp_direction)
+        
         glLightfv(GL_LIGHT0, GL_POSITION, (0,200,0,1))
 
         glEnable(GL_LIGHT0)
@@ -741,16 +725,16 @@ class Road():
 
         intensity = 2*math.sin(self.sun_angle)
         if self.lights:
-            if self.time > 42500 and self.time < 50000:
-                glLightfv(GL_LIGHT1, GL_AMBIENT, (1-intensity, 1-intensity, 1-intensity, 1))
-                glLightfv(GL_LIGHT2, GL_AMBIENT, (1-intensity, 1-intensity, 1-intensity, 1))
-                glLightfv(GL_LIGHT3, GL_AMBIENT, (1-intensity, 1-intensity, 1-intensity, 1))
-                glLightfv(GL_LIGHT4, GL_AMBIENT, (1-intensity, 1-intensity, 1-intensity, 1))
-            
-            glLightfv(GL_LIGHT1, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[0]+self.lights_offset, 1));
-            glLightfv(GL_LIGHT2, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[1]+self.lights_offset, 1));
-            glLightfv(GL_LIGHT3, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[2]+self.lights_offset, 1));
-            glLightfv(GL_LIGHT4, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[3]+self.lights_offset, 1));
+            if self.time > 42500 and self.time < 55000:
+                compensate_sun = 1-intensity
+                ambient = (compensate_sun if compensate_sun > self.lamp_ambient[0] else self.lamp_ambient[0], \
+                            compensate_sun if compensate_sun > self.lamp_ambient[1] else self.lamp_ambient[1], \
+                            compensate_sun if compensate_sun > self.lamp_ambient[2] else self.lamp_ambient[2])
+                for light in range(GL_LIGHT1, GL_LIGHT4+1):
+                    glLightfv(light, GL_AMBIENT, ambient) 
+                            
+            for light in range(GL_LIGHT1, GL_LIGHT4+1):
+                glLightfv(light, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[light - GL_LIGHT1]+self.lights_offset, 1));
 
         if self.sun:
             sin = math.sin(self.sun_angle)
@@ -796,10 +780,10 @@ class Road():
             self.time = 0
 
         if not self.sun:
-            if self.time > 15000 and self.time < 50000 and self.sun_angle >= 0:
+            if self.time > 15000 and self.time < 55000 and self.sun_angle >= 0:
                 self.sunrise = True
         else:
-            if self.time > 50000 and self.sun_angle >= math.pi:
+            if self.time > 55000 and self.sun_angle >= math.pi:
                 self.sunset = True
 
         if not self.lights:
