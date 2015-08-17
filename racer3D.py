@@ -908,7 +908,8 @@ class Game():
         self.available_vehicles.append(load_vehicle("./M3E92/M3play.ms3d", "./M3E92/M3E92Wheel.ms3d", 4))
         self.available_vehicles.append(load_vehicle("./NSX/NSXplay.ms3d", "./NSX/NSXWheel.ms3d" , 4))
         self.available_vehicles.append(load_vehicle("./Skyline/skylineplay.ms3d", "./Skyline/skyline_wheel.ms3d" , 4))
-    
+        self.available_vehicles.append(load_vehicle("./LP570_S/LP570play.ms3d", "./LP570_S/LP570wheel.ms3d" , 4))
+        
     def generateEmergencyVehicle(self, vertical_position):
             pass
             #self.npvs.append(NPV(CarModels.EMERGENCY_CARS[random.randrange(len(CarModels.EMERGENCY_CARS))], vertical_position, -20*Speed.ONE_KMH))
