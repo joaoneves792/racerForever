@@ -5,6 +5,7 @@ from pygame.locals import *
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
+from OpenGL.GLUT import *
 
 import ms3d
 
@@ -22,6 +23,20 @@ class Window:
     FULLSCREEN = False
 
     VERSION = "v0.1"
+
+class HUD:
+    PLAYER2_DELTA_X = 800
+    SCORE_POS_X = (30, 50+PLAYER2_DELTA_X)
+    SCORE_POS_Y = (45, 50)
+    TIME_OUT_POS_X = (50, 50+PLAYER2_DELTA_X)
+    TIME_OUT_POS_Y = (70, 70)
+    INVENTORY_X = (50, 50+PLAYER2_DELTA_X)
+    INVENTORY_Y = (450, 450)
+    POINTS100_X = (50, 50+PLAYER2_DELTA_X)
+    POINTS100_SPEED_DIRECTION = (1, -1)
+    POINTS_HUD = None
+    INVENTORY_HUD = None
+
 
 class KeyboardKeys:
     KEY_ESC = pygame.K_ESCAPE
@@ -78,6 +93,14 @@ class SkidMarks:
     SKID_LEFT = None
     SKID_RIGHT = None
     SKID_STRAIGHT = None
+
+
+def drawText(x, y, rgba_color, bg_color, textString):
+    font = pygame.font.Font(None, 30)
+    textSurface = font.render(textString, True, rgba_color, bg_color)   
+    textData = pygame.image.tostring(textSurface, "RGBA", True)     
+    glRasterPos2i(x, y)     
+    glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
 
 def box_collision(box1_x, box1_y, box1_w, box1_h, box2_x, box2_y, box2_w, box2_h):
     box1_x = box1_x - box1_w
@@ -436,9 +459,10 @@ class Player(Car):
         #if self.crash_handler != None:
         #    self.crash_handler.draw(cr)
        
-        #self.draw_score(cr)
+        #self.draw_score()
         #self.draw_power_up_timer(cr)
         #self.draw_inventory(cr)
+
 
 class NPV(Car): #NPV - Non Player Vehicle
     def __init__(self, model, x, speed):
@@ -514,7 +538,7 @@ class NPV(Car): #NPV - Non Player Vehicle
         else:
             self.angular_speed -= 0.6*Speed.ONE_DEGREE_MIL*(impact_vector[1]/(self.vehicle.radius*2))
         self.skiding = True
-        self.crashed = True
+        #self.crashed = True
 
     def draw_car(self):
         glPushMatrix()
@@ -867,9 +891,13 @@ class Game():
             fill_wheel_positions(vehicle, ms3d_car)
             return vehicle
 
+
         SkidMarks.SKID_LEFT = ms3d.ms3d("./skid_left.ms3d")
         SkidMarks.SKID_RIGHT = ms3d.ms3d("./skid_right.ms3d")
         SkidMarks.SKID_STRAIGHT = ms3d.ms3d("./skid_straight.ms3d")
+
+        HUD.POINTS_HUD = ms3d.ms3d("./pointsHUD.ms3d")
+        self.pointsHUD = ms3d.ms3d("./pointsHUD.ms3d")
 
 
         self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
@@ -879,6 +907,7 @@ class Game():
         self.available_vehicles.append(load_vehicle("./Murci/MurcielagoPlay.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
         self.available_vehicles.append(load_vehicle("./M3E92/M3play.ms3d", "./M3E92/M3E92Wheel.ms3d", 4))
         self.available_vehicles.append(load_vehicle("./NSX/NSXplay.ms3d", "./NSX/NSXWheel.ms3d" , 4))
+        self.available_vehicles.append(load_vehicle("./Skyline/skylineplay.ms3d", "./Skyline/skyline_wheel.ms3d" , 4))
     
     def generateEmergencyVehicle(self, vertical_position):
             pass
@@ -961,10 +990,7 @@ class Game():
                         if not npv.crashed:
                             #ParticleManager.add_new_emmitter(Minus10Points(player.horizontal_position, player.vertical_position, -player.speed, 0.2))
                             player.score -= 60
-                            #if(player.crash_handler == None):
-                            #    player.crash_handler = PlayerCrashHandler(player, npv.speed)
-                    if not npv.crashed:
-                        npv.crashed = True
+                            npv.crashed = True
                         #ParticleManager.add_new_emmitter(SmokeEmitter( npv.horizontal_position, npv.vertical_position-npv.height_offset, -npv.speed, 0))
                 #if player.fire_phaser:
                 #    if self.check_collision_box(player.horizontal_position, player.vertical_position, RoadPositions.COLLISION_HORIZON/2, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
@@ -977,6 +1003,8 @@ class Game():
                 impact_vector = []
                 if self.check_collision_circle(self.npvs[i], self.npvs[j], impact_vector):
                     self.applyCollisionForces(self.npvs[i], self.npvs[j], impact_vector)
+                    self.npvs[i].crashed = True
+                    self.npvs[j].crashed = True
 
         for player in self.players:
             player.update(time_delta)
@@ -997,7 +1025,6 @@ class Game():
     def draw(self):
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
         self.road.draw()
 
         for player in self.players:
@@ -1005,9 +1032,43 @@ class Game():
 
         for npv in self.npvs:
             npv.draw()
+        
+        self.draw_hud()
 
         pygame.display.flip()
-    
+ 
+    def draw_hud(self): 
+        glDisable(GL_DEPTH_TEST)
+        glDepthMask(GL_FALSE)
+        #glDisable(GL_LIGHTING)
+        #glDisable(GL_BLEND)
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        glOrtho(0, Window.WIDTH, Window.HEIGHT, 0, -1, 1)
+
+        glMatrixMode(GL_MODELVIEW)
+        glPushMatrix()
+        glLoadIdentity()
+
+        glColor3f(0, 0, 0)
+        for player in self.players:
+            color = (255, 255, 255, 255)
+            if(player.score <= 0):
+                color = (255, 0, 0, 255)
+            self.pointsHUD.draw()
+            glDisable(GL_TEXTURE_2D)
+            drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (20, 20, 20, 0), "SCORE: " + str(int(player.score)) )
+        glPopMatrix()
+        
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+
+        glMatrixMode(GL_MODELVIEW)
+        glEnable(GL_DEPTH_TEST)
+        glEnable(GL_LIGHTING)
+        glDepthMask(GL_TRUE)
+        glEnable(GL_BLEND)
     
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
