@@ -5,9 +5,9 @@ from pygame.locals import *
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from OpenGL.GLUT import *
 
 import ms3d
+import ParticleManager
 
 import random
 import math
@@ -32,7 +32,7 @@ class HUD:
     TIME_OUT_POS_Y = (70, 70)
     INVENTORY_X = (50, 50+PLAYER2_DELTA_X)
     INVENTORY_Y = (450, 450)
-    POINTS100_X = (50, 50+PLAYER2_DELTA_X)
+    POINTS100_X = (-200, 200+PLAYER2_DELTA_X)
     POINTS100_SPEED_DIRECTION = (1, -1)
     POINTS_HUD = None
     INVENTORY_HUD = None
@@ -93,7 +93,6 @@ class SkidMarks:
     SKID_LEFT = None
     SKID_RIGHT = None
     SKID_STRAIGHT = None
-
 
 def drawText(x, y, rgba_color, bg_color, textString):
     font = pygame.font.Font(None, 30)
@@ -327,13 +326,13 @@ class Player(Car):
         self.skiding = True
     
     def update_car(self, time_delta):
-        #for i in range(self.score_hundreds - int(self.score / 100)):
-        #    ParticleManager.add_new_emmitter(Minus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id]*Speed.MAX_SPEED))
+        for i in range(self.score_hundreds - int(self.score / 100)):
+            ParticleManager.add_new_emmitter(Minus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id]*Speed.MAX_SPEED-10*Speed.ONE_KMH))
         self.score += 0.01 * time_delta
         old_score_hundreds = self.score_hundreds
         self.score_hundreds = int(self.score / 100)
-        #for i in range(self.score_hundreds-old_score_hundreds):
-        #    ParticleManager.add_new_emmitter(Plus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id]*Speed.MAX_SPEED))
+        for i in range(self.score_hundreds-old_score_hundreds):
+            ParticleManager.add_new_emmitter(Plus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id]*Speed.MAX_SPEED-10*Speed.ONE_KMH))
         
         #Adjust postition to user input
         if self.apply_left:
@@ -817,6 +816,48 @@ class Road():
             if self.time > 20000 and self.time < 42500:
                 self.switch_lights_off = True
 
+class PointsEmitter(ParticleManager.ParticleEmitter):
+    def __init__(self, x, y, speed_x, speed_y, size=100, shape=ParticleManager.Particles.POINTS, rate=0.1, num_of_particles=3):
+        super(PointsEmitter, self).__init__(x, y, speed_x, speed_y, size, shape, num_of_particles , 0.1)
+    def set_particles(self):
+        for particle in self.particles:
+            particle.set_properties(self.x, self.y, 700, 0, self.speed_x + random.randrange(-5, 5)*Speed.ONE_KMH, self.speed_y + random.randrange(-5, 5)*Speed.ONE_KMH,  self.size, self.shape, True)
+
+class Minus10Points(PointsEmitter):
+    def __init__(self, x, y, speed_x, speed_y, size=100, shape=ParticleManager.Particles.POINTS, num_of_particles=6):
+        super(Minus10Points, self).__init__(x, y, speed_x, speed_y, size, shape, 0.01, num_of_particles)
+    def set_particles(self):
+        for particle in self.particles:
+            particle.set_properties(self.x, self.y, 1200, 0, self.speed_x + random.randrange(-5, 5)*Speed.ONE_KMH, self.speed_y + random.randrange(-5, 5)*Speed.ONE_KMH,  self.size, self.shape, True)
+
+
+class Plus100Points(PointsEmitter):
+    def __init__(self, x, speed):
+        super(Plus100Points, self).__init__(x, 130, speed, 0.1, 200, ParticleManager.Particles.PLUS_100_POINTS, 1, 1)
+
+class Minus100Points(PointsEmitter):
+    def __init__(self, x, speed):
+        super(Minus100Points, self).__init__(x, 130, speed,  0.1, 400, ParticleManager.Particles.MINUS_100_POINTS, 1, 1)
+
+#class MessageEmitter(ParticleManager.ParticleEmitter):
+#    def __init__(self, x, y, shape):
+#        super(MessageEmitter, self).__init__(x, y, 0, 0, 100, shape, 1, 1)
+#    def set_particles(self):
+#        for particle in self.particles:
+#            particle.set_properties(self.x, self.y, 1500, 0, self.speed_x, self.speed_y,  self.size, self.shape, True)
+#
+#class HolyShit(MessageEmitter):
+#    def __init__(self):
+#        super(HolyShit, self).__init__(512, 340, ParticleManager.Particles.HOLY_SHIT)
+#
+#class Mayhem(MessageEmitter):
+#    def __init__(self):
+#        super(Mayhem, self).__init__(512, 256, ParticleManager.Particles.MAYHEM)
+#
+#class Annihilation(MessageEmitter):
+#    def __init__(self):
+#        super(Annihilation, self).__init__(512, 170, ParticleManager.Particles.ANNIHILATION)
+#
 class Game():
 
     def __init__(self):
@@ -896,8 +937,11 @@ class Game():
         SkidMarks.SKID_RIGHT = ms3d.ms3d("./skid_right.ms3d")
         SkidMarks.SKID_STRAIGHT = ms3d.ms3d("./skid_straight.ms3d")
 
-        HUD.POINTS_HUD = ms3d.ms3d("./pointsHUD.ms3d")
         self.pointsHUD = ms3d.ms3d("./pointsHUD.ms3d")
+
+        ParticleManager.Particles.POINTS = ms3d.ms3d("./pointsParticle.ms3d")
+        ParticleManager.Particles.PLUS_100_POINTS = ms3d.ms3d("./plus100Particle.ms3d")
+        ParticleManager.Particles.MINUS_100_POINTS = ms3d.ms3d("./minus100Particle.ms3d")
 
 
         self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
@@ -989,7 +1033,7 @@ class Game():
                     self.applyCollisionForces(player, npv, impact_vector)
                     if not player.shield:
                         if not npv.crashed:
-                            #ParticleManager.add_new_emmitter(Minus10Points(player.horizontal_position, player.vertical_position, -player.speed, 0.2))
+                            ParticleManager.add_new_emmitter(Minus10Points(player.horizontal_position, player.vertical_position, -0.3, -0.2, size=100, shape=ParticleManager.Particles.POINTS))
                             player.score -= 60
                             npv.crashed = True
                         #ParticleManager.add_new_emmitter(SmokeEmitter( npv.horizontal_position, npv.vertical_position-npv.height_offset, -npv.speed, 0))
@@ -1009,6 +1053,8 @@ class Game():
 
         for player in self.players:
             player.update(time_delta)
+
+        ParticleManager.update(time_delta)
 
         self.last_update_timestamp = current_time
     
@@ -1062,6 +1108,20 @@ class Game():
             drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (20, 20, 20, 0), "SCORE: " + str(int(player.score)) )
         glPopMatrix()
         
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+
+        glPushMatrix()
+        glLoadIdentity()
+        glOrtho(RoadPositions.REAR_LIMIT, RoadPositions.FORWARD_LIMIT, 0, RoadPositions.UPPER_LIMIT, -1, 1)
+        glMatrixMode(GL_MODELVIEW)
+        glPushMatrix()
+        glLoadIdentity()
+        
+        ParticleManager.draw()
+        
+        glPopMatrix()
+
         glMatrixMode(GL_PROJECTION)
         glPopMatrix()
 
