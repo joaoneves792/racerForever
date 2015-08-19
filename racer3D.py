@@ -873,6 +873,7 @@ class Game():
         self.init_display()
 
         self.available_vehicles = []
+        self.emergency_vehicles = []
         self.available_player_vehicles = []
         self.load_resources()
 
@@ -957,6 +958,8 @@ class Game():
 
         self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
 
+        self.emergency_vehicles.append(load_vehicle("./Cop1/copplay.ms3d", "./Cop1/copwheels.ms3d", 4))
+
         self.available_vehicles.append(load_vehicle("./RS4/RS4.ms3d", "./RS4/RS4Wheel.ms3d", 4))
         self.available_vehicles.append(load_vehicle("./charger/charger_play.ms3d", "./charger/ChargerWheel.ms3d", 4))
         self.available_vehicles.append(load_vehicle("./Murci/MurcielagoPlay.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
@@ -966,8 +969,7 @@ class Game():
         self.available_vehicles.append(load_vehicle("./LP570_S/LP570play.ms3d", "./LP570_S/LP570wheel.ms3d" , 4))
         
     def generateEmergencyVehicle(self, vertical_position):
-            pass
-            #self.npvs.append(NPV(CarModels.EMERGENCY_CARS[random.randrange(len(CarModels.EMERGENCY_CARS))], vertical_position, -20*Speed.ONE_KMH))
+            self.npvs.append(NPV(self.emergency_vehicles[random.randrange(len(self.emergency_vehicles))], vertical_position, -20*Speed.ONE_KMH))
 
     def generateRandomNPV(self):
         #Select a random lane
@@ -1024,7 +1026,7 @@ class Game():
         if len(self.npvs) < 5:
             if self.spawn_delay <= 0:
                 self.generateRandomNPV()
-                self.spawn_delay = 1300
+                self.spawn_delay = 1900
         #Recalculate their position
         for npv in self.npvs:
             npv.check_overtake_need(self.npvs + self.players)
