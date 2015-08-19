@@ -816,6 +816,13 @@ class Road():
             if self.time > 20000 and self.time < 42500:
                 self.switch_lights_off = True
 
+class SmokeEmitter(ParticleManager.ParticleEmitter3D):
+    def __init__(self, x, y, speed_x, speed_y):
+        super(SmokeEmitter, self).__init__(x, y, 5, speed_x, speed_y, 0, 0, 0, 0.0005, 30, ParticleManager.Particles.SMOKE, 20, 0.1)
+    def set_particles(self):
+        for particle in self.particles:
+            particle.set_properties(self.x, self.y, self.z, 500, 0, self.speed_x + random.randrange(-5, 5)*Speed.ONE_KMH, self.speed_y + random.randrange(-5, 5)*Speed.ONE_KMH, self.speed_z, self.accel_x, self.accel_y, self.accel_z, self.size, self.texture, False)
+
 class PointsEmitter(ParticleManager.ParticleEmitter):
     def __init__(self, x, y, speed_x, speed_y, size=100, shape=ParticleManager.Particles.POINTS, rate=0.1, num_of_particles=3):
         super(PointsEmitter, self).__init__(x, y, speed_x, speed_y, size, shape, num_of_particles , 0.1)
@@ -839,25 +846,25 @@ class Minus100Points(PointsEmitter):
     def __init__(self, x, speed):
         super(Minus100Points, self).__init__(x, 130, speed,  0.1, 400, ParticleManager.Particles.MINUS_100_POINTS, 1, 1)
 
-#class MessageEmitter(ParticleManager.ParticleEmitter):
-#    def __init__(self, x, y, shape):
-#        super(MessageEmitter, self).__init__(x, y, 0, 0, 100, shape, 1, 1)
-#    def set_particles(self):
-#        for particle in self.particles:
-#            particle.set_properties(self.x, self.y, 1500, 0, self.speed_x, self.speed_y,  self.size, self.shape, True)
-#
-#class HolyShit(MessageEmitter):
-#    def __init__(self):
-#        super(HolyShit, self).__init__(512, 340, ParticleManager.Particles.HOLY_SHIT)
-#
-#class Mayhem(MessageEmitter):
-#    def __init__(self):
-#        super(Mayhem, self).__init__(512, 256, ParticleManager.Particles.MAYHEM)
-#
-#class Annihilation(MessageEmitter):
-#    def __init__(self):
-#        super(Annihilation, self).__init__(512, 170, ParticleManager.Particles.ANNIHILATION)
-#
+class MessageEmitter(ParticleManager.ParticleEmitter):
+    def __init__(self, x, y, shape):
+        super(MessageEmitter, self).__init__(x, y, 0, 0, 100, shape, 1, 1)
+    def set_particles(self):
+        for particle in self.particles:
+            particle.set_properties(self.x, self.y, 1500, 0, self.speed_x, self.speed_y,  self.size, self.shape, True)
+
+class HolyShit(MessageEmitter):
+    def __init__(self, shape):
+        super(HolyShit, self).__init__(0, RoadPositions.RIGHT_LANE, shape)
+
+class Mayhem(MessageEmitter):
+    def __init__(self, shape):
+        super(Mayhem, self).__init__(0, RoadPositions.MIDDLE_LANE, shape)
+
+class Annihilation(MessageEmitter):
+    def __init__(self, shape):
+        super(Annihilation, self).__init__(0, RoadPositions.LEFT_LANE, shape)
+
 class Game():
 
     def __init__(self):
@@ -942,7 +949,11 @@ class Game():
         ParticleManager.Particles.POINTS = ms3d.ms3d("./pointsParticle.ms3d")
         ParticleManager.Particles.PLUS_100_POINTS = ms3d.ms3d("./plus100Particle.ms3d")
         ParticleManager.Particles.MINUS_100_POINTS = ms3d.ms3d("./minus100Particle.ms3d")
+        ParticleManager.Particles.HOLY_SHIT = ms3d.ms3d("./holy.ms3d")
+        ParticleManager.Particles.MAYHEM = ms3d.ms3d("./mayhem.ms3d")
+        ParticleManager.Particles.ANNIHILATION = ms3d.ms3d("./annihilation.ms3d")
 
+        ParticleManager.Particles.SMOKE = ms3d.Tex("./smoke_particle.png").getTexture()
 
         self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
 
@@ -951,6 +962,7 @@ class Game():
         self.available_vehicles.append(load_vehicle("./Murci/MurcielagoPlay.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
         self.available_vehicles.append(load_vehicle("./M3E92/M3play.ms3d", "./M3E92/M3E92Wheel.ms3d", 4))
         self.available_vehicles.append(load_vehicle("./NSX/NSXplay.ms3d", "./NSX/NSXWheel.ms3d" , 4))
+        self.available_vehicles.append(load_vehicle("./LP570_S/LP570play.ms3d", "./LP570_S/LP570wheel.ms3d" , 4))
         self.available_vehicles.append(load_vehicle("./Skyline/skylineplay.ms3d", "./Skyline/skyline_wheel.ms3d" , 4))
         self.available_vehicles.append(load_vehicle("./LP570_S/LP570play.ms3d", "./LP570_S/LP570wheel.ms3d" , 4))
         
@@ -1035,8 +1047,9 @@ class Game():
                         if not npv.crashed:
                             ParticleManager.add_new_emmitter(Minus10Points(player.horizontal_position, player.vertical_position, -0.3, -0.2, size=100, shape=ParticleManager.Particles.POINTS))
                             player.score -= 60
-                            npv.crashed = True
-                        #ParticleManager.add_new_emmitter(SmokeEmitter( npv.horizontal_position, npv.vertical_position-npv.height_offset, -npv.speed, 0))
+                    if not npv.crashed:
+                        ParticleManager.add_new_3d_emmiter(SmokeEmitter( npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
+                        npv.crashed = True
                 #if player.fire_phaser:
                 #    if self.check_collision_box(player.horizontal_position, player.vertical_position, RoadPositions.COLLISION_HORIZON/2, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
                 #        ParticleManager.add_new_emmitter(SmokeEmitter( npv.horizontal_position, npv.vertical_position-npv.height_offset, 0, 0))
@@ -1048,11 +1061,31 @@ class Game():
                 impact_vector = []
                 if self.check_collision_circle(self.npvs[i], self.npvs[j], impact_vector):
                     self.applyCollisionForces(self.npvs[i], self.npvs[j], impact_vector)
+                    if not self.npvs[i].crashed:
+                        ParticleManager.add_new_3d_emmiter(SmokeEmitter( self.npvs[i].horizontal_position, self.npvs[i].vertical_position, -self.npvs[i].speed, 0))
+                    if not self.npvs[j].crashed:
+                        ParticleManager.add_new_3d_emmiter(SmokeEmitter( self.npvs[j].horizontal_position, self.npvs[j].vertical_position, -self.npvs[j].speed, 0))
                     self.npvs[i].crashed = True
                     self.npvs[j].crashed = True
 
         for player in self.players:
             player.update(time_delta)
+        
+        #Messages
+        current_crashed_count = 0
+        for npv in self.npvs:
+            if npv.crashed:
+                 current_crashed_count += 1
+
+        if current_crashed_count > self.previous_crash_count:
+            if current_crashed_count == 3:
+                ParticleManager.add_new_emmitter(HolyShit(ParticleManager.Particles.HOLY_SHIT))
+            elif current_crashed_count == 4:
+                ParticleManager.add_new_emmitter(Mayhem(ParticleManager.Particles.MAYHEM))
+            elif current_crashed_count > 4:
+                ParticleManager.add_new_emmitter(Annihilation(ParticleManager.Particles.ANNIHILATION))
+            
+        self.previous_crash_count = current_crashed_count
 
         ParticleManager.update(time_delta)
 
@@ -1080,8 +1113,10 @@ class Game():
         for npv in self.npvs:
             npv.draw()
         
-        self.draw_hud()
+        ParticleManager.draw_3d()
 
+        self.draw_hud()
+        
         pygame.display.flip()
  
     def draw_hud(self): 

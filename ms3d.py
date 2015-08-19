@@ -117,6 +117,27 @@ class ms3d(_object):
 ms3d_swigregister = _ms3d.ms3d_swigregister
 ms3d_swigregister(ms3d)
 
+class Tex(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Tex, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Tex, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, filename):
+        this = _ms3d.new_Tex(filename)
+        try:
+            self.this.append(this)
+        except:
+            self.this = this
+
+    def getTexture(self):
+        return _ms3d.Tex_getTexture(self)
+    __swig_destroy__ = _ms3d.delete_Tex
+    __del__ = lambda self: None
+Tex_swigregister = _ms3d.Tex_swigregister
+Tex_swigregister(Tex)
+
 # This file is compatible with both classic and new-style classes.
 
 
