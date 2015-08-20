@@ -94,6 +94,15 @@ class SkidMarks:
     SKID_RIGHT = None
     SKID_STRAIGHT = None
 
+class Sounds:
+    ACCEL = None
+    BRAKE = None
+    CRASH = None
+    ROLLOVER = None
+    SIREN = None
+    HORN = None
+
+
 def drawText(x, y, rgba_color, bg_color, textString):
     font = pygame.font.Font(None, 30)
     textSurface = font.render(textString, True, rgba_color, bg_color)   
@@ -523,6 +532,7 @@ class NPV(Car): #NPV - Non Player Vehicle
             return
         if other_car.speed > 0:
             if (other_car.horizontal_position - self.horizontal_position) < self.width+50:
+                Sounds.HORN.play()
                 self.speed = other_car.speed
         else:
             self.speed = 0
@@ -572,8 +582,9 @@ class NPV(Car): #NPV - Non Player Vehicle
             elif self.angular_speed < -0.5*Speed.ONE_DEGREE_MIL:
                 self.angular_speed = -0.5*Speed.ONE_DEGREE_MIL
 
-            if (self.rotation >= 90 or self.rotation <= -90) and self.speed >= Speed.MAX_SPEED*3/4:
+            if (self.rotation >= 90 or self.rotation <= -90) and self.speed >= Speed.MAX_SPEED*3/4 and self.capsized == False:
                 self.capsized = True
+                Sounds.ROLLOVER.play()
 
             if self.capsized:
                 self.angular_speed = 0
@@ -871,6 +882,7 @@ class Game():
         pygame.init()
         pygame.display.init()
         self.init_display()
+        pygame.mixer.init()
 
         self.available_vehicles = []
         self.emergency_vehicles = []
@@ -887,6 +899,8 @@ class Game():
         self.droped_items = []
         self.paused = False 
         self.singlePlayer = True
+
+        Sounds.ACCEL.play(-1)
 
         #self.players.append(Player(self.available_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
         self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
@@ -940,12 +954,19 @@ class Game():
             fill_wheel_positions(vehicle, ms3d_car)
             return vehicle
 
+        Sounds.ACCEL = pygame.mixer.Sound("./accelarating2.wav")
+        Sounds.BRAKE = pygame.mixer.Sound("./tiresqueal.wav")
+        Sounds.CRASH = pygame.mixer.Sound("./crash.wav")
+        Sounds.ROLLOVER = pygame.mixer.Sound("./rollover.wav")
+        Sounds.SIREN = pygame.mixer.Sound("./siren.wav")
+        Sounds.HORN = pygame.mixer.Sound("./horn.wav")
 
         SkidMarks.SKID_LEFT = ms3d.ms3d("./skid_left.ms3d")
         SkidMarks.SKID_RIGHT = ms3d.ms3d("./skid_right.ms3d")
         SkidMarks.SKID_STRAIGHT = ms3d.ms3d("./skid_straight.ms3d")
 
         self.pointsHUD = ms3d.ms3d("./pointsHUD.ms3d")
+        self.powerupsHUD = ms3d.ms3d("./powerupsHUD.ms3d")
 
         ParticleManager.Particles.POINTS = ms3d.ms3d("./pointsParticle.ms3d")
         ParticleManager.Particles.PLUS_100_POINTS = ms3d.ms3d("./plus100Particle.ms3d")
@@ -969,7 +990,8 @@ class Game():
         self.available_vehicles.append(load_vehicle("./LP570_S/LP570play.ms3d", "./LP570_S/LP570wheel.ms3d" , 4))
         
     def generateEmergencyVehicle(self, vertical_position):
-            self.npvs.append(NPV(self.emergency_vehicles[random.randrange(len(self.emergency_vehicles))], vertical_position, -20*Speed.ONE_KMH))
+        Sounds.SIREN.play()    
+        self.npvs.append(NPV(self.emergency_vehicles[random.randrange(len(self.emergency_vehicles))], vertical_position, -20*Speed.ONE_KMH))
 
     def generateRandomNPV(self):
         #Select a random lane
@@ -1048,6 +1070,8 @@ class Game():
                         if not npv.crashed:
                             ParticleManager.add_new_emmitter(Minus10Points(player.horizontal_position, player.vertical_position, -0.3, -0.2, size=100, shape=ParticleManager.Particles.POINTS))
                             player.score -= 60
+                    Sounds.CRASH.play()
+                    Sounds.BRAKE.play()
                     if not npv.crashed:
                         ParticleManager.add_new_3d_emmiter(SmokeEmitter( npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
                         npv.crashed = True
@@ -1068,6 +1092,8 @@ class Game():
                         ParticleManager.add_new_3d_emmiter(SmokeEmitter( self.npvs[j].horizontal_position, self.npvs[j].vertical_position, -self.npvs[j].speed, 0))
                     self.npvs[i].crashed = True
                     self.npvs[j].crashed = True
+                    Sounds.CRASH.play()
+                    Sounds.BRAKE.play()
 
         for player in self.players:
             player.update(time_delta)
@@ -1142,6 +1168,9 @@ class Game():
             self.pointsHUD.draw()
             glDisable(GL_TEXTURE_2D)
             drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (20, 20, 20, 0), "SCORE: " + str(int(player.score)) )
+            glTranslatef(0, Window.HEIGHT-55, 0)
+            self.powerupsHUD.draw()
+        
         glPopMatrix()
         
         glMatrixMode(GL_PROJECTION)
