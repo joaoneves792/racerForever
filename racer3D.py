@@ -45,6 +45,8 @@ class KeyboardKeys:
     KEY_UP = (pygame.K_UP, pygame.K_w)
     KEY_DOWN = (pygame.K_DOWN, pygame.K_s)
 
+    KEY_Y = pygame.K_y
+
     #TODO
     KEY_ONE = (49, 65457)
     KEY_FIVE = (54, 65461)
@@ -1040,6 +1042,10 @@ class Game():
             self.last_update_timestamp = current_time
         time_delta = (current_time - self.last_update_timestamp)
 
+        if self.paused:
+            self.last_update_timestamp = current_time
+            return       
+        
         self.road.advance(time_delta)
         
         #Update NPVs
@@ -1255,12 +1261,66 @@ class Game():
         glMatrixMode(GL_PROJECTION)
         glPopMatrix()
 
+
+        if self.paused:
+            self.draw_paused_menu()
+
         glMatrixMode(GL_MODELVIEW)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
         glDepthMask(GL_TRUE)
         glEnable(GL_BLEND)
     
+    def draw_paused_menu(self):
+        picture = ms3d.Tex("./paused.png").getTexture()
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        glOrtho(0, Window.WIDTH, 0, Window.HEIGHT, -1, 1)
+        glMatrixMode(GL_MODELVIEW)
+
+        glPushMatrix()
+
+        glTranslatef(Window.WIDTH/2-256, Window.HEIGHT/2-128, 0)
+
+        glEnable(GL_TEXTURE_2D)
+        glBindTexture(GL_TEXTURE_2D, picture)
+        glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, 1))
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, 1))
+        glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, 1))
+        glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, 1))
+        glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
+
+        glBegin(GL_TRIANGLES)
+        glNormal3f(0,0, 1)
+        glTexCoord2f(0, 1)
+        glVertex3f(0, 0, 0)
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(1, 1)
+        glVertex3f(512, 0, 0) 
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(0, 0)
+        glVertex3f(0,256,0)    
+
+        glNormal3f(0,0, 1)
+        glTexCoord2f(1, 1)
+        glVertex3f(512, 0, 0)    
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(0, 0)
+        glVertex3f(0, 256, 0)    
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(1, 0)
+        glVertex3f(512, 256, 0)    
+        glEnd()
+        
+        glDisable(GL_TEXTURE_2D)
+        glPopMatrix()
+
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
+
+
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             self.on_key_press(event.key)
@@ -1271,6 +1331,16 @@ class Game():
             quit()
 
     def on_key_press(self, key):
+        if key == KeyboardKeys.KEY_ESC:
+            if self.paused:
+                pygame.mixer.unpause()
+            else:
+                pygame.mixer.pause()
+            self.paused = not self.paused
+        if key == KeyboardKeys.KEY_Y and self.paused:
+            pygame.quit()
+            quit()
+        
         for i in range(len(self.players)):
             if key == KeyboardKeys.KEY_LEFT[i]:
                 self.players[i].apply_brakes = True
