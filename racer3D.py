@@ -101,6 +101,9 @@ class Sounds:
     ROLLOVER = None
     SIREN = None
     HORN = None
+    HOLY = None
+    MAYHEM = None
+    ANNIHILATION = None
 
 
 def drawText(x, y, rgba_color, bg_color, textString):
@@ -888,6 +891,7 @@ class Game():
         self.available_vehicles = []
         self.emergency_vehicles = []
         self.available_player_vehicles = []
+        self.draw_loading_screen()
         self.load_resources()
 
         self.road = Road()
@@ -961,6 +965,10 @@ class Game():
         Sounds.ROLLOVER = pygame.mixer.Sound("./rollover.wav")
         Sounds.SIREN = pygame.mixer.Sound("./siren.wav")
         Sounds.HORN = pygame.mixer.Sound("./horn.wav")
+
+        Sounds.HOLY = pygame.mixer.Sound("./holy.wav")
+        Sounds.MAYHEM = pygame.mixer.Sound("./mayhem.wav")
+        Sounds.ANNIHILATION = pygame.mixer.Sound("./total2.wav")
 
         SkidMarks.SKID_LEFT = ms3d.ms3d("./skid_left.ms3d")
         SkidMarks.SKID_RIGHT = ms3d.ms3d("./skid_right.ms3d")
@@ -1071,7 +1079,9 @@ class Game():
                         if not npv.crashed:
                             ParticleManager.add_new_emmitter(Minus10Points(player.horizontal_position, player.vertical_position, -0.3, -0.2, size=100, shape=ParticleManager.Particles.POINTS))
                             player.score -= 60
+                    Sounds.CRASH.stop()
                     Sounds.CRASH.play()
+                    Sounds.BRAKE.stop()
                     Sounds.BRAKE.play()
                     if not npv.crashed:
                         ParticleManager.add_new_3d_emmiter(SmokeEmitter( npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
@@ -1108,10 +1118,19 @@ class Game():
         if current_crashed_count > self.previous_crash_count:
             if current_crashed_count == 3:
                 ParticleManager.add_new_emmitter(HolyShit(ParticleManager.Particles.HOLY_SHIT))
+                Sounds.HOLY.stop()
+                Sounds.HOLY.play()
             elif current_crashed_count == 4:
                 ParticleManager.add_new_emmitter(Mayhem(ParticleManager.Particles.MAYHEM))
+                Sounds.HOLY.stop()
+                Sounds.MAYHEM.stop()
+                Sounds.MAYHEM.play()
             elif current_crashed_count > 4:
                 ParticleManager.add_new_emmitter(Annihilation(ParticleManager.Particles.ANNIHILATION))
+                Sounds.HOLY.stop()
+                Sounds.MAYHEM.stop()
+                Sounds.ANNIHILATION.stop()
+                Sounds.ANNIHILATION.play()
             
         self.previous_crash_count = current_crashed_count
 
@@ -1130,6 +1149,51 @@ class Game():
         car1.applyCollisionForces(car2, car2_speed, car2_lateral_speed, impact_vector)
         car2.applyCollisionForces(car1, car1_speed, car1_lateral_speed, impact_vector)
 
+    def draw_loading_screen(self):
+        picture = ms3d.Tex("./loading.png").getTexture()
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glMatrixMode(GL_PROJECTION)
+        glPushMatrix()
+        glLoadIdentity()
+        glOrtho(0, Window.WIDTH, 0, Window.HEIGHT, -1, 1)
+        glMatrixMode(GL_MODELVIEW)
+        
+        glEnable(GL_TEXTURE_2D)
+        glBindTexture(GL_TEXTURE_2D, picture)
+        glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, 1))
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, 1))
+        glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, 1))
+        glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, 1))
+        glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
+
+        glBegin(GL_TRIANGLES)
+        glNormal3f(0,0, 1)
+        glTexCoord2f(0, 1)
+        glVertex3f(0, 0, 0)
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(1, 1)
+        glVertex3f(Window.WIDTH, 0, 0) 
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(0, 0)
+        glVertex3f(0,Window.HEIGHT,0)    
+
+        glNormal3f(0,0, 1)
+        glTexCoord2f(1, 1)
+        glVertex3f(Window.WIDTH, 0, 0)    
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(0, 0)
+        glVertex3f(0, Window.HEIGHT, 0)    
+        glNormal3f(0, 0, 1)
+        glTexCoord2f(1, 0)
+        glVertex3f(Window.WIDTH, Window.HEIGHT, 0)    
+        glEnd()
+        
+        glDisable(GL_TEXTURE_2D)
+
+        glMatrixMode(GL_PROJECTION)
+        glPopMatrix()
+        glMatrixMode(GL_MODELVIEW)
+        pygame.display.flip()
     def draw(self):
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
