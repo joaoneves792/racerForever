@@ -532,6 +532,7 @@ class NPV(Car): #NPV - Non Player Vehicle
             return
         if other_car.speed > 0:
             if (other_car.horizontal_position - self.horizontal_position) < self.width+50:
+                Sounds.HORN.stop()
                 Sounds.HORN.play()
                 self.speed = other_car.speed
         else:
