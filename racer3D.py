@@ -46,10 +46,9 @@ class KeyboardKeys:
     KEY_DOWN = (pygame.K_DOWN, pygame.K_s)
 
     KEY_Y = pygame.K_y
-
-    #TODO
-    KEY_ONE = (49, 65457)
-    KEY_FIVE = (54, 65461)
+    
+    KEY_ONE = (pygame.K_1, pygame.K_KP1)
+    KEY_FIVE = (pygame.K_5, pygame.K_KP5)
     KEY_TO_NUM = (KEY_ONE[0] - 1, KEY_ONE[1] - 1)
 
 class RoadPositions:
@@ -107,6 +106,21 @@ class Sounds:
     MAYHEM = None
     ANNIHILATION = None
 
+class PowerUps:
+    TIME_OUT = 10000 #in miliseconds
+    INVENTORY_SIZE = 5
+    SIZE = 50
+    EMPTY = None
+    CRATE = None
+    SHIELD = None
+    ENERGY_SHIELD = None
+    ENERGY_SHIELD_WIDTH = None
+    ENERGY_SHIELD_HEIGHT = None
+    HYDRAULICS = None
+    CALL_911 = None
+    SHRINK = None
+    PHASER_FIRE = None
+    PHASER = None
 
 def drawText(x, y, rgba_color, bg_color, textString):
     font = pygame.font.Font(None, 30)
@@ -157,16 +171,50 @@ def car_circle_collision(car1, car2, impact_vector=[], car1_x_offset=0, car1_y_o
     car2_front_circle =  ( car2.front_circle[0]+car2.horizontal_position, car2.vehicle.front_circle[1] + car2.vertical_position)
     #Apparently the "or" goes on even if one of the operands is already known to be True! That messes up the impact vector
     #WARNING: Dont Try to improve this code without reading the previous line and understanding the consequences!!!
-    if circle_collision(car1_rear_circle, car1.vehicle.radius, car2_rear_circle, car2.vehicle.radius, impact_vector):
+    if circle_collision(car1_rear_circle, car1.radius, car2_rear_circle, car2.radius, impact_vector):
         return True
-    if circle_collision(car1_rear_circle, car1.vehicle.radius, car2_front_circle, car2.vehicle.radius, impact_vector):
+    if circle_collision(car1_rear_circle, car1.radius, car2_front_circle, car2.radius, impact_vector):
         return True
-    if circle_collision(car1_front_circle, car1.vehicle.radius, car2_rear_circle, car2.vehicle.radius, impact_vector):
+    if circle_collision(car1_front_circle, car1.radius, car2_rear_circle, car2.radius, impact_vector):
         return True
-    if circle_collision(car1_front_circle, car1.vehicle.radius, car2_front_circle, car2.vehicle.radius, impact_vector):
+    if circle_collision(car1_front_circle, car1.radius, car2_front_circle, car2.radius, impact_vector):
         return True
     return False
-            
+    
+
+def draw_rectangle(w, h, texture):
+    glEnable(GL_TEXTURE_2D)
+    glBindTexture(GL_TEXTURE_2D, texture)
+    glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, 1))
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, 1))
+    glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, 1))
+    glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, 1))
+    glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
+    
+    glBegin(GL_TRIANGLES)
+    glNormal3f(0,0, 1)
+    glTexCoord2f(0, 1)
+    glVertex3f(0, 0, 0)
+    glNormal3f(0, 0, 1)
+    glTexCoord2f(1, 1)
+    glVertex3f(w, 0, 0) 
+    glNormal3f(0, 0, 1)
+    glTexCoord2f(0, 0)
+    glVertex3f(0,h,0)    
+
+    glNormal3f(0,0, 1)
+    glTexCoord2f(1, 1)
+    glVertex3f(w, 0, 0)    
+    glNormal3f(0, 0, 1)
+    glTexCoord2f(0, 0)
+    glVertex3f(0, h, 0)    
+    glNormal3f(0, 0, 1)
+    glTexCoord2f(1, 0)
+    glVertex3f(w, h, 0)    
+    glEnd()
+    
+    glDisable(GL_TEXTURE_2D)
+
 class VehicleModel:
     def __init__(self, model, wheel, wheel_count):
         self.model = model
@@ -238,6 +286,7 @@ class Car:
         self.height =  self.vehicle.height #TODO #cairo.ImageSurface.get_height(model)
         self.width = self.vehicle.width #TODO cairo.ImageSurface.get_width(model)
         self.height_offset = self.vehicle.height_offset
+        self.radius = self.vehicle.radius
         self.width_offset = self.vehicle.width_offset
         self.speed = speed
         self.lateral_speed = 0
@@ -435,11 +484,11 @@ class Player(Car):
         #            self.phaser_gaining_intensity = True
         #            self.fire_phaser = False
 
-        #if(self.powerUpTimeOut > 0):
-        #    self.powerUpTimeOut -= time_delta
-        #if self.powerUpTimeOut <= 0:
-        #    self.disablePowerUps()
-        #    self.powerUpTimeOut = 0
+        if(self.powerUpTimeOut > 0):
+            self.powerUpTimeOut -= time_delta
+        if self.powerUpTimeOut <= 0:
+            self.disablePowerUps()
+            self.powerUpTimeOut = 0
 
     def draw_car(self):
         glPushMatrix()
@@ -455,12 +504,19 @@ class Player(Car):
         #    cr.translate(x, y)
         #    cr.rotate(self.rotation);
         #    cr.translate(-x,-y) 
-        #if self.hydraulics:
-        #    cr.scale(1.2, 1.2)
-        #if self.shrunk:
-        #    cr.scale(1, 0.5)
+        if self.hydraulics:
+            glPushMatrix()
+            glTranslatef(0, 10, 0)
+        if self.shrunk:
+            glPushMatrix()
+            glScalef(0.5, 1, 1)
         self.vehicle.model.draw()
+        if self.hydraulics:
+            glPopMatrix()
         self.draw_wheels()
+        if self.shrunk:
+            glPopMatrix()
+
         #if self.shield:
         #    cr.save()
         #    cr.translate(self.width/2 - PowerUps.ENERGY_SHIELD_WIDTH/2, self.height_offset - PowerUps.ENERGY_SHIELD_HEIGHT/2)
@@ -475,6 +531,22 @@ class Player(Car):
         #self.draw_score()
         #self.draw_power_up_timer(cr)
         #self.draw_inventory(cr)
+
+    def addPowerUp(self, powerup):
+        if len(self.inventory) < PowerUps.INVENTORY_SIZE:
+            self.inventory.append(powerup)
+
+    def usePowerUp(self, num):
+        if(num <= len(self.inventory) and self.powerUpTimeOut == 0):
+            self.inventory.pop(num-1).execute()
+
+    def disablePowerUps(self):
+        self.hydraulics = False
+        self.shield = False
+        self.shrunk = False
+        self.height = self.vehicle.height
+        self.height_offset = self.height/2
+        self.radius = self.vehicle.radius
 
 
 class NPV(Car): #NPV - Non Player Vehicle
@@ -689,6 +761,115 @@ class NPV(Car): #NPV - Non Player Vehicle
             else:
                 self.skid_marks_x -= time_delta*(Speed.MAX_SPEED) 
 
+class Truck(NPV):
+    def __init__(self, model, y, speed, game):
+            super(Truck, self).__init__(model, y, speed)
+            self.game = game
+            self.looted = False
+
+    def update(self, time_delta):
+        if(self.horizontal_position < RoadPositions.FORWARD_LIMIT and random.randrange(100) == 1):
+            self.dropPowerUp()
+        if self.crashed and not self.looted:
+            self.dropPowerUp()
+            self.dropPowerUp()
+            self.looted = True
+        super(Truck, self).update(time_delta)
+
+    def dropPowerUp(self):
+        rand = random.randrange(5)
+        if rand == 0:
+            Call911(self.game).drop(self.horizontal_position, self.vertical_position)
+        elif rand == 1:
+            Hydraulics(self.game).drop(self.horizontal_position, self.vertical_position)
+        elif rand == 2:
+            Shrink(self.game).drop(self.horizontal_position, self.vertical_position)
+        elif rand == 3:
+            Phaser(self.game).drop(self.horizontal_position, self.vertical_position)
+        else:
+            Shield(self.game).drop(self.horizontal_position, self.vertical_position)
+
+class PowerUp:
+    def __init__(self, game, player=None):
+        self.player = player
+        self.game = game    
+        self.icon = PowerUps.EMPTY
+        self.x = 0
+        self.y = 0
+
+    def drop(self, x, y):
+        self.game.droped_items.append(self)
+        self.x = x
+        self.y = y
+
+    def execute(self):
+        if self.player == None:
+            return
+        self.player.powerUpTimeOut = PowerUps.TIME_OUT
+        self.applyPowerUp()
+    
+    #abstract
+    def applyPowerUp(self):
+        pass
+
+    def picked_up_by(self, player):
+        self.game.droped_items.remove(self)
+        self.player = player
+        player.addPowerUp(self)
+
+    def update(self, time_delta):
+        self.x += time_delta*(-Speed.MAX_SPEED)
+        if self.x < RoadPositions.BEHIND_REAR_HORIZON:
+            self.game.droped_items.remove(self)
+
+    def draw(self):
+        glPushMatrix()
+        glTranslate(self.y, 0, self.x)
+        PowerUps.CRATE.draw()
+        glPopMatrix()
+
+class Call911(PowerUp):
+    def __init__(self, game, player=None):
+        super(Call911, self).__init__(game, player)
+        self.icon = PowerUps.CALL_911
+
+    def applyPowerUp(self):
+        self.game.generateEmergencyVehicle(self.player.vertical_position)
+
+class Hydraulics(PowerUp):
+    def __init__(self, game, player=None):
+        super(Hydraulics, self).__init__(game, player)
+        self.icon = PowerUps.HYDRAULICS
+
+    def applyPowerUp(self):
+        self.player.hydraulics = True
+
+class Shield(PowerUp):
+    def __init__(self, game, player=None):
+        super(Shield, self).__init__(game, player)
+        self.icon = PowerUps.SHIELD
+
+    def applyPowerUp(self):
+        self.player.shield = True
+
+class Shrink(PowerUp):
+    def __init__(self, game, player=None):
+        super(Shrink, self).__init__(game, player)
+        self.icon = PowerUps.SHRINK
+
+    def applyPowerUp(self):
+        self.player.shrunk = True
+        self.player.height = self.player.height / 2
+        self.player.height_offset = self.player.height_offset / 2
+        self.player.radius = self.player.radius / 2
+
+class Phaser(PowerUp):
+    def __init__(self, game, player=None):
+        super(Phaser, self).__init__(game, player)
+        self.icon = PowerUps.PHASER
+
+    def applyPowerUp(self):
+        self.player.fire_phaser = True
 
 class Road():
     def __init__(self, z=0):
@@ -717,7 +898,7 @@ class Road():
     def setup_lights(self):
         self.lamp_ambient = (0.5, 0.5, 0.2, 0.5)
         self.lamp_diffuse = (1, 1, 0.799, 0.5)
-        self.lamp_specular = (0.1, 0.1, 0.1, 1)
+        self.lamp_specular = (0.1, 0.1, 0.1, 0.1)
         lamp_direction = (0, -1, 0)
         
         glEnable(GL_LIGHTING);
@@ -742,7 +923,7 @@ class Road():
             self.sun = True
 
         if self.sunset:
-            glDisable(GL_LIGHT0)
+            #glDisable(GL_LIGHT0)
             self.sunset = False
             self.sun = False
 
@@ -891,6 +1072,7 @@ class Game():
         pygame.mixer.init()
 
         self.available_vehicles = []
+        self.available_trucks = []
         self.emergency_vehicles = []
         self.available_player_vehicles = []
         self.draw_loading_screen()
@@ -988,9 +1170,22 @@ class Game():
 
         ParticleManager.Particles.SMOKE = ms3d.Tex("./smoke_particle.png").getTexture()
 
+
+        PowerUps.CRATE = ms3d.ms3d("./crate/crate.ms3d")
+        PowerUps.EMPTY = ms3d.Tex("./empty.png").getTexture()
+        PowerUps.CALL_911 = ms3d.Tex("./911.png").getTexture()
+        PowerUps.HYDRAULICS = ms3d.Tex("./Hydraulics.png").getTexture()
+        PowerUps.PHASER = ms3d.Tex("./phaser.png").getTexture()
+        PowerUps.SHIELD = ms3d.Tex("./shield.png").getTexture()
+        PowerUps.SHRINK = ms3d.Tex("./shrink.png").getTexture()
+
+
         self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
 
         self.emergency_vehicles.append(load_vehicle("./Cop1/copplay.ms3d", "./Cop1/copwheels.ms3d", 4))
+        self.emergency_vehicles.append(load_vehicle("./Ambulance/ambulance.ms3d", "./Ambulance/ambulance_wheel.ms3d", 4))
+
+        self.available_trucks.append(load_vehicle("./Rumpo/rumpo.ms3d", "./Rumpo/rumpo_wheel.ms3d", 4))
 
         self.available_vehicles.append(load_vehicle("./RS4/RS4.ms3d", "./RS4/RS4Wheel.ms3d", 4))
         self.available_vehicles.append(load_vehicle("./charger/charger_play.ms3d", "./charger/ChargerWheel.ms3d", 4))
@@ -1021,8 +1216,8 @@ class Game():
         random_num = random.randrange(100)
         if random_num < 4:
             self.generateEmergencyVehicle(lane)
-        #elif random_num < 10:
-        #    self.npvs.append(Truck(CarModels.TRUCKS[random.randrange(len(CarModels.TRUCKS))], lane, speed, self))
+        elif random_num < 10:
+            self.npvs.append(Truck(self.available_trucks[random.randrange(len(self.available_trucks))], lane, speed, self))
         else:
             self.npvs.append(NPV(self.available_vehicles[random.randrange(len(self.available_vehicles))], lane, speed))
 
@@ -1140,6 +1335,14 @@ class Game():
             
         self.previous_crash_count = current_crashed_count
 
+        for player in self.players:
+            for item in self.droped_items:
+                if self.check_collision_box(player.horizontal_position, player.vertical_position, player.width, player.height, item.x, item.y, PowerUps.SIZE, PowerUps.SIZE):
+                    item.picked_up_by(player)
+        
+        for item in self.droped_items:
+            item.update(time_delta)
+        
         ParticleManager.update(time_delta)
 
         self.last_update_timestamp = current_time
@@ -1210,7 +1413,10 @@ class Game():
 
         for npv in self.npvs:
             npv.draw()
-        
+       
+        for item in self.droped_items:
+            item.draw()
+
         ParticleManager.draw_3d()
 
         self.draw_hud()
@@ -1241,7 +1447,17 @@ class Game():
             drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (20, 20, 20, 0), "SCORE: " + str(int(player.score)) )
             glTranslatef(0, Window.HEIGHT-55, 0)
             self.powerupsHUD.draw()
-        
+            glPushMatrix()
+            glTranslatef(-10, 40, 0)
+            glRotatef(180, 1, 0, 0)
+            for i in range(PowerUps.INVENTORY_SIZE):
+                glTranslatef(58, 0, 0)
+                if i < len(player.inventory):
+                    draw_rectangle(32, 32, player.inventory[i].icon)
+                else:
+                    draw_rectangle(32,32, PowerUps.EMPTY) 
+
+            glPopMatrix()
         glPopMatrix()
         
         glMatrixMode(GL_PROJECTION)
@@ -1340,7 +1556,7 @@ class Game():
         if key == KeyboardKeys.KEY_Y and self.paused:
             pygame.quit()
             quit()
-        
+       
         for i in range(len(self.players)):
             if key == KeyboardKeys.KEY_LEFT[i]:
                 self.players[i].apply_brakes = True
@@ -1352,6 +1568,8 @@ class Game():
             elif key == KeyboardKeys.KEY_DOWN[i]:
                 self.players[i].apply_right = True
                 self.players[i].steer(Steering.TURN_RIGHT)
+            elif key >= KeyboardKeys.KEY_ONE[i] and key <= KeyboardKeys.KEY_FIVE[i]:
+                self.players[i].usePowerUp(key - KeyboardKeys.KEY_TO_NUM[i])
     
     def on_key_release(self, key):
         for i in range(len(self.players)):
