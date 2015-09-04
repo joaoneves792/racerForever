@@ -114,8 +114,6 @@ class PowerUps:
     CRATE = None
     SHIELD = None
     ENERGY_SHIELD = None
-    ENERGY_SHIELD_WIDTH = None
-    ENERGY_SHIELD_HEIGHT = None
     HYDRAULICS = None
     CALL_911 = None
     SHRINK = None
@@ -498,12 +496,6 @@ class Player(Car):
         #    cr.set_source_surface(PowerUps.PHASER_FIRE, 0, 0)
         #    cr.paint_with_alpha(self.phaser_alpha)
         #    cr.restore()
-        #if self.draw_rotation:
-        #    x = self.width/2.0
-        #    y = self.height/2.0
-        #    cr.translate(x, y)
-        #    cr.rotate(self.rotation);
-        #    cr.translate(-x,-y) 
         if self.hydraulics:
             glPushMatrix()
             glTranslatef(0, 10, 0)
@@ -516,21 +508,11 @@ class Player(Car):
         self.draw_wheels()
         if self.shrunk:
             glPopMatrix()
-
-        #if self.shield:
-        #    cr.save()
-        #    cr.translate(self.width/2 - PowerUps.ENERGY_SHIELD_WIDTH/2, self.height_offset - PowerUps.ENERGY_SHIELD_HEIGHT/2)
-        #    cr.set_source_surface(PowerUps.ENERGY_SHIELD, 0, 0)
-        #    cr.paint()
-        #    cr.restore()
+        if self.shield:
+            PowerUps.ENERGY_SHIELD.draw()
         glPopMatrix()
 
-        #if self.crash_handler != None:
-        #    self.crash_handler.draw(cr)
-       
-        #self.draw_score()
         #self.draw_power_up_timer(cr)
-        #self.draw_inventory(cr)
 
     def addPowerUp(self, powerup):
         if len(self.inventory) < PowerUps.INVENTORY_SIZE:
@@ -1172,6 +1154,7 @@ class Game():
 
 
         PowerUps.CRATE = ms3d.ms3d("./crate/crate.ms3d")
+        PowerUps.ENERGY_SHIELD = ms3d.ms3d("./energy_shield.ms3d")
         PowerUps.EMPTY = ms3d.Tex("./empty.png").getTexture()
         PowerUps.CALL_911 = ms3d.Tex("./911.png").getTexture()
         PowerUps.HYDRAULICS = ms3d.Tex("./Hydraulics.png").getTexture()
