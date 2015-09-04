@@ -1061,6 +1061,13 @@ class Game():
         self.load_resources()
 
         self.road = Road()
+        
+        #Setup the HUD light
+        glLightfv(GL_LIGHT7, GL_AMBIENT, (1, 1, 1, 1))
+        glLightfv(GL_LIGHT7, GL_DIFFUSE, (1,1,1,1))
+        glLightfv(GL_LIGHT7, GL_SPECULAR, (1,1,1,1))
+        glLightfv(GL_LIGHT7, GL_POSITION, (0,0,1,0))
+        
         self.players = []
         self.last_update_timestamp = -1
 
@@ -1407,10 +1414,28 @@ class Game():
         pygame.display.flip()
  
     def draw_hud(self): 
+        sun = False
+        lamps = False
+        if glIsEnabled(GL_LIGHT0):
+            sun = True
+        if glIsEnabled(GL_LIGHT1):
+            lamps = True
+        
+        
         glDisable(GL_DEPTH_TEST)
         glDepthMask(GL_FALSE)
         #glDisable(GL_LIGHTING)
         #glDisable(GL_BLEND)
+        if sun:
+            glDisable(GL_LIGHT0)
+        if lamps:
+            glDisable(GL_LIGHT1)
+            glDisable(GL_LIGHT2)
+            glDisable(GL_LIGHT3)
+            glDisable(GL_LIGHT4)
+        
+        glEnable(GL_LIGHT7)
+        
         glMatrixMode(GL_PROJECTION)
         glPushMatrix()
         glLoadIdentity()
@@ -1467,6 +1492,15 @@ class Game():
         glMatrixMode(GL_MODELVIEW)
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_LIGHTING)
+        glDisable(GL_LIGHT7)
+        if sun:
+            glEnable(GL_LIGHT0)
+        if lamps:
+            glEnable(GL_LIGHT1)
+            glEnable(GL_LIGHT2)
+            glEnable(GL_LIGHT3)
+            glEnable(GL_LIGHT4)
+        
         glDepthMask(GL_TRUE)
         glEnable(GL_BLEND)
     
