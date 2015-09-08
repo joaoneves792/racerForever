@@ -25,13 +25,14 @@ class Window:
     VERSION = "v0.1"
 
 class HUD:
-    PLAYER2_DELTA_X = 800
-    SCORE_POS_X = (30, 50+PLAYER2_DELTA_X)
-    SCORE_POS_Y = (45, 50)
+    PLAYER2_DELTA_X = 400
+    SCORE_HUD_POS_X = (0, PLAYER2_DELTA_X)
+    SCORE_HUD_POS_Y = (0, 0)
+    SCORE_POS_X = (30, 30+PLAYER2_DELTA_X)
+    SCORE_POS_Y = (45, 45)
     TIME_OUT_POS_X = (50, 50+PLAYER2_DELTA_X)
     TIME_OUT_POS_Y = (70, 70)
-    INVENTORY_X = (50, 50+PLAYER2_DELTA_X)
-    INVENTORY_Y = (450, 450)
+    INVENTORY_X = (0, PLAYER2_DELTA_X)
     POINTS100_X = (-200, 200+PLAYER2_DELTA_X)
     POINTS100_SPEED_DIRECTION = (1, -1)
     POINTS_HUD = None
@@ -1115,10 +1116,8 @@ class Game():
 
         #self.players.append(Player(self.available_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
         self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+        
+        self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.RIGHT_LANE, Speed.MAX_SPEED, 1))
 
 
         while True:
@@ -1335,6 +1334,16 @@ class Game():
                     self.npvs[j].crashed = True
                     Sounds.CRASH.play()
                     Sounds.BRAKE.play()
+        
+        #between players
+        for i in range(len(self.players) - 1):
+            for j in range(i+1, len(self.players)):
+                if self.players[i].hydraulics or self.players[j].hydraulics:
+                    continue
+                impact_vector = []
+                if self.check_collision_circle(self.players[i], self.players[j], impact_vector):
+                    self.applyCollisionForces(self.players[i], self.players[j], impact_vector)
+                    Sounds.CRASH.play()
 
         for player in self.players:
             player.update(time_delta)
@@ -1486,13 +1495,18 @@ class Game():
 
         glColor3f(0, 0, 0)
         for player in self.players:
+            glPushMatrix()
             color = (255, 255, 255, 255)
             if(player.score <= 0):
                 color = (255, 0, 0, 255)
+            glPushMatrix()
+            glTranslatef(HUD.SCORE_HUD_POS_X[player.player_id], HUD.SCORE_HUD_POS_Y[player.player_id], 0)
             self.pointsHUD.draw()
+            glPopMatrix()
             glDisable(GL_TEXTURE_2D)
             drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (20, 20, 20, 0), "SCORE: " + str(int(player.score)) )
-            glTranslatef(0, Window.HEIGHT-55, 0)
+            glPushMatrix()
+            glTranslatef(HUD.INVENTORY_X[player.player_id], Window.HEIGHT-55, 0)
             self.powerupsHUD.draw()
             glPushMatrix()
             glTranslatef(-10, 40, 0)
@@ -1503,8 +1517,10 @@ class Game():
                     draw_rectangle(32, 32, player.inventory[i].icon)
                 else:
                     draw_rectangle(32,32, PowerUps.EMPTY) 
-
             glPopMatrix()
+            glPopMatrix()
+            glPopMatrix()
+        
         glPopMatrix()
         
         glMatrixMode(GL_PROJECTION)
