@@ -180,13 +180,13 @@ def car_circle_collision(car1, car2, impact_vector=[], car1_x_offset=0, car1_y_o
     return False
     
 
-def draw_rectangle(w, h, texture):
+def draw_rectangle(w, h, texture, alpha=1):
     glEnable(GL_TEXTURE_2D)
     glBindTexture(GL_TEXTURE_2D, texture)
-    glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, 1))
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, 1))
-    glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, 1))
-    glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, 1))
+    glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, alpha))
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, alpha))
+    glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, alpha))
+    glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, alpha))
     glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
     
     glBegin(GL_TRIANGLES)
@@ -209,6 +209,39 @@ def draw_rectangle(w, h, texture):
     glNormal3f(0, 0, 1)
     glTexCoord2f(1, 0)
     glVertex3f(w, h, 0)    
+    glEnd()
+    
+    glDisable(GL_TEXTURE_2D)
+
+def draw_3d_rectangle(w, h, texture, alpha=1):
+    glEnable(GL_TEXTURE_2D)
+    glBindTexture(GL_TEXTURE_2D, texture)
+    glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, alpha))
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, alpha))
+    glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, alpha))
+    glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, alpha))
+    glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
+    
+    glBegin(GL_TRIANGLES)
+    glNormal3f(0,1, 0)
+    glTexCoord2f(0, 1)
+    glVertex3f(-h/2, 0, -w/2)
+    glNormal3f(0, 1, 0)
+    glTexCoord2f(1, 1)
+    glVertex3f(-h/2, 0, w/2) 
+    glNormal3f(0, 1, 0)
+    glTexCoord2f(0, 0)
+    glVertex3f(h/2, 0, -w/2)    
+
+    glNormal3f(0,1, 0)
+    glTexCoord2f(1, 1)
+    glVertex3f(-h/2, 0, w/2)    
+    glNormal3f(0, 1, 0)
+    glTexCoord2f(0, 0)
+    glVertex3f(h/2, 0, -w/2)    
+    glNormal3f(0, 1, 0)
+    glTexCoord2f(1, 0)
+    glVertex3f(h/2, 0, w/2)    
     glEnd()
     
     glDisable(GL_TEXTURE_2D)
@@ -469,18 +502,18 @@ class Player(Car):
         if self.vertical_position < RoadPositions.LOWER_LIMIT+self.height_offset:
             self.vertical_position = RoadPositions.LOWER_LIMIT+self.height_offset
 
-        #if self.fire_phaser:
-        #    if self.phaser_gaining_intensity:
-        #        self.phaser_alpha += time_delta*0.005
-        #        if self.phaser_alpha >= 1:
-        #            self.phaser_alpha = 1
-        #            self.phaser_gaining_intensity = False
-        #    else:
-        #        self.phaser_alpha -= time_delta*0.005
-        #        if self.phaser_alpha <= 0:
-        #            self.phaser_alpha = 0
-        #            self.phaser_gaining_intensity = True
-        #            self.fire_phaser = False
+        if self.fire_phaser:
+            if self.phaser_gaining_intensity:
+                self.phaser_alpha += time_delta*0.005
+                if self.phaser_alpha >= 1:
+                    self.phaser_alpha = 1
+                    self.phaser_gaining_intensity = False
+            else:
+                self.phaser_alpha -= time_delta*0.005
+                if self.phaser_alpha <= 0:
+                    self.phaser_alpha = 0
+                    self.phaser_gaining_intensity = True
+                    self.fire_phaser = False
 
         if(self.powerUpTimeOut > 0):
             self.powerUpTimeOut -= time_delta
@@ -490,12 +523,12 @@ class Player(Car):
 
     def draw_car(self):
         glPushMatrix()
-        #if self.fire_phaser:
-        #    cr.save()
-        #    cr.translate(10, self.height_offset - 8)
-        #    cr.set_source_surface(PowerUps.PHASER_FIRE, 0, 0)
-        #    cr.paint_with_alpha(self.phaser_alpha)
-        #    cr.restore()
+        if self.fire_phaser:
+            w = (RoadPositions.COLLISION_HORIZON + abs(RoadPositions.REAR_LIMIT))
+            glPushMatrix()
+            glTranslatef(0, 1, w/2)
+            draw_3d_rectangle(w, self.height, PowerUps.PHASER_FIRE, self.phaser_alpha)
+            glPopMatrix()
         if self.hydraulics:
             glPushMatrix()
             glTranslatef(0, 10, 0)
@@ -1082,6 +1115,11 @@ class Game():
 
         #self.players.append(Player(self.available_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
         self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+
 
         while True:
             for event in pygame.event.get():
@@ -1162,6 +1200,7 @@ class Game():
 
         PowerUps.CRATE = ms3d.ms3d("./crate/crate.ms3d")
         PowerUps.ENERGY_SHIELD = ms3d.ms3d("./energy_shield.ms3d")
+        PowerUps.PHASER_FIRE = ms3d.Tex("./phaser_fire.png").getTexture()
         PowerUps.EMPTY = ms3d.Tex("./empty.png").getTexture()
         PowerUps.CALL_911 = ms3d.Tex("./911.png").getTexture()
         PowerUps.HYDRAULICS = ms3d.Tex("./Hydraulics.png").getTexture()
@@ -1206,7 +1245,7 @@ class Game():
         random_num = random.randrange(100)
         if random_num < 4:
             self.generateEmergencyVehicle(lane)
-        elif random_num < 10:
+        elif random_num < 15:
             self.npvs.append(Truck(self.available_trucks[random.randrange(len(self.available_trucks))], lane, speed, self))
         else:
             self.npvs.append(NPV(self.available_vehicles[random.randrange(len(self.available_vehicles))], lane, speed))
@@ -1262,7 +1301,6 @@ class Game():
             for npv in self.npvs[:]:
                 if npv.capsized:
                     continue
-                #if self.check_collision_box(player.horizontal_position, player.vertical_position, player.width_offset, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
                 impact_vector = []
                 if car_circle_collision(player, npv, impact_vector):    
                     self.applyCollisionForces(player, npv, impact_vector)
@@ -1277,10 +1315,11 @@ class Game():
                     if not npv.crashed:
                         ParticleManager.add_new_3d_emmiter(SmokeEmitter( npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
                         npv.crashed = True
-                #if player.fire_phaser:
-                #    if self.check_collision_box(player.horizontal_position, player.vertical_position, RoadPositions.COLLISION_HORIZON/2, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
-                #        ParticleManager.add_new_emmitter(SmokeEmitter( npv.horizontal_position, npv.vertical_position-npv.height_offset, 0, 0))
-                #        self.npvs.remove(npv)
+                if player.fire_phaser:
+                    if npv.horizontal_position > player.horizontal_position:
+                        if self.check_collision_box(player.horizontal_position, player.vertical_position, RoadPositions.COLLISION_HORIZON, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
+                            ParticleManager.add_new_3d_emmiter(SmokeEmitter( npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
+                            self.npvs.remove(npv)
         
         #(between non-players themselves)
         for i in range(len(self.npvs) - 1):
