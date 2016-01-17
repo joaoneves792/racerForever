@@ -61,10 +61,10 @@ class RoadPositions:
     UPPER_LIMIT = 320
     LOWER_LIMIT = 80
    
-    FORWARD_LIMIT = 200
+    FORWARD_LIMIT = 800
     REAR_LIMIT = -200
-    COLLISION_HORIZON = 300
-    BEYOND_HORIZON = 500 
+    COLLISION_HORIZON = 900
+    BEYOND_HORIZON = 1200 
     BEHIND_REAR_HORIZON = -400
 
 class Speed:
@@ -527,7 +527,9 @@ class Player(Car):
     def draw_car(self):
         
         glMatrixMode(GL_PROJECTION)
-        glTranslatef(self.vertical_position, 0, self.horizontal_position)
+        glLoadIdentity()
+        gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 20400)
+        gluLookAt(self.vertical_position, 30, self.horizontal_position-150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
         glMatrixMode(GL_MODELVIEW)
         
         glPushMatrix()
@@ -900,11 +902,13 @@ class Road():
     def __init__(self, z=0):
         self.road = ms3d.ms3d("./road5.ms3d")
         self.length = 600 #calculated by measuring it in milkshape (see comment at beginning of file!)
-        self.num_of_tiles = 4 #Needs to be a pair number!!
+        self.num_of_tiles = 24 #Needs to be a pair number!!
         self.maximum_rear_pos = ((-(self.num_of_tiles//2))-1)*self.length
         self.maximum_front_pos = ((self.num_of_tiles//2)-1)*self.length
+        self.tile_delta = 0
         self.z = []
         self.num_of_lights = 4
+        self.tiles_to_lights_ratio = self.num_of_tiles//self.num_of_lights
         self.lights_offset = self.length/2
         self.lights_cutoff = 70
         for i in range(-self.num_of_tiles//2, self.num_of_tiles//2):
@@ -916,6 +920,7 @@ class Road():
         self.sunrise = False
         self.sunset = False
         self.time = 30000
+        #self.time = 43000
         self.sun_angle = math.pi/2
 
         self.setup_lights()
@@ -978,9 +983,18 @@ class Road():
                             compensate_sun if compensate_sun > self.lamp_ambient[2] else self.lamp_ambient[2])
                 for light in range(GL_LIGHT1, GL_LIGHT4+1):
                     glLightfv(light, GL_AMBIENT, ambient) 
-                            
+                
+            half = self.num_of_tiles//2
+            delta = self.tile_delta
+            nLights = self.num_of_lights
             for light in range(GL_LIGHT1, GL_LIGHT4+1):
-                glLightfv(light, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[light - GL_LIGHT1]+self.lights_offset, 1));
+                l = (light - GL_LIGHT1)
+                
+                # Magic...
+                tile_index = (l+half+((delta//nLights)+(1 if l < (delta%nLights) else 0))*nLights)%self.num_of_tiles
+                
+                glLightfv(light, GL_POSITION, (RoadPositions.LEFT_LANE, 100, self.z[tile_index]+self.lights_offset, 1));
+
 
         if self.sun:
             sin = math.sin(self.sun_angle)
@@ -1004,6 +1018,7 @@ class Road():
         for i in range(self.num_of_tiles):
             if self.z[i] <= self.maximum_rear_pos:
                 self.z[i] = self.maximum_front_pos - (self.maximum_rear_pos-self.z[i]) #Dont forget the correction factor because of big time_deltas
+                self.tile_delta = (self.tile_delta + 1)%self.num_of_tiles
             self.z[i] -= time_delta*Speed.MAX_SPEED
 
 
@@ -1161,10 +1176,10 @@ class Game():
         
         glMatrixMode(GL_PROJECTION)
         #gluPerspective(90, Window.WIDTH/Window.HEIGHT, 1, 2400)
-        gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 2400)
+        #gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 2400)
         #gluLookAt(-200,450,0, RoadPositions.MIDDLE_LANE,0,0, 0,1,0)
         #gluLookAt(RoadPositions.MIDDLE_LANE, 30, RoadPositions.REAR_LIMIT-100, RoadPositions.MIDDLE_LANE,30,0, 0,1,0)
-        gluLookAt(RoadPositions.MIDDLE_LANE, 30, -150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
+        #gluLookAt(RoadPositions.MIDDLE_LANE, 30, -150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
         #gluLookAt(RoadPositions.MIDDLE_LANE+8, 18, -2.3, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
         glMatrixMode(GL_MODELVIEW)
         
