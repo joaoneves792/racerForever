@@ -1,5 +1,6 @@
-#import pygame2
-#pygame_sdl2.import_as_pygame()
+# import pygame2
+# pygame_sdl2.import_as_pygame()
+
 import pygame
 from pygame.locals import *
 
@@ -12,7 +13,7 @@ import ParticleManager
 import random
 import math
 
-#1 MS3D Unit = 1 meter = 20 OpenGL units
+# 11 MS3D Unit = 1 meter = 20 OpenGL units
 
 class Window:
     #WIDTH = 1920
@@ -121,6 +122,7 @@ class PowerUps:
     PHASER_FIRE = None
     PHASER = None
 
+
 def drawText(x, y, rgba_color, bg_color, textString):
     font = pygame.font.Font(None, 30)
     textSurface = font.render(textString, True, rgba_color, bg_color)   
@@ -162,6 +164,7 @@ def rotate_2d_vector(vector, angle):
     x = vector[0]
     y = vector[1]
     return [x*cs-y*sn, x*sn+y*cs]
+
 
 def car_circle_collision(car1, car2, impact_vector=[], car1_x_offset=0, car1_y_offset=0):
     car1_rear_circle = ( car1.rear_circle[0]+car1.horizontal_position+car1_x_offset, car1.rear_circle[1] + car1.vertical_position+car1_y_offset)
@@ -291,11 +294,10 @@ class Car:
             self.rotateAngle = 0
 
         def update(self):
-            #Not realistic at all but who cares!!
+            # Not realistic at all but who cares!!
             if self.rotateAngle >= 360:
                 self.rotateAngle = 0;
             self.rotateAngle += 15
-
 
         def draw(self):
             glPushMatrix()
@@ -523,6 +525,11 @@ class Player(Car):
             self.powerUpTimeOut = 0
 
     def draw_car(self):
+        
+        glMatrixMode(GL_PROJECTION)
+        glTranslatef(self.vertical_position, 0, self.horizontal_position)
+        glMatrixMode(GL_MODELVIEW)
+        
         glPushMatrix()
         if self.fire_phaser:
             w = (RoadPositions.COLLISION_HORIZON + abs(RoadPositions.REAR_LIMIT))
@@ -697,7 +704,9 @@ class NPV(Car): #NPV - Non Player Vehicle
                         self.capsized_angle = -90
                     else:
                         self.capsized_angle = 180
-        
+
+
+
         if(self.speed > 0):
             self.rotation += time_delta*self.angular_speed
 
@@ -1117,7 +1126,7 @@ class Game():
         #self.players.append(Player(self.available_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
         self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
         
-        self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.RIGHT_LANE, Speed.MAX_SPEED, 1))
+        #self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.RIGHT_LANE, Speed.MAX_SPEED, 1))
 
 
         while True:
@@ -1153,7 +1162,10 @@ class Game():
         glMatrixMode(GL_PROJECTION)
         #gluPerspective(90, Window.WIDTH/Window.HEIGHT, 1, 2400)
         gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 2400)
-        gluLookAt(-200,450,0, RoadPositions.MIDDLE_LANE,0,0, 0,1,0)
+        #gluLookAt(-200,450,0, RoadPositions.MIDDLE_LANE,0,0, 0,1,0)
+        #gluLookAt(RoadPositions.MIDDLE_LANE, 30, RoadPositions.REAR_LIMIT-100, RoadPositions.MIDDLE_LANE,30,0, 0,1,0)
+        gluLookAt(RoadPositions.MIDDLE_LANE, 30, -150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
+        #gluLookAt(RoadPositions.MIDDLE_LANE+8, 18, -2.3, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
         glMatrixMode(GL_MODELVIEW)
         
 
@@ -1631,29 +1643,29 @@ class Game():
        
         for i in range(len(self.players)):
             if key == KeyboardKeys.KEY_LEFT[i]:
-                self.players[i].apply_brakes = True
-            elif key == KeyboardKeys.KEY_RIGHT[i]:
-                self.players[i].apply_throttle = True
-            elif key == KeyboardKeys.KEY_UP[i]:
                 self.players[i].apply_left = True
                 self.players[i].steer(Steering.TURN_LEFT)
-            elif key == KeyboardKeys.KEY_DOWN[i]:
+            elif key == KeyboardKeys.KEY_RIGHT[i]:
                 self.players[i].apply_right = True
                 self.players[i].steer(Steering.TURN_RIGHT)
+            elif key == KeyboardKeys.KEY_UP[i]:
+                self.players[i].apply_throttle = True
+            elif key == KeyboardKeys.KEY_DOWN[i]:
+                self.players[i].apply_brakes = True
             elif key >= KeyboardKeys.KEY_ONE[i] and key <= KeyboardKeys.KEY_FIVE[i]:
                 self.players[i].usePowerUp(key - KeyboardKeys.KEY_TO_NUM[i])
     
     def on_key_release(self, key):
         for i in range(len(self.players)):
             if key == KeyboardKeys.KEY_LEFT[i]:
-                self.players[i].release_brakes = True
-            elif key == KeyboardKeys.KEY_RIGHT[i]:
-                self.players[i].release_throttle = True 
-            elif key == KeyboardKeys.KEY_UP[i]:
                 self.players[i].release_left = True
                 self.players[i].steer(Steering.CENTERED)
-            elif key == KeyboardKeys.KEY_DOWN[i]:
+            elif key == KeyboardKeys.KEY_RIGHT[i]:
                 self.players[i].release_right = True
                 self.players[i].steer(Steering.CENTERED)
+            elif key == KeyboardKeys.KEY_UP[i]:
+                self.players[i].release_throttle = True 
+            elif key == KeyboardKeys.KEY_DOWN[i]:
+                self.players[i].release_brakes = True
 
 game = Game()
