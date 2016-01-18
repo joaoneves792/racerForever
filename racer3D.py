@@ -61,10 +61,10 @@ class RoadPositions:
     UPPER_LIMIT = 320
     LOWER_LIMIT = 80
    
-    FORWARD_LIMIT = 800
+    FORWARD_LIMIT = 8000
     REAR_LIMIT = -200
-    COLLISION_HORIZON = 900
-    BEYOND_HORIZON = 1200 
+    COLLISION_HORIZON = 4100
+    BEYOND_HORIZON = 4400 
     BEHIND_REAR_HORIZON = -400
 
 class Speed:
@@ -900,7 +900,8 @@ class Phaser(PowerUp):
 
 class Road():
     def __init__(self, z=0):
-        self.road = ms3d.ms3d("./road5.ms3d")
+        self.road = ms3d.ms3d("./road6.ms3d")
+        self.sky = ms3d.ms3d("./sky.ms3d")
         self.length = 600 #calculated by measuring it in milkshape (see comment at beginning of file!)
         self.num_of_tiles = 24 #Needs to be a pair number!!
         self.maximum_rear_pos = ((-(self.num_of_tiles//2))-1)*self.length
@@ -1012,7 +1013,10 @@ class Road():
             self.road.draw()
             glPopMatrix()
 
-
+        glPushMatrix()
+        glScalef(10,10,10)
+        self.sky.draw()
+        glPopMatrix()
 
     def advance(self, time_delta):
         for i in range(self.num_of_tiles):
