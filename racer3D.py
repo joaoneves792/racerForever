@@ -16,12 +16,12 @@ import math
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
 
 class Window:
-    #WIDTH = 1920
-    #HEIGHT = 1080
-    #FULLSCREEN = True
-    WIDTH = 1024
-    HEIGHT = 512
-    FULLSCREEN = False
+    WIDTH = 1920
+    HEIGHT = 1080
+    FULLSCREEN = True
+    #WIDTH = 1024
+    #HEIGHT = 512
+    #FULLSCREEN = False
 
     VERSION = "v0.1"
 
@@ -407,6 +407,9 @@ class Player(Car):
         self.score = 0
         self.score_hundreds = 0
 
+        self.camera_x_rot = 0
+        self.camera_y_rot = 0
+
         self.inventory = []
         self.powerUpTimeOut = 0
         self.hydraulics = False
@@ -529,7 +532,12 @@ class Player(Car):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 20400)
-        gluLookAt(self.vertical_position, 30, self.horizontal_position-150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
+        #gluLookAt(self.vertical_position, 30, self.horizontal_position-150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
+        glTranslate(0, 0, -150)
+        glRotate(180, 0,1, 0)
+        glRotatef(-self.camera_y_rot, 1, 0, 0);
+        glRotatef(self.camera_x_rot, 0, 1, 0);
+        glTranslate(-self.vertical_position, -30, -self.horizontal_position)
         glMatrixMode(GL_MODELVIEW)
         
         glPushMatrix()
@@ -556,6 +564,14 @@ class Player(Car):
         glPopMatrix()
 
         #self.draw_power_up_timer(cr)
+    
+    def update_mouse(self, movement):
+        self.camera_x_rot += 0.3*movement[0]
+        self.camera_y_rot += 0.3*movement[1]
+        if self.camera_y_rot < 0:
+            self.camera_y_rot = 0
+        if self.camera_y_rot > 180:
+            self.camera_y_rot = 180
 
     def addPowerUp(self, powerup):
         if len(self.inventory) < PowerUps.INVENTORY_SIZE:
@@ -1156,6 +1172,7 @@ class Game():
 
     def init_display(self):
         display = (Window.WIDTH, Window.HEIGHT)
+        pygame.mouse.set_visible(False)
         #pygame.display.gl_set_attribute(pygame.GL_SWAP_CONTROL, 1)
         #pygame.display.gl_set_attribute(pygame.GL_STENCIL_SIZE, 4)
         pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
@@ -1648,6 +1665,9 @@ class Game():
         elif event.type == pygame.QUIT:
             pygame.quit()
             quit()
+        elif event.type == pygame.MOUSEMOTION:
+            for i in range(len(self.players)):
+                self.players[i].update_mouse(pygame.mouse.get_rel())
 
     def on_key_press(self, key):
         if key == KeyboardKeys.KEY_ESC:
