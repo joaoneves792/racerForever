@@ -42,10 +42,10 @@ class HUD:
 
 class KeyboardKeys:
     KEY_ESC = pygame.K_ESCAPE
-    KEY_LEFT  = (pygame.K_LEFT, pygame.K_a)
-    KEY_RIGHT = (pygame.K_RIGHT, pygame.K_d)
-    KEY_UP = (pygame.K_UP, pygame.K_w)
-    KEY_DOWN = (pygame.K_DOWN, pygame.K_s)
+    KEY_LEFT  = (pygame.K_a, pygame.K_LEFT)
+    KEY_RIGHT = (pygame.K_d, pygame.K_RIGHT)
+    KEY_UP = (pygame.K_w, pygame.K_UP)
+    KEY_DOWN = (pygame.K_s, pygame.K_DOWN)
 
     KEY_Y = pygame.K_y
     
@@ -65,7 +65,9 @@ class RoadPositions:
     REAR_LIMIT = -200
     COLLISION_HORIZON = 4100
     BEYOND_HORIZON = 4400 
-    BEHIND_REAR_HORIZON = -400
+    BEHIND_REAR_HORIZON = -2400
+
+    LOD_DISTANCE = 2000
 
 class Speed:
     ONE_METER = 20
@@ -251,8 +253,9 @@ def draw_3d_rectangle(w, h, texture, alpha=1):
     glDisable(GL_TEXTURE_2D)
 
 class VehicleModel:
-    def __init__(self, model, wheel, wheel_count):
+    def __init__(self, model, lod, wheel, wheel_count):
         self.model = model
+        self.lod = lod
         self.wheel = wheel
         self.wheel_positions = []
         self.wheel_count = wheel_count
@@ -507,6 +510,8 @@ class Player(Car):
             self.vertical_position = RoadPositions.UPPER_LIMIT-self.height_offset
         if self.vertical_position < RoadPositions.LOWER_LIMIT+self.height_offset:
             self.vertical_position = RoadPositions.LOWER_LIMIT+self.height_offset
+        
+        glLightfv(GL_LIGHT6, GL_POSITION, (self.vertical_position, 15, self.horizontal_position+100, 1));
 
         if self.fire_phaser:
             if self.phaser_gaining_intensity:
@@ -540,6 +545,7 @@ class Player(Car):
         glTranslate(-self.vertical_position, -30, -self.horizontal_position)
         glMatrixMode(GL_MODELVIEW)
         
+
         glPushMatrix()
         if self.fire_phaser:
             w = (RoadPositions.COLLISION_HORIZON + abs(RoadPositions.REAR_LIMIT))
@@ -655,6 +661,8 @@ class NPV(Car): #NPV - Non Player Vehicle
                 self.speed = other_car.speed
         else:
             self.speed = 0
+            Sounds.BRAKE.stop()
+            Sounds.BRAKE.play()
             self.skiding = True
             self.skid_marks_x = self.horizontal_position - 50
 
@@ -674,7 +682,10 @@ class NPV(Car): #NPV - Non Player Vehicle
             glTranslate(0, 20*abs(math.sin(0.5*self.capsized_angle*Speed.DEGREES_TO_RADIANS)), 0)
             glRotatef(self.capsized_angle, 1, 0, 0)
         glRotatef(self.rotation, 0, 1, 0)
-        self.vehicle.model.draw()
+        if abs(self.horizontal_position) > RoadPositions.LOD_DISTANCE:
+            self.vehicle.lod.draw()
+        else:
+            self.vehicle.model.draw()
         self.draw_wheels()
         
         glPopMatrix()
@@ -811,7 +822,7 @@ class Truck(NPV):
             self.looted = False
 
     def update(self, time_delta):
-        if(self.horizontal_position < RoadPositions.FORWARD_LIMIT and random.randrange(100) == 1):
+        if(self.horizontal_position < RoadPositions.FORWARD_LIMIT and random.randrange(1000) == 1):
             self.dropPowerUp()
         if self.crashed and not self.looted:
             self.dropPowerUp()
@@ -917,6 +928,7 @@ class Phaser(PowerUp):
 class Road():
     def __init__(self, z=0):
         self.road = ms3d.ms3d("./road6.ms3d")
+        self.road_lod = ms3d.ms3d("./road_lod.ms3d")
         self.sky = ms3d.ms3d("./sky.ms3d")
         self.length = 600 #calculated by measuring it in milkshape (see comment at beginning of file!)
         self.num_of_tiles = 24 #Needs to be a pair number!!
@@ -961,6 +973,14 @@ class Road():
         
         glLightfv(GL_LIGHT0, GL_POSITION, (0,200,0,1))
 
+
+        glLightfv(GL_LIGHT6, GL_AMBIENT, (1, 1, 1, 1))
+        glLightfv(GL_LIGHT6, GL_DIFFUSE, self.lamp_diffuse)
+        glLightfv(GL_LIGHT6, GL_SPECULAR, self.lamp_specular)
+        glLightfv(GL_LIGHT6, GL_SPOT_CUTOFF, 17) 
+        glLightfv(GL_LIGHT6, GL_SPOT_DIRECTION, (0, -0.27, 1))
+
+
         glEnable(GL_LIGHT0)
     def draw(self):
         
@@ -970,7 +990,7 @@ class Road():
             self.sun = True
 
         if self.sunset:
-            #glDisable(GL_LIGHT0)
+            glDisable(GL_LIGHT0)
             self.sunset = False
             self.sun = False
 
@@ -979,6 +999,7 @@ class Road():
             glEnable(GL_LIGHT2)
             glEnable(GL_LIGHT3)
             glEnable(GL_LIGHT4)
+            glEnable(GL_LIGHT6)
             self.switch_lights_on = False
             self.lights = True
 
@@ -987,6 +1008,7 @@ class Road():
             glDisable(GL_LIGHT2)
             glDisable(GL_LIGHT3)
             glDisable(GL_LIGHT4)
+            glDisable(GL_LIGHT6)
             self.switch_lights_off = False
             self.lights = False
 
@@ -1026,7 +1048,10 @@ class Road():
         for z in self.z:
             glPushMatrix()
             glTranslatef(0, 0, z)
-            self.road.draw()
+            if abs(z) > (self.num_of_lights*self.length):
+                self.road_lod.draw()
+            else:
+                self.road.draw()
             glPopMatrix()
 
         glPushMatrix()
@@ -1210,10 +1235,11 @@ class Game():
             for i in range(vehicle.wheel_count):
                 vehicle.wheel_positions.append(model.getJointPosition("hub"+str(i)))
     
-        def load_vehicle(car_model, wheel_model, num_wheels):
+        def load_vehicle(car_model, wheel_model, num_wheels, lod="./RS4/RS4_LOD.ms3d"):
             ms3d_car = ms3d.ms3d(car_model)
+            ms3d_lod = ms3d.ms3d(lod)
             ms3d_wheel = ms3d.ms3d(wheel_model)
-            vehicle = VehicleModel(ms3d_car, ms3d_wheel, num_wheels)
+            vehicle = VehicleModel(ms3d_car, ms3d_lod, ms3d_wheel, num_wheels)
             fill_wheel_positions(vehicle, ms3d_car)
             return vehicle
 
@@ -1256,20 +1282,20 @@ class Game():
         PowerUps.SHRINK = ms3d.Tex("./shrink.png").getTexture()
 
 
-        self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
+        self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play_optimized.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
 
-        self.emergency_vehicles.append(load_vehicle("./Cop1/copplay.ms3d", "./Cop1/copwheels.ms3d", 4))
-        self.emergency_vehicles.append(load_vehicle("./Ambulance/ambulance.ms3d", "./Ambulance/ambulance_wheel.ms3d", 4))
+        self.emergency_vehicles.append(load_vehicle("./Cop1/copplay_optimized.ms3d", "./Cop1/copwheels.ms3d", 4, "./Cop1/coplod.ms3d"))
+        self.emergency_vehicles.append(load_vehicle("./Ambulance/ambulance_optimized.ms3d", "./Ambulance/ambulance_wheel.ms3d", 4, "./Ambulance/ambulance_lod.ms3d"))
 
-        self.available_trucks.append(load_vehicle("./Rumpo/rumpo.ms3d", "./Rumpo/rumpo_wheel.ms3d", 4))
+        self.available_trucks.append(load_vehicle("./Rumpo/rumpo_optimized.ms3d", "./Rumpo/rumpo_wheel.ms3d", 4,  "./Rumpo/rumpo_LOD.ms3d"))
 
-        self.available_vehicles.append(load_vehicle("./RS4/RS4.ms3d", "./RS4/RS4Wheel.ms3d", 4))
-        self.available_vehicles.append(load_vehicle("./charger/charger_play.ms3d", "./charger/ChargerWheel.ms3d", 4))
-        self.available_vehicles.append(load_vehicle("./Murci/MurcielagoPlay.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
-        self.available_vehicles.append(load_vehicle("./M3E92/M3play.ms3d", "./M3E92/M3E92Wheel.ms3d", 4))
-        self.available_vehicles.append(load_vehicle("./NSX/NSXplay.ms3d", "./NSX/NSXWheel.ms3d" , 4))
-        self.available_vehicles.append(load_vehicle("./Skyline/skylineplay.ms3d", "./Skyline/skyline_wheel.ms3d" , 4))
-        self.available_vehicles.append(load_vehicle("./LP570_S/LP570play.ms3d", "./LP570_S/LP570wheel.ms3d" , 4))
+        self.available_vehicles.append(load_vehicle("./RS4/RS4_optimized.ms3d", "./RS4/RS4Wheel.ms3d", 4, "./RS4/RS4_LOD.ms3d"))
+        self.available_vehicles.append(load_vehicle("./charger/charger_play_optimized.ms3d", "./charger/ChargerWheel.ms3d", 4, "./charger/charger_lod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Murci/MurcielagoPlay_optimized.ms3d", "./Gallardo/gallardoWheel.ms3d", 4, "./Murci/Murcielago_LOD.ms3d"))
+        self.available_vehicles.append(load_vehicle("./M3E92/M3play_optimized.ms3d", "./M3E92/M3E92Wheel.ms3d", 4, "M3E92/M3Lod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./NSX/NSXplay_optimized.ms3d", "./NSX/NSXWheel.ms3d" , 4, "./NSX/NSXlod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Skyline/skylineplay_optimized.ms3d", "./Skyline/skyline_wheel.ms3d" , 4, "./Skyline/skylinelod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./LP570_S/LP570play_optimized.ms3d", "./LP570_S/LP570wheel.ms3d" , 4, "./LP570_S/LP570lod.ms3d"))
         
     def generateEmergencyVehicle(self, vertical_position):
         Sounds.SIREN.play()    
@@ -1292,7 +1318,7 @@ class Game():
         random_num = random.randrange(100)
         if random_num < 4:
             self.generateEmergencyVehicle(lane)
-        elif random_num < 15:
+        elif random_num < 10:
             self.npvs.append(Truck(self.available_trucks[random.randrange(len(self.available_trucks))], lane, speed, self))
         else:
             self.npvs.append(NPV(self.available_vehicles[random.randrange(len(self.available_vehicles))], lane, speed))
@@ -1331,7 +1357,7 @@ class Game():
                         player.crashed_into.remove(npv)
                 #Just a reminder this is only feasable because were using really small lists THIS DOES NOT SCALE WELL!!
         #create new NPVs
-        if len(self.npvs) < 5:
+        if len(self.npvs) < 12:
             if self.spawn_delay <= 0:
                 self.generateRandomNPV()
                 self.spawn_delay = 1900
@@ -1378,10 +1404,10 @@ class Game():
                         ParticleManager.add_new_3d_emmiter(SmokeEmitter( self.npvs[i].horizontal_position, self.npvs[i].vertical_position, -self.npvs[i].speed, 0))
                     if not self.npvs[j].crashed:
                         ParticleManager.add_new_3d_emmiter(SmokeEmitter( self.npvs[j].horizontal_position, self.npvs[j].vertical_position, -self.npvs[j].speed, 0))
+                        Sounds.CRASH.play()
+                        Sounds.BRAKE.play()
                     self.npvs[i].crashed = True
                     self.npvs[j].crashed = True
-                    Sounds.CRASH.play()
-                    Sounds.BRAKE.play()
         
         #between players
         for i in range(len(self.players) - 1):
@@ -1492,10 +1518,12 @@ class Game():
     def draw(self):
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        self.road.draw()
-
+        
         for player in self.players:
             player.draw()
+        
+        self.road.draw()
+
 
         for npv in self.npvs:
             npv.draw()
@@ -1576,7 +1604,8 @@ class Game():
 
         glPushMatrix()
         glLoadIdentity()
-        glOrtho(RoadPositions.REAR_LIMIT, RoadPositions.FORWARD_LIMIT, 0, RoadPositions.UPPER_LIMIT, -1, 1)
+        #glOrtho(RoadPositions.REAR_LIMIT, RoadPositions.FORWARD_LIMIT, 0, RoadPositions.UPPER_LIMIT, -1, 1)
+        glOrtho(-Window.WIDTH//2, Window.WIDTH//2, 0, Window.HEIGHT, -1, 1)
         glMatrixMode(GL_MODELVIEW)
         glPushMatrix()
         glLoadIdentity()
