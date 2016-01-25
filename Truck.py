@@ -12,7 +12,7 @@ class Truck(AI):
             self.looted = False
 
     def update(self, time_delta):
-        if(self.horizontal_position < RoadPositions.FORWARD_LIMIT and random.randrange(1000) == 1):
+        if self.horizontal_position < RoadPositions.FORWARD_LIMIT and random.randrange(1000) == 1:
             self.dropPowerUp()
         if self.crashed and not self.looted:
             self.dropPowerUp()

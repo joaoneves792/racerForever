@@ -55,7 +55,7 @@ class Car:
         self.rotation = 0
         self.wheels = []
         self.crashed_into = []
-        self.skiding = False
+        self.skidding = False
         self.skid_marks_x = 0
         self.skid_marks_y = 0
         self.skid_mark = None
@@ -89,7 +89,8 @@ class Car:
         for wheel in self.wheels:
             wheel.draw()
 
-    def check_collision_box(self, box_x, box_y, box_w, box_h, car):
+    @staticmethod
+    def check_collision_box(box_x, box_y, box_w, box_h, car):
         box2_x = car.horizontal_position
         box2_y = car.vertical_position
         box2_w = car.width_offset

@@ -13,29 +13,29 @@ class PowerUp:
         self.y = 0
 
     def drop(self, x, y):
-        self.game.droped_items.append(self)
+        self.game.dropped_items.append(self)
         self.x = x
         self.y = y
 
     def execute(self):
-        if self.player == None:
+        if self.player is None:
             return
         self.player.powerUpTimeOut = PowerUps.TIME_OUT
         self.applyPowerUp()
 
-    #abstract
+    # abstract
     def applyPowerUp(self):
         pass
 
     def picked_up_by(self, player):
-        self.game.droped_items.remove(self)
+        self.game.dropped_items.remove(self)
         self.player = player
         player.addPowerUp(self)
 
     def update(self, time_delta):
         self.x += time_delta*(-Speed.MAX_SPEED)
         if self.x < RoadPositions.BEHIND_REAR_HORIZON:
-            self.game.droped_items.remove(self)
+            self.game.dropped_items.remove(self)
 
     def draw(self):
         glPushMatrix()
@@ -78,9 +78,9 @@ class Shrink(PowerUp):
 
     def applyPowerUp(self):
         self.player.shrunk = True
-        self.player.height = self.player.height / 2
-        self.player.height_offset = self.player.height_offset / 2
-        self.player.radius = self.player.radius / 2
+        self.player.height /= 2
+        self.player.height_offset /= 2
+        self.player.radius /= 2
 
 
 class Phaser(PowerUp):

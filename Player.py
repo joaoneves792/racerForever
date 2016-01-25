@@ -44,21 +44,21 @@ class Player(Car):
         self.phaser_alpha = 0
         self.phaser_gaining_intensity = True
 
-    def apply_collision_forces(self, other, other_speed, other_lateral_speed, impact_vector):
+    def apply_collision_forces(self, other_speed, other_lateral_speed, impact_vector):
         self.speed += (other_speed - self.speed)
         self.lateral_speed += (other_lateral_speed - self.lateral_speed)
-        self.skiding = True
+        self.skidding = True
 
     def update_car(self, time_delta):
         for i in range(self.score_hundreds - int(self.score / 100)):
-            ParticleManager.add_new_emmitter(Minus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.MAX_SPEED - 10 * Speed.ONE_KMH))
+            ParticleManager.add_new_emitter(Minus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.MAX_SPEED - 10 * Speed.ONE_KMH))
         self.score += 0.01 * time_delta
         old_score_hundreds = self.score_hundreds
         self.score_hundreds = int(self.score / 100)
         for i in range(self.score_hundreds-old_score_hundreds):
-            ParticleManager.add_new_emmitter(Plus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.MAX_SPEED - 10 * Speed.ONE_KMH))
+            ParticleManager.add_new_emitter(Plus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.MAX_SPEED - 10 * Speed.ONE_KMH))
 
-        #Adjust postition to user input
+        # Adjust postition to user input
         if self.apply_left:
             self.lateral_speed += Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
             self.apply_left = False
@@ -68,12 +68,12 @@ class Player(Car):
             self.apply_right = False
             self.right = True
         if self.release_left:
-            #self.lateral_speed -= Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
+            # self.lateral_speed -= Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
             self.lateral_speed = 0
             self.release_left = False
             self.left = False
         if self.release_right:
-            #self.lateral_speed += Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
+            # self.lateral_speed += Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
             self.lateral_speed = 0
             self.release_right = False
             self.right = False
@@ -102,27 +102,25 @@ class Player(Car):
             if self.throttling:
                 speed_increase = Speed.ONE_KMH * time_delta
                 self.speed = (self.speed + speed_increase) if (self.speed + speed_increase) < (
-                Speed.MAX_SPEED + Speed.PLAYER_ACCELERATE_SPEED) else Speed.PLAYER_ACCELERATE_SPEED
+                    Speed.MAX_SPEED + Speed.PLAYER_ACCELERATE_SPEED) else Speed.PLAYER_ACCELERATE_SPEED
             else:
                 speed_increase = Speed.ONE_KMH * 0.03 * time_delta
                 self.speed = (self.speed + speed_increase) if (self.speed + speed_increase) < Speed.MAX_SPEED else Speed.MAX_SPEED
 
-
         horizontal_position_delta = time_delta*(self.speed - Speed.MAX_SPEED)
-        vertical_position_delta = time_delta*(self.lateral_speed)
+        vertical_position_delta = time_delta*self.lateral_speed
 
-        #Corrections so as to not get stuck!
+        # Corrections so as to not get stuck!
         for car in self.crashed_into:
-            impactvector = []
-            if car_circle_collision(self, car, impactvector, horizontal_position_delta, vertical_position_delta):
-                if impactvector[2] > 0:
-                    horizontal_position_delta -= (impactvector[0]*impactvector[2])
-                    car.horizontal_position += impactvector[0]*impactvector[2]
-                    car.vertical_position += impactvector[1]*impactvector[2]
+            impact_vector = []
+            if car_circle_collision(self, car, impact_vector, horizontal_position_delta, vertical_position_delta):
+                if impact_vector[2] > 0:
+                    horizontal_position_delta -= (impact_vector[0]*impact_vector[2])
+                    car.horizontal_position += impact_vector[0]*impact_vector[2]
+                    car.vertical_position += impact_vector[1]*impact_vector[2]
 
         self.horizontal_position += horizontal_position_delta
         self.vertical_position += vertical_position_delta
-
 
         if self.horizontal_position > RoadPositions.FORWARD_LIMIT:
             self.horizontal_position = RoadPositions.FORWARD_LIMIT
@@ -133,7 +131,7 @@ class Player(Car):
         if self.vertical_position < RoadPositions.LOWER_LIMIT+self.height_offset:
             self.vertical_position = RoadPositions.LOWER_LIMIT + self.height_offset
 
-        glLightfv(GL_LIGHT6, GL_POSITION, (self.vertical_position, 15, self.horizontal_position+100, 1));
+        glLightfv(GL_LIGHT6, GL_POSITION, (self.vertical_position, 15, self.horizontal_position+100, 1))
 
         if self.fire_phaser:
             if self.phaser_gaining_intensity:
@@ -148,7 +146,7 @@ class Player(Car):
                     self.phaser_gaining_intensity = True
                     self.fire_phaser = False
 
-        if(self.powerUpTimeOut > 0):
+        if self.powerUpTimeOut > 0:
             self.powerUpTimeOut -= time_delta
         if self.powerUpTimeOut <= 0:
             self.disablePowerUps()
@@ -159,14 +157,13 @@ class Player(Car):
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
         gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 20400)
-        #gluLookAt(self.vertical_position, 30, self.horizontal_position-150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
+        # giuLookAt(self.vertical_position, 30, self.horizontal_position-150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
         glTranslate(0, 0, -150)
-        glRotate(180, 0,1, 0)
-        glRotatef(-self.camera_y_rot, 1, 0, 0);
-        glRotatef(self.camera_x_rot, 0, 1, 0);
+        glRotate(180, 0, 1, 0)
+        glRotatef(-self.camera_y_rot, 1, 0, 0)
+        glRotatef(self.camera_x_rot, 0, 1, 0)
         glTranslate(-self.vertical_position, -30, -self.horizontal_position)
         glMatrixMode(GL_MODELVIEW)
-
 
         glPushMatrix()
         if self.fire_phaser:
@@ -191,7 +188,7 @@ class Player(Car):
             PowerUps.ENERGY_SHIELD.draw()
         glPopMatrix()
 
-        #self.draw_power_up_timer(cr)
+        # self.draw_power_up_timer(cr)
 
     def update_mouse(self, movement):
         self.camera_x_rot += 0.3*movement[0]

@@ -1,6 +1,5 @@
 from OpenGL.GL import *
-from OpenGL.GLU import *
-import pygame
+
 
 class Particles:
 
@@ -17,6 +16,7 @@ class Particles:
     POOLED_PARTICLES3D = 120
     WIDTH = 64
     HEIGHT = 64
+
 
 class Particle:
     def __init__(self, x=0, y=0, life=0, angle=0, speed_x=0, speed_y=0, size=0, shape=None, deflate=True, w=Particles.WIDTH, h=Particles.HEIGHT):
@@ -69,7 +69,6 @@ class Particle3D:
         self.texture = 0
         self.set_properties(0,0,0, 0, 0, 0, 0,0,0,0,0,0, 0, False)
 
-
     def set_properties(self, x, y, z, life, angle, speed_x, speed_y, speed_z, accel_x, accel_y, accel_z, size, texture, deflate):
         self.z = z
         self.speed_z = speed_z
@@ -90,7 +89,7 @@ class Particle3D:
         self.deflate = deflate
 
     def update(self, time_delta):
-        if(self.z <= 0):
+        if self.z <= 0:
             self.life = 0
             return
         self.life -= time_delta
@@ -131,9 +130,9 @@ class Particle3D:
         glVertex3f(self.size, 0, 0) 
         glNormal3f(0, 1, 0)
         glTexCoord2f(0, 1)
-        glVertex3f(0,0,self.size)    
+        glVertex3f(0, 0, self.size)
 
-        glNormal3f(0,1, 0)
+        glNormal3f(0, 1, 0)
         glTexCoord2f(1, 0)
         glVertex3f(self.size, 0, 0)    
         glNormal3f(0, 1, 0)
@@ -147,10 +146,11 @@ class Particle3D:
         glPopMatrix()
         glDisable(GL_TEXTURE_2D)
 
+
 class ParticlePool:
     def __init__(self, pool_size):
         self.pool_size = pool_size
-        self.pool = [ Particle() for i in range(pool_size) ] 
+        self.pool = [Particle() for i in range(pool_size)]
         self.ready_particle_count = pool_size
 
     def request_particle(self):
@@ -168,11 +168,13 @@ class ParticlePool:
         self.pool[position_to_move_into] = moved_particle
         self.ready_particle_count += 1
 
+
 class ParticlePool3D(ParticlePool):
     def __init__(self, pool_size):
         self.pool_size = pool_size
         self.pool = [ Particle3D() for i in range(pool_size) ]
         self.ready_particle_count = pool_size
+
 
 class ParticleEmitter:
     def __init__(self, x, y, speed_x, speed_y, size, shape, num_of_particles, rate):
@@ -189,13 +191,12 @@ class ParticleEmitter:
         self.rate = rate
         self.done = False
 
-
-    #Must be outside of constructor so that particles are only reserved after emitter is aproved
+    # Must be outside of constructor so that particles are only reserved after emitter is aproved
     def init_particles(self):
         self.particles = [self.pool.request_particle() for i in range(self.particle_count)]
         self.set_particles()
 
-    #abstract
+    # abstract
     def set_particles(self):
         pass
 
@@ -204,7 +205,7 @@ class ParticleEmitter:
         new_emissions = self.rate*time_delta
         newly_emitted = 0
         for particle in self.particles:
-            if particle.life > 0 and particle.life < particle.original_life:
+            if 0 < particle.life < particle.original_life:
                 live_particles_count += 1
                 particle.update(time_delta)
             elif particle.life > 0 and newly_emitted < new_emissions:
@@ -217,7 +218,7 @@ class ParticleEmitter:
                 self.pool.return_particle(particle)
             self.done = True
 
-    def isDone(self):
+    def is_done(self):
         return self.done
 
     def draw(self):
@@ -226,6 +227,7 @@ class ParticleEmitter:
         for particle in self.particles:
             if particle.life > 0:
                 particle.draw()
+
 
 class ParticleEmitter3D():
     def __init__(self, x, y, z, speed_x, speed_y, speed_z, accel_x, accel_y, accel_z, size, texture, num_of_particles, rate):
@@ -246,12 +248,13 @@ class ParticleEmitter3D():
         self.particle_count = num_of_particles
         self.rate = rate
         self.done = False
-    #Must be outside of constructor so that particles are only reserved after emitter is aproved
+    # Must be outside of constructor so that particles are only reserved after emitter is aproved
+
     def init_particles(self):
         self.particles = [self.pool.request_particle() for i in range(self.particle_count)]
         self.set_particles()
 
-    #abstract
+    # abstract
     def set_particles(self):
         pass
 
@@ -260,7 +263,7 @@ class ParticleEmitter3D():
         new_emissions = self.rate*time_delta
         newly_emitted = 0
         for particle in self.particles:
-            if particle.life > 0 and particle.life < particle.original_life:
+            if 0 < particle.life < particle.original_life:
                 live_particles_count += 1
                 particle.update(time_delta)
             elif particle.life > 0 and newly_emitted < new_emissions:
@@ -273,7 +276,7 @@ class ParticleEmitter3D():
                 self.pool.return_particle(particle)
             self.done = True
 
-    def isDone(self):
+    def is_done(self):
         return self.done
 
     def draw(self):
@@ -290,38 +293,43 @@ __particlePool3D__ = ParticlePool3D(Particles.POOLED_PARTICLES3D)
 __particleEmitters__ = []
 __particleEmitters3D__ = []
 
-def add_new_emmitter(new_emmiter):
+
+def add_new_emitter(new_emitter):
     global __particleEmitters__
     if len(__particleEmitters__) < Particles.MAX_EMMITTERS:
-        __particleEmitters__.append(new_emmiter)
-        new_emmiter.init_particles()
+        __particleEmitters__.append(new_emitter)
+        new_emitter.init_particles()
     else:
         print("Too many emitters!!")
 
-def add_new_3d_emmiter(new_emmiter):
+
+def add_new_3d_emitter(new_emitter):
     global __particleEmitters3D__
     if len(__particleEmitters3D__) < Particles.MAX_EMMITTERS3D:
-        __particleEmitters3D__.append(new_emmiter)
-        new_emmiter.init_particles()
+        __particleEmitters3D__.append(new_emitter)
+        new_emitter.init_particles()
     else:
         print("Too many 3D emitters!!!")
+
 
 def update(time_delta):
     global __particleEmitters__
     global __particleEmitters3D__
     for pe in __particleEmitters__[:]:
         pe.update(time_delta)
-        if pe.isDone():
+        if pe.is_done():
             __particleEmitters__.remove(pe)
     for pe3d in __particleEmitters3D__[:]:
         pe3d.update(time_delta)
-        if pe3d.isDone():
+        if pe3d.is_done():
             __particleEmitters3D__.remove(pe3d)
+
 
 def draw():
     global __particleEmitters__
     for pe in __particleEmitters__:
         pe.draw()
+
 
 def draw_3d():
     global __particleEmitters3D__

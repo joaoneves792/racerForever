@@ -1,14 +1,10 @@
-# import pygame2
-# pygame_sdl2.import_as_pygame()
-
 import random
-
 import pygame
 from OpenGL.GL import *
+
 from ms3d import ms3d, Tex
 
 import ParticleManager
-# 11 MS3D Unit = 1 meter = 20 OpenGL units
 from AI import AI
 from MessageEmitter import HolyShit, Mayhem, Annihilation
 from Player import Player
@@ -19,6 +15,8 @@ from Truck import Truck
 from VehicleModel import VehicleModel
 from constants import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps
 from utils import car_circle_collision, drawText, draw_rectangle, box_collision
+
+# 11 MS3D Unit = 1 meter = 20 OpenGL units
 
 
 class Game:
@@ -259,7 +257,7 @@ class Game:
                     self.apply_collision_forces(player, npv, impact_vector)
                     if not player.shield:
                         if not npv.crashed:
-                            ParticleManager.add_new_emmitter(
+                            ParticleManager.add_new_emitter(
                                 Minus10Points(player.horizontal_position, player.vertical_position, -0.3, -0.2, size=100, shape=ParticleManager.Particles.POINTS))
                             player.score -= 60
                     Sounds.CRASH.stop()
@@ -267,13 +265,13 @@ class Game:
                     Sounds.BRAKE.stop()
                     Sounds.BRAKE.play()
                     if not npv.crashed:
-                        ParticleManager.add_new_3d_emmiter(
+                        ParticleManager.add_new_3d_emitter(
                             SmokeEmitter(npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
                         npv.crashed = True
                 if player.fire_phaser:
                     if npv.horizontal_position > player.horizontal_position:
                         if self.check_collision_box(player.horizontal_position, player.vertical_position, RoadPositions.COLLISION_HORIZON, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
-                            ParticleManager.add_new_3d_emmiter(
+                            ParticleManager.add_new_3d_emitter(
                                 SmokeEmitter(npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
                             self.ai.remove(npv)
         
@@ -284,10 +282,10 @@ class Game:
                 if self.check_collision_circle(self.ai[i], self.ai[j], impact_vector):
                     self.apply_collision_forces(self.ai[i], self.ai[j], impact_vector)
                     if not self.ai[i].crashed:
-                        ParticleManager.add_new_3d_emmiter(
+                        ParticleManager.add_new_3d_emitter(
                             SmokeEmitter(self.ai[i].horizontal_position, self.ai[i].vertical_position, -self.ai[i].speed, 0))
                     if not self.ai[j].crashed:
-                        ParticleManager.add_new_3d_emmiter(
+                        ParticleManager.add_new_3d_emitter(
                             SmokeEmitter(self.ai[j].horizontal_position, self.ai[j].vertical_position, -self.ai[j].speed, 0))
                         Sounds.CRASH.play()
                         Sounds.BRAKE.play()
@@ -315,16 +313,16 @@ class Game:
 
         if current_crashed_count > self.previous_crash_count:
             if current_crashed_count == 3:
-                ParticleManager.add_new_emmitter(HolyShit(ParticleManager.Particles.HOLY_SHIT))
+                ParticleManager.add_new_emitter(HolyShit(ParticleManager.Particles.HOLY_SHIT))
                 Sounds.HOLY.stop()
                 Sounds.HOLY.play()
             elif current_crashed_count == 4:
-                ParticleManager.add_new_emmitter(Mayhem(ParticleManager.Particles.MAYHEM))
+                ParticleManager.add_new_emitter(Mayhem(ParticleManager.Particles.MAYHEM))
                 Sounds.HOLY.stop()
                 Sounds.MAYHEM.stop()
                 Sounds.MAYHEM.play()
             elif current_crashed_count > 4:
-                ParticleManager.add_new_emmitter(Annihilation(ParticleManager.Particles.ANNIHILATION))
+                ParticleManager.add_new_emitter(Annihilation(ParticleManager.Particles.ANNIHILATION))
                 Sounds.HOLY.stop()
                 Sounds.MAYHEM.stop()
                 Sounds.ANNIHILATION.stop()
@@ -353,8 +351,8 @@ class Game:
         
         if not (car2 in car1.crashed_into):
             car1.crashed_into.append(car2)
-        car1.apply_collision_forces(car2, car2_speed, car2_lateral_speed, impact_vector)
-        car2.apply_collision_forces(car1, car1_speed, car1_lateral_speed, impact_vector)
+        car1.apply_collision_forces(car2_speed, car2_lateral_speed, impact_vector)
+        car2.apply_collision_forces(car1_speed, car1_lateral_speed, impact_vector)
 
     @staticmethod
     def draw_loading_screen():

@@ -9,12 +9,12 @@ from constants import RoadPositions, Sounds, Speed, SkidMarks
 from utils import car_circle_collision
 
 
-class AI(Car): #AI - Non Player Vehicle
+class AI(Car):  # AI - Non Player Vehicle
     def __init__(self, model, x, speed):
         super(AI, self).__init__(model, RoadPositions.BEYOND_HORIZON, x, speed)
         self.angular_speed = 0
-        #self.rotating = False
-        #self.rotation_side = True #True = Left False=Right
+        # self.rotating = False
+        # self.rotation_side = True #True = Left False=Right
         self.original_lane = self.vertical_position
         self.switching_to_left_lane = False
         self.switching_to_right_lane = False
@@ -24,7 +24,7 @@ class AI(Car): #AI - Non Player Vehicle
         self.capsized_angle = 0
 
     def check_overtake_need(self, cars):
-        if self.skiding or (self.switching_to_left_lane or self.switching_to_right_lane):
+        if self.skidding or (self.switching_to_left_lane or self.switching_to_right_lane):
             return
         for car in cars:
             if car == self:
@@ -48,11 +48,10 @@ class AI(Car): #AI - Non Player Vehicle
             return False
         return True
 
-
     def is_lane_free(self, cars, lane):
-        box_x = self.horizontal_position;
-        box_y = lane;
-        box_w = self.width_offset + 100 #give it some clearance
+        box_x = self.horizontal_position
+        box_y = lane
+        box_w = self.width_offset + 100  # give it some clearance
         box_h = self.height_offset
         for car in cars:
             if car == self:
@@ -62,10 +61,10 @@ class AI(Car): #AI - Non Player Vehicle
         return True
 
     def swerve(self):
-        self.change_lane([]) #passing an empty list of other cars: doesnt check if lanes are free
+        self.change_lane([])  # passing an empty list of other cars: doesnt check if lanes are free
 
     def match_speed_of(self, other_car):
-        if self.speed < 0: #ignore if we are an ambulance
+        if self.speed < 0:  # ignore if we are an ambulance
             return
         if other_car.speed > 0:
             if (other_car.horizontal_position - self.horizontal_position) < self.width+50:
@@ -76,18 +75,18 @@ class AI(Car): #AI - Non Player Vehicle
             self.speed = 0
             Sounds.BRAKE.stop()
             Sounds.BRAKE.play()
-            self.skiding = True
+            self.skidding = True
             self.skid_marks_x = self.horizontal_position - 50
 
-    def apply_collision_forces(self, other, other_speed, other_lateral_speed, impact_vector):
+    def apply_collision_forces(self, other_speed, other_lateral_speed, impact_vector):
         self.speed += (other_speed - self.speed)
         self.lateral_speed += (other_lateral_speed - self.lateral_speed)
         if impact_vector[1] > 0:
             self.angular_speed += 0.6 * Speed.ONE_DEGREE_MIL * (impact_vector[1] / (self.vehicle.radius * 2))
         else:
             self.angular_speed -= 0.6 * Speed.ONE_DEGREE_MIL * (impact_vector[1] / (self.vehicle.radius * 2))
-        self.skiding = True
-        #self.crashed = True
+        self.skidding = True
+        # self.crashed = True
 
     def draw_car(self):
         glPushMatrix()
@@ -120,12 +119,12 @@ class AI(Car): #AI - Non Player Vehicle
             else:
                 self.angular_speed = self.angular_speed + angular_speed_delta if self.angular_speed + angular_speed_delta < 0 else 0
 
-            if self.angular_speed > 0.5* Speed.ONE_DEGREE_MIL:
+            if self.angular_speed > 0.5 * Speed.ONE_DEGREE_MIL:
                 self.angular_speed = 0.5 * Speed.ONE_DEGREE_MIL
-            elif self.angular_speed < -0.5* Speed.ONE_DEGREE_MIL:
+            elif self.angular_speed < -0.5 * Speed.ONE_DEGREE_MIL:
                 self.angular_speed = -0.5 * Speed.ONE_DEGREE_MIL
 
-            if (self.rotation >= 90 or self.rotation <= -90) and self.speed >= Speed.MAX_SPEED*3/4 and self.capsized == False:
+            if (self.rotation >= 90 or self.rotation <= -90) and self.speed >= Speed.MAX_SPEED*3/4 and not self.capsized:
                 self.capsized = True
                 Sounds.ROLLOVER.play()
 
@@ -138,21 +137,19 @@ class AI(Car): #AI - Non Player Vehicle
                     self.capsized_angle += 0.8 * Speed.ONE_DEGREE_MIL * time_delta
 
                 if self.speed == 0:
-                    if(self.capsized_angle%360 < 45 and self.capsized_angle%360 > -45):
-                        self.capsized_angle =  0
-                    elif(self.capsized_angle%360 < 125 and self.capsized_angle > 0):
+                    if 45 > self.capsized_angle % 360 > -45:
+                        self.capsized_angle = 0
+                    elif self.capsized_angle % 360 < 125 and self.capsized_angle > 0:
                         self.capsized_angle = 90
-                    elif(self.capsized_angle%360 > -125 and self.capsized_angle < 0):
+                    elif self.capsized_angle % 360 > -125 and self.capsized_angle < 0:
                         self.capsized_angle = -90
                     else:
                         self.capsized_angle = 180
 
-
-
-        if(self.speed > 0):
+        if self.speed > 0:
             self.rotation += time_delta*self.angular_speed
 
-        lateral_speed = Speed.PLAYER_LATERAL_SPEED#*(float(self.speed)/float(Speed.MAX_SPEED))
+        lateral_speed = Speed.PLAYER_LATERAL_SPEED  # *(float(self.speed)/float(Speed.MAX_SPEED))
         if self.switching_to_left_lane:
             if self.original_lane == RoadPositions.RIGHT_LANE:
                 if self.vertical_position >= RoadPositions.MIDDLE_LANE:
@@ -179,11 +176,10 @@ class AI(Car): #AI - Non Player Vehicle
                     self.vertical_position = RoadPositions.RIGHT_LANE
                 else:
                     self.lateral_speed = -lateral_speed
-        elif (not self.crashed):
+        elif not self.crashed:
             self.lateral_speed = 0
 
-
-        #if self.crashed:
+        # if self.crashed:
         #    rotation_lateral_speed_increase_delta = math.sin(self.rotation)*0.01*Speed.ONE_KMH*time_delta
         #
         #    if self.rotation > 0 and self.lateral_speed - (self.rotation_lateral_speed_increase + rotation_lateral_speed_increase_delta) > -1*Speed.ONE_KMH:
@@ -194,17 +190,17 @@ class AI(Car): #AI - Non Player Vehicle
         #        self.lateral_speed += self.rotation_lateral_speed_increase
 
         horizontal_position_delta = time_delta*(self.speed-player_speed)
-        vertical_position_delta = time_delta*(self.lateral_speed)
+        vertical_position_delta = time_delta*self.lateral_speed
 
-        #Corrections so as to not get stuck!
+        # Corrections so as to not get stuck!
         for car in self.crashed_into:
-            impactvector = []
-            if car_circle_collision(self, car, impactvector, horizontal_position_delta, vertical_position_delta):
-                if impactvector[2] > 0:
-                    horizontal_position_delta -= (impactvector[0]*impactvector[2])
-                    vertical_position_delta -= (impactvector[1]*impactvector[2])
-                    car.horizontal_position += impactvector[0]*impactvector[2]
-                    car.vertical_position += impactvector[1]*impactvector[2]
+            impact_vector = []
+            if car_circle_collision(self, car, impact_vector, horizontal_position_delta, vertical_position_delta):
+                if impact_vector[2] > 0:
+                    horizontal_position_delta -= (impact_vector[0]*impact_vector[2])
+                    vertical_position_delta -= (impact_vector[1]*impact_vector[2])
+                    car.horizontal_position += impact_vector[0]*impact_vector[2]
+                    car.vertical_position += impact_vector[1]*impact_vector[2]
 
         self.vertical_position += vertical_position_delta
         self.horizontal_position += horizontal_position_delta
@@ -214,16 +210,16 @@ class AI(Car): #AI - Non Player Vehicle
         if self.vertical_position < RoadPositions.LOWER_LIMIT:
             self.vertical_position = RoadPositions.LOWER_LIMIT
 
-        if self.skiding:
-            if self.skid_mark == None and self.lateral_speed > 0:
+        if self.skidding:
+            if self.skid_mark is None and self.lateral_speed > 0:
                 self.skid_mark = SkidMarks.SKID_LEFT
-            elif self.skid_mark == None and self.lateral_speed < 0:
+            elif self.skid_mark is None and self.lateral_speed < 0:
                 self.skid_mark = SkidMarks.SKID_RIGHT
-            elif self.skid_mark == None and self.lateral_speed == 0:
+            elif self.skid_mark is None and self.lateral_speed == 0:
                 self.skid_mark = SkidMarks.SKID_STRAIGHT
             if self.skid_marks_y == 0:
                 self.skid_marks_y = self.vertical_position
             if self.skid_marks_x == 0:
                 self.skid_marks_x = self.horizontal_position
             else:
-                self.skid_marks_x -= time_delta*(Speed.MAX_SPEED)
+                self.skid_marks_x -= time_delta * Speed.MAX_SPEED

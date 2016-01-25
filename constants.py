@@ -2,14 +2,15 @@ import pygame
 
 
 class Window:
-    #WIDTH = 1920
-    #HEIGHT = 1080
-    #FULLSCREEN = True
+    # WIDTH = 1920
+    # HEIGHT = 1080
+    # FULLSCREEN = True
     WIDTH = 1024
     HEIGHT = 512
     FULLSCREEN = False
 
     VERSION = "v0.1"
+
 
 class HUD:
     PLAYER2_DELTA_X = 400
@@ -28,7 +29,7 @@ class HUD:
 
 class KeyboardKeys:
     KEY_ESC = pygame.K_ESCAPE
-    KEY_LEFT  = (pygame.K_a, pygame.K_LEFT)
+    KEY_LEFT = (pygame.K_a, pygame.K_LEFT)
     KEY_RIGHT = (pygame.K_d, pygame.K_RIGHT)
     KEY_UP = (pygame.K_w, pygame.K_UP)
     KEY_DOWN = (pygame.K_s, pygame.K_DOWN)
@@ -102,7 +103,7 @@ class Sounds:
 
 
 class PowerUps:
-    TIME_OUT = 10000 #in miliseconds
+    TIME_OUT = 10000  # in miliseconds
     INVENTORY_SIZE = 5
     SIZE = 50
     EMPTY = None

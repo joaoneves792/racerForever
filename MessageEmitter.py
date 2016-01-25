@@ -5,6 +5,7 @@ from constants import RoadPositions
 class MessageEmitter(ParticleManager.ParticleEmitter):
     def __init__(self, x, y, shape):
         super(MessageEmitter, self).__init__(x, y, 0, 0, 100, shape, 1, 1)
+
     def set_particles(self):
         for particle in self.particles:
             particle.set_properties(self.x, self.y, 1500, 0, self.speed_x, self.speed_y,  self.size, self.shape, True)
