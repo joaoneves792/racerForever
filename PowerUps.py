@@ -50,7 +50,7 @@ class Call911(PowerUp):
         self.icon = PowerUps.CALL_911
 
     def applyPowerUp(self):
-        self.game.generateEmergencyVehicle(self.player.vertical_position)
+        self.game.generate_emergency_vehicle(self.player.vertical_position)
 
 
 class Hydraulics(PowerUp):

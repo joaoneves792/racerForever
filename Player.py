@@ -44,8 +44,7 @@ class Player(Car):
         self.phaser_alpha = 0
         self.phaser_gaining_intensity = True
 
-
-    def applyCollisionForces(self, other, other_speed, other_lateral_speed, impact_vector):
+    def apply_collision_forces(self, other, other_speed, other_lateral_speed, impact_vector):
         self.speed += (other_speed - self.speed)
         self.lateral_speed += (other_lateral_speed - self.lateral_speed)
         self.skiding = True

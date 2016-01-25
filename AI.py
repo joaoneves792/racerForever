@@ -79,7 +79,7 @@ class AI(Car): #AI - Non Player Vehicle
             self.skiding = True
             self.skid_marks_x = self.horizontal_position - 50
 
-    def applyCollisionForces(self, other, other_speed, other_lateral_speed, impact_vector):
+    def apply_collision_forces(self, other, other_speed, other_lateral_speed, impact_vector):
         self.speed += (other_speed - self.speed)
         self.lateral_speed += (other_lateral_speed - self.lateral_speed)
         if impact_vector[1] > 0:
