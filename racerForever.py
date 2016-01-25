@@ -927,9 +927,9 @@ class Phaser(PowerUp):
 
 class Road():
     def __init__(self, z=0):
-        self.road = ms3d.ms3d("./road6.ms3d")
-        self.road_lod = ms3d.ms3d("./road_lod.ms3d")
-        self.sky = ms3d.ms3d("./sky.ms3d")
+        self.road = ms3d.ms3d("./Road/road6.ms3d")
+        self.road_lod = ms3d.ms3d("./Road/road_lod.ms3d")
+        self.sky = ms3d.ms3d("./Road/sky.ms3d")
         self.length = 600 #calculated by measuring it in milkshape (see comment at beginning of file!)
         self.num_of_tiles = 24 #Needs to be a pair number!!
         self.maximum_rear_pos = ((-(self.num_of_tiles//2))-1)*self.length
@@ -1235,7 +1235,7 @@ class Game():
             for i in range(vehicle.wheel_count):
                 vehicle.wheel_positions.append(model.getJointPosition("hub"+str(i)))
     
-        def load_vehicle(car_model, wheel_model, num_wheels, lod="./RS4/RS4_LOD.ms3d"):
+        def load_vehicle(car_model, wheel_model, num_wheels, lod="./Cars/RS4/RS4_LOD.ms3d"):
             ms3d_car = ms3d.ms3d(car_model)
             ms3d_lod = ms3d.ms3d(lod)
             ms3d_wheel = ms3d.ms3d(wheel_model)
@@ -1243,59 +1243,59 @@ class Game():
             fill_wheel_positions(vehicle, ms3d_car)
             return vehicle
 
-        Sounds.ACCEL = pygame.mixer.Sound("./accelarating2.wav")
-        Sounds.BRAKE = pygame.mixer.Sound("./tiresqueal.wav")
-        Sounds.CRASH = pygame.mixer.Sound("./crash.wav")
-        Sounds.ROLLOVER = pygame.mixer.Sound("./rollover.wav")
-        Sounds.SIREN = pygame.mixer.Sound("./siren.wav")
-        Sounds.HORN = pygame.mixer.Sound("./horn.wav")
+        Sounds.ACCEL = pygame.mixer.Sound("./Sound/accelarating2.wav")
+        Sounds.BRAKE = pygame.mixer.Sound("./Sound/tiresqueal.wav")
+        Sounds.CRASH = pygame.mixer.Sound("./Sound/crash.wav")
+        Sounds.ROLLOVER = pygame.mixer.Sound("./Sound/rollover.wav")
+        Sounds.SIREN = pygame.mixer.Sound("./Sound/siren.wav")
+        Sounds.HORN = pygame.mixer.Sound("./Sound/horn.wav")
 
-        Sounds.HOLY = pygame.mixer.Sound("./holy.wav")
-        Sounds.MAYHEM = pygame.mixer.Sound("./mayhem.wav")
-        Sounds.ANNIHILATION = pygame.mixer.Sound("./total2.wav")
+        Sounds.HOLY = pygame.mixer.Sound("./Sound/holy.wav")
+        Sounds.MAYHEM = pygame.mixer.Sound("./Sound/mayhem.wav")
+        Sounds.ANNIHILATION = pygame.mixer.Sound("./Sound/total2.wav")
 
-        SkidMarks.SKID_LEFT = ms3d.ms3d("./skid_left.ms3d")
-        SkidMarks.SKID_RIGHT = ms3d.ms3d("./skid_right.ms3d")
-        SkidMarks.SKID_STRAIGHT = ms3d.ms3d("./skid_straight.ms3d")
+        SkidMarks.SKID_LEFT = ms3d.ms3d("./Road/skid_left.ms3d")
+        SkidMarks.SKID_RIGHT = ms3d.ms3d("./Road/skid_right.ms3d")
+        SkidMarks.SKID_STRAIGHT = ms3d.ms3d("./Road/skid_straight.ms3d")
 
-        self.pointsHUD = ms3d.ms3d("./pointsHUD.ms3d")
-        self.powerupsHUD = ms3d.ms3d("./powerupsHUD.ms3d")
+        self.pointsHUD = ms3d.ms3d("./HUD/pointsHUD.ms3d")
+        self.powerupsHUD = ms3d.ms3d("./HUD/powerupsHUD.ms3d")
 
-        ParticleManager.Particles.POINTS = ms3d.ms3d("./pointsParticle.ms3d")
-        ParticleManager.Particles.PLUS_100_POINTS = ms3d.ms3d("./plus100Particle.ms3d")
-        ParticleManager.Particles.MINUS_100_POINTS = ms3d.ms3d("./minus100Particle.ms3d")
-        ParticleManager.Particles.HOLY_SHIT = ms3d.ms3d("./holy.ms3d")
-        ParticleManager.Particles.MAYHEM = ms3d.ms3d("./mayhem.ms3d")
-        ParticleManager.Particles.ANNIHILATION = ms3d.ms3d("./annihilation.ms3d")
+        ParticleManager.Particles.POINTS = ms3d.ms3d("./HUD/pointsParticle.ms3d")
+        ParticleManager.Particles.PLUS_100_POINTS = ms3d.ms3d("./HUD/plus100Particle.ms3d")
+        ParticleManager.Particles.MINUS_100_POINTS = ms3d.ms3d("./HUD/minus100Particle.ms3d")
+        ParticleManager.Particles.HOLY_SHIT = ms3d.ms3d("./HUD/holy.ms3d")
+        ParticleManager.Particles.MAYHEM = ms3d.ms3d("./HUD/mayhem.ms3d")
+        ParticleManager.Particles.ANNIHILATION = ms3d.ms3d("./HUD/annihilation.ms3d")
 
         ParticleManager.Particles.SMOKE = ms3d.Tex("./smoke_particle.png").getTexture()
 
 
-        PowerUps.CRATE = ms3d.ms3d("./crate/crate.ms3d")
-        PowerUps.ENERGY_SHIELD = ms3d.ms3d("./energy_shield.ms3d")
-        PowerUps.PHASER_FIRE = ms3d.Tex("./phaser_fire.png").getTexture()
-        PowerUps.EMPTY = ms3d.Tex("./empty.png").getTexture()
-        PowerUps.CALL_911 = ms3d.Tex("./911.png").getTexture()
-        PowerUps.HYDRAULICS = ms3d.Tex("./Hydraulics.png").getTexture()
-        PowerUps.PHASER = ms3d.Tex("./phaser.png").getTexture()
-        PowerUps.SHIELD = ms3d.Tex("./shield.png").getTexture()
-        PowerUps.SHRINK = ms3d.Tex("./shrink.png").getTexture()
+        PowerUps.CRATE = ms3d.ms3d("./Powerups/crate/crate.ms3d")
+        PowerUps.ENERGY_SHIELD = ms3d.ms3d("./Powerups/energy_shield.ms3d")
+        PowerUps.PHASER_FIRE = ms3d.Tex("./Powerups/phaser_fire.png").getTexture()
+        PowerUps.EMPTY = ms3d.Tex("./Powerups/empty.png").getTexture()
+        PowerUps.CALL_911 = ms3d.Tex("./Powerups/911.png").getTexture()
+        PowerUps.HYDRAULICS = ms3d.Tex("./Powerups/Hydraulics.png").getTexture()
+        PowerUps.PHASER = ms3d.Tex("./Powerups/phaser.png").getTexture()
+        PowerUps.SHIELD = ms3d.Tex("./Powerups/shield.png").getTexture()
+        PowerUps.SHRINK = ms3d.Tex("./Powerups/shrink.png").getTexture()
 
 
-        self.available_player_vehicles.append(load_vehicle("./Gallardo/gallardo_play_optimized.ms3d", "./Gallardo/gallardoWheel.ms3d", 4))
+        self.available_player_vehicles.append(load_vehicle("./Cars/Gallardo/gallardo_play_optimized.ms3d", "./Cars/Gallardo/gallardoWheel.ms3d", 4))
 
-        self.emergency_vehicles.append(load_vehicle("./Cop1/copplay_optimized.ms3d", "./Cop1/copwheels.ms3d", 4, "./Cop1/coplod.ms3d"))
-        self.emergency_vehicles.append(load_vehicle("./Ambulance/ambulance_optimized.ms3d", "./Ambulance/ambulance_wheel.ms3d", 4, "./Ambulance/ambulance_lod.ms3d"))
+        self.emergency_vehicles.append(load_vehicle("./Cars/Cop1/copplay_optimized.ms3d", "./Cars/Cop1/copwheels.ms3d", 4, "./Cars/Cop1/coplod.ms3d"))
+        self.emergency_vehicles.append(load_vehicle("./Cars/Ambulance/ambulance_optimized.ms3d", "./Cars/Ambulance/ambulance_wheel.ms3d", 4, "./Cars/Ambulance/ambulance_lod.ms3d"))
 
-        self.available_trucks.append(load_vehicle("./Rumpo/rumpo_optimized.ms3d", "./Rumpo/rumpo_wheel.ms3d", 4,  "./Rumpo/rumpo_LOD.ms3d"))
+        self.available_trucks.append(load_vehicle("./Cars/Rumpo/rumpo_optimized.ms3d", "./Cars/Rumpo/rumpo_wheel.ms3d", 4,  "./Cars/Rumpo/rumpo_LOD.ms3d"))
 
-        self.available_vehicles.append(load_vehicle("./RS4/RS4_optimized.ms3d", "./RS4/RS4Wheel.ms3d", 4, "./RS4/RS4_LOD.ms3d"))
-        self.available_vehicles.append(load_vehicle("./charger/charger_play_optimized.ms3d", "./charger/ChargerWheel.ms3d", 4, "./charger/charger_lod.ms3d"))
-        self.available_vehicles.append(load_vehicle("./Murci/MurcielagoPlay_optimized.ms3d", "./Gallardo/gallardoWheel.ms3d", 4, "./Murci/Murcielago_LOD.ms3d"))
-        self.available_vehicles.append(load_vehicle("./M3E92/M3play_optimized.ms3d", "./M3E92/M3E92Wheel.ms3d", 4, "M3E92/M3Lod.ms3d"))
-        self.available_vehicles.append(load_vehicle("./NSX/NSXplay_optimized.ms3d", "./NSX/NSXWheel.ms3d" , 4, "./NSX/NSXlod.ms3d"))
-        self.available_vehicles.append(load_vehicle("./Skyline/skylineplay_optimized.ms3d", "./Skyline/skyline_wheel.ms3d" , 4, "./Skyline/skylinelod.ms3d"))
-        self.available_vehicles.append(load_vehicle("./LP570_S/LP570play_optimized.ms3d", "./LP570_S/LP570wheel.ms3d" , 4, "./LP570_S/LP570lod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/RS4/RS4_optimized.ms3d", "./Cars/RS4/RS4Wheel.ms3d", 4, "./Cars/RS4/RS4_LOD.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/charger/charger_play_optimized.ms3d", "./Cars/charger/ChargerWheel.ms3d", 4, "./Cars/charger/charger_lod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/Murci/MurcielagoPlay_optimized.ms3d", "./Cars/Gallardo/gallardoWheel.ms3d", 4, "./Cars/Murci/Murcielago_LOD.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/M3E92/M3play_optimized.ms3d", "./Cars/M3E92/M3E92Wheel.ms3d", 4, "Cars/M3E92/M3Lod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/NSX/NSXplay_optimized.ms3d", "./Cars/NSX/NSXWheel.ms3d" , 4, "./Cars/NSX/NSXlod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/Skyline/skylineplay_optimized.ms3d", "./Cars/Skyline/skyline_wheel.ms3d" , 4, "./Cars/Skyline/skylinelod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/LP570_S/LP570play_optimized.ms3d", "./Cars/LP570_S/LP570wheel.ms3d" , 4, "./Cars/LP570_S/LP570lod.ms3d"))
         
     def generateEmergencyVehicle(self, vertical_position):
         Sounds.SIREN.play()    
@@ -1471,7 +1471,7 @@ class Game():
         car2.applyCollisionForces(car1, car1_speed, car1_lateral_speed, impact_vector)
 
     def draw_loading_screen(self):
-        picture = ms3d.Tex("./loading.png").getTexture()
+        picture = ms3d.Tex("./HUD/loading.png").getTexture()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glMatrixMode(GL_PROJECTION)
         glPushMatrix()
@@ -1637,7 +1637,7 @@ class Game():
         glEnable(GL_BLEND)
     
     def draw_paused_menu(self):
-        picture = ms3d.Tex("./paused.png").getTexture()
+        picture = ms3d.Tex("./HUD/paused.png").getTexture()
         glMatrixMode(GL_PROJECTION)
         glPushMatrix()
         glLoadIdentity()
