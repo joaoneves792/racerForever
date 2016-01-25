@@ -90,6 +90,27 @@ except AttributeError:
     _newclass = 0
 
 
+class shader(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, shader, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, shader, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, vertShader, fragShader):
+        this = _ms3d.new_shader(vertShader, fragShader)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _ms3d.delete_shader
+    __del__ = lambda self: None
+
+    def getShader(self):
+        return _ms3d.shader_getShader(self)
+shader_swigregister = _ms3d.shader_swigregister
+shader_swigregister(shader)
+
 class ms3d(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, ms3d, name, value)
@@ -108,6 +129,12 @@ class ms3d(_object):
 
     def draw(self):
         return _ms3d.ms3d_draw(self)
+
+    def drawGL3(self):
+        return _ms3d.ms3d_drawGL3(self)
+
+    def prepare(self, shader):
+        return _ms3d.ms3d_prepare(self, shader)
 
     def getJointPosition(self, jointName):
         return _ms3d.ms3d_getJointPosition(self, jointName)
@@ -138,6 +165,98 @@ class Tex(_object):
 Tex_swigregister = _ms3d.Tex_swigregister
 Tex_swigregister(Tex)
 
+class GLM(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, GLM, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, GLM, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, shader):
+        this = _ms3d.new_GLM(shader)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _ms3d.delete_GLM
+    __del__ = lambda self: None
+
+    def selectMatrix(self, Matrix):
+        return _ms3d.GLM_selectMatrix(self, Matrix)
+
+    def perspective(self, fov_degrees, aspect_ratio, near, far):
+        return _ms3d.GLM_perspective(self, fov_degrees, aspect_ratio, near, far)
+
+    def loadIdentity(self):
+        return _ms3d.GLM_loadIdentity(self)
+
+    def translate(self, x, y, z):
+        return _ms3d.GLM_translate(self, x, y, z)
+
+    def rotate(self, angle, x, y, z):
+        return _ms3d.GLM_rotate(self, angle, x, y, z)
+
+    def pushMatrix(self):
+        return _ms3d.GLM_pushMatrix(self)
+
+    def popMatrix(self):
+        return _ms3d.GLM_popMatrix(self)
+GLM_swigregister = _ms3d.GLM_swigregister
+GLM_swigregister(GLM)
+
+
+_ms3d.MAX_LIGHTS_swigconstant(_ms3d)
+MAX_LIGHTS = _ms3d.MAX_LIGHTS
+class Lights(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Lights, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Lights, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, shader):
+        this = _ms3d.new_Lights(shader)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _ms3d.delete_Lights
+    __del__ = lambda self: None
+
+    def enable(self, light):
+        return _ms3d.Lights_enable(self, light)
+
+    def disable(self, light):
+        return _ms3d.Lights_disable(self, light)
+
+    def setColor(self, light, red, green, blue, intensity):
+        return _ms3d.Lights_setColor(self, light, red, green, blue, intensity)
+
+    def setPosition(self, light, x, y, z):
+        return _ms3d.Lights_setPosition(self, light, x, y, z)
+
+    def setCone(self, light, direction_x, direction_y, direction_z, angle):
+        return _ms3d.Lights_setCone(self, light, direction_x, direction_y, direction_z, angle)
+Lights_swigregister = _ms3d.Lights_swigregister
+Lights_swigregister(Lights)
+
 # This file is compatible with both classic and new-style classes.
 
 
+
+class MATRIX:
+    MODEL = 1
+    VIEW = 2
+    PROJECTION = 3
+
+class LIGHTS:
+    LIGHT_0 = 0
+    LIGHT_1 = 1
+    LIGHT_2 = 2
+    LIGHT_3 = 3
+    LIGHT_4 = 4
+    LIGHT_5 = 5
+    LIGHT_6 = 6
+    LIGHT_7 = 7
+    LIGHT_8 = 8
+    LIGHT_9 = 9

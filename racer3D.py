@@ -16,12 +16,12 @@ import math
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
 
 class Window:
-    WIDTH = 1920
-    HEIGHT = 1080
-    FULLSCREEN = True
-    #WIDTH = 1024
-    #HEIGHT = 512
-    #FULLSCREEN = False
+    #WIDTH = 1920
+    #HEIGHT = 1080
+    #FULLSCREEN = True
+    WIDTH = 1024
+    HEIGHT = 512
+    FULLSCREEN = False
 
     VERSION = "v0.1"
 
