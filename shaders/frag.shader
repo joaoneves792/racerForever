@@ -69,7 +69,7 @@ void main() {
 					decay = (distance_to_light*distance_to_light);
 
 				light_color_sum += matDiffuse * lightColor[i].xyz * abs(lightColor[i].w) * cosTheta / decay +
-					matSpecular * (shininess/4.0) * lightColor[i].xyz * abs(lightColor[i].w) * pow(cosAlpha, 5) / decay;
+					matSpecular * (shininess/16.0) * lightColor[i].xyz * abs(lightColor[i].w) * pow(cosAlpha, 5) / decay;
 			}
 		}
 		

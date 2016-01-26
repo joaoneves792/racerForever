@@ -100,7 +100,7 @@ class AI(Car):  # AI - Non Player Vehicle
         GL.GLM.popMatrix()
 
     def update_car(self, time_delta):
-        player_speed = Speed.MAX_SPEED
+        player_speed = Speed.PLAYER_SPEED
 
         if self.crashed:
             self.speed = self.speed - (0.05 * Speed.ONE_KMH * time_delta) if self.speed > 0 else 0
@@ -121,7 +121,7 @@ class AI(Car):  # AI - Non Player Vehicle
             elif self.angular_speed < -0.5 * Speed.ONE_DEGREE_MIL:
                 self.angular_speed = -0.5 * Speed.ONE_DEGREE_MIL
 
-            if (self.rotation >= 90 or self.rotation <= -90) and self.speed >= Speed.MAX_SPEED*3/4 and not self.capsized:
+            if (self.rotation >= 90 or self.rotation <= -90) and self.speed >= Speed.NORMAL_SPEED*3/4 and not self.capsized:
                 self.capsized = True
                 Sounds.ROLLOVER.play()
 
@@ -219,4 +219,4 @@ class AI(Car):  # AI - Non Player Vehicle
             if self.skid_marks_x == 0:
                 self.skid_marks_x = self.horizontal_position
             else:
-                self.skid_marks_x -= time_delta * Speed.MAX_SPEED
+                self.skid_marks_x -= time_delta * Speed.PLAYER_SPEED

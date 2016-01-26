@@ -4,7 +4,7 @@ from Car import Car
 from constants import HUD, Speed, RoadPositions, PowerUps, Window
 from PointsEmitter import Plus100Points, Minus100Points
 from utils import car_circle_collision, draw_3d_rectangle
-from ms3d import MATRIX
+from ms3d import MATRIX, LIGHTS
 
 
 class Player(Car):
@@ -47,12 +47,12 @@ class Player(Car):
 
     def update_car(self, time_delta):
         for i in range(self.score_hundreds - int(self.score / 100)):
-            ParticleManager.add_new_emitter(Minus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.MAX_SPEED - 10 * Speed.ONE_KMH))
+            ParticleManager.add_new_emitter(Minus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.PLAYER_SPEED - 10 * Speed.ONE_KMH))
         self.score += 0.01 * time_delta
         old_score_hundreds = self.score_hundreds
         self.score_hundreds = int(self.score / 100)
         for i in range(self.score_hundreds-old_score_hundreds):
-            ParticleManager.add_new_emitter(Plus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.MAX_SPEED - 10 * Speed.ONE_KMH))
+            ParticleManager.add_new_emitter(Plus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.PLAYER_SPEED - 10 * Speed.ONE_KMH))
 
         # Adjust postition to user input
         if self.apply_left:
@@ -75,35 +75,39 @@ class Player(Car):
             self.right = False
 
         if self.apply_throttle:
-            self.speed += Speed.PLAYER_ACCELERATE_SPEED
+            Speed.PLAYER_SPEED += Speed.PLAYER_ACCELERATE_SPEED
+            # self.speed += Speed.PLAYER_ACCELERATE_SPEED
             self.apply_throttle = False
             self.throttling = True
 
         if self.apply_brakes:
-            self.speed -= Speed.PLAYER_BRAKE_SPEED
+            Speed.PLAYER_SPEED -= Speed.PLAYER_BRAKE_SPEED
+            # self.speed -= Speed.PLAYER_BRAKE_SPEED
             self.apply_brakes = False
             self.braking = True
 
         if self.release_throttle:
-            self.speed -= Speed.PLAYER_ACCELERATE_SPEED
+            Speed.PLAYER_SPEED -= Speed.PLAYER_ACCELERATE_SPEED
+            # self.speed -= Speed.PLAYER_ACCELERATE_SPEED
             self.release_throttle = False
             self.throttling = False
 
         if self.release_brakes:
-            self.speed += Speed.PLAYER_BRAKE_SPEED
+            Speed.PLAYER_SPEED += Speed.PLAYER_BRAKE_SPEED
+            # self.speed += Speed.PLAYER_BRAKE_SPEED
             self.release_brakes = False
             self.braking = False
 
-        if self.speed < Speed.MAX_SPEED and not self.braking:
+        if self.speed < Speed.PLAYER_SPEED and not self.braking:
             if self.throttling:
                 speed_increase = Speed.ONE_KMH * time_delta
                 self.speed = (self.speed + speed_increase) if (self.speed + speed_increase) < (
-                    Speed.MAX_SPEED + Speed.PLAYER_ACCELERATE_SPEED) else Speed.PLAYER_ACCELERATE_SPEED
+                    Speed.PLAYER_SPEED + Speed.PLAYER_ACCELERATE_SPEED) else Speed.PLAYER_ACCELERATE_SPEED
             else:
                 speed_increase = Speed.ONE_KMH * 0.03 * time_delta
-                self.speed = (self.speed + speed_increase) if (self.speed + speed_increase) < Speed.MAX_SPEED else Speed.MAX_SPEED
+                self.speed = (self.speed + speed_increase) if (self.speed + speed_increase) < Speed.PLAYER_SPEED else Speed.PLAYER_SPEED
 
-        horizontal_position_delta = time_delta*(self.speed - Speed.MAX_SPEED)
+        horizontal_position_delta = time_delta*(self.speed - Speed.PLAYER_SPEED)
         vertical_position_delta = time_delta*self.lateral_speed
 
         # Corrections so as to not get stuck!
@@ -115,7 +119,7 @@ class Player(Car):
                     car.horizontal_position += impact_vector[0]*impact_vector[2]
                     car.vertical_position += impact_vector[1]*impact_vector[2]
 
-        self.horizontal_position += horizontal_position_delta
+        # self.horizontal_position += horizontal_position_delta
         self.vertical_position += vertical_position_delta
 
         if self.horizontal_position > RoadPositions.FORWARD_LIMIT:
@@ -127,7 +131,7 @@ class Player(Car):
         if self.vertical_position < RoadPositions.LOWER_LIMIT+self.height_offset:
             self.vertical_position = RoadPositions.LOWER_LIMIT + self.height_offset
 
-        # glLightfv(GL_LIGHT6, GL_POSITION, (self.vertical_position, 15, self.horizontal_position+100, 1))
+        GL.Lights.setPosition(LIGHTS.LIGHT_9, self.vertical_position, 15, self.horizontal_position)
 
         if self.fire_phaser:
             if self.phaser_gaining_intensity:

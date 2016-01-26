@@ -31,7 +31,7 @@ class PowerUp:
         player.addPowerUp(self)
 
     def update(self, time_delta):
-        self.x += time_delta*(-Speed.MAX_SPEED)
+        self.x += time_delta*(-Speed.PLAYER_SPEED)
         if self.x < RoadPositions.BEHIND_REAR_HORIZON:
             self.game.dropped_items.remove(self)
 

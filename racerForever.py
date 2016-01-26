@@ -62,7 +62,7 @@ class Game:
         Sounds.ACCEL.play(-1)
 
         # self.players.append(Player(self.available_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
-        self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
+        self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.PLAYER_SPEED, 0))
         
         # self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.RIGHT_LANE, Speed.MAX_SPEED, 1))
 
@@ -105,15 +105,11 @@ class Game:
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        GL.GLM.perspective(25, Window.WIDTH/Window.HEIGHT, 0.1, 12000)
+        GL.GLM.perspective(25, Window.WIDTH/Window.HEIGHT, 1, 15000)
         GL.GLM.selectMatrix(MATRIX.MODEL)
         GL.GLM.loadIdentity()
 
         GL.Lights.enableLighting()
-        GL.Lights.setPosition(LIGHTS.LIGHT_0, RoadPositions.MIDDLE_LANE, 1500, 0)
-        GL.Lights.setColor(LIGHTS.LIGHT_0, 255, 255, 204, -0.005)
-        GL.Lights.setCone(LIGHTS.LIGHT_0, 0, -1, 0, -180)
-        GL.Lights.enable(LIGHTS.LIGHT_0)
 
     def load_resources(self):
         def fill_wheel_positions(vehicle, model):
@@ -211,7 +207,7 @@ class Game:
             lane = RoadPositions.RIGHT_LANE
 
         # Select a Speed
-        speed = Speed.MAX_SPEED - Speed.ONE_KMH * (random.randrange(20) + 5)  # -5 because we need the ai to always be slower than the player
+        speed = Speed.NORMAL_SPEED - Speed.ONE_KMH * (random.randrange(20) + 5)  # -5 because we need the ai to always be slower than the player
 
         # Select a car
         random_num = random.randrange(100)
