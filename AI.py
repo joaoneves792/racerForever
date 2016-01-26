@@ -1,9 +1,7 @@
 import math
 import random
 
-from OpenGL.GL import glTranslate
-from OpenGL.raw.GL.VERSION.GL_1_0 import glPushMatrix, glRotatef, glPopMatrix
-
+from OpenGLContext import GL
 from Car import Car
 from constants import RoadPositions, Sounds, Speed, SkidMarks
 from utils import car_circle_collision
@@ -89,18 +87,17 @@ class AI(Car):  # AI - Non Player Vehicle
         # self.crashed = True
 
     def draw_car(self):
-        glPushMatrix()
+        GL.GLM.pushMatrix()
         if self.capsized:
-            glTranslate(0, 20 * abs(math.sin(0.5 * self.capsized_angle * Speed.DEGREES_TO_RADIANS)), 0)
-            glRotatef(self.capsized_angle, 1, 0, 0)
-        glRotatef(self.rotation, 0, 1, 0)
+            GL.GLM.translate(0, 20 * abs(math.sin(0.5 * self.capsized_angle * Speed.DEGREES_TO_RADIANS)), 0)
+            GL.GLM.rotate(self.capsized_angle, 1, 0, 0)
+        GL.GLM.rotate(self.rotation, 0, 1, 0)
         if abs(self.horizontal_position) > RoadPositions.LOD_DISTANCE:
             self.vehicle.lod.drawGL3()
         else:
             self.vehicle.model.drawGL3()
         self.draw_wheels()
-
-        glPopMatrix()
+        GL.GLM.popMatrix()
 
     def update_car(self, time_delta):
         player_speed = Speed.MAX_SPEED

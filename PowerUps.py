@@ -1,6 +1,4 @@
-from OpenGL.GL import glTranslate
-from OpenGL.raw.GL.VERSION.GL_1_0 import glPushMatrix, glPopMatrix
-
+from OpenGLContext import GL
 from constants import PowerUps, Speed, RoadPositions
 
 
@@ -38,11 +36,10 @@ class PowerUp:
             self.game.dropped_items.remove(self)
 
     def draw(self):
-        glPushMatrix()
-        glTranslate(self.y, 0, self.x)
-        PowerUps.CRATE.draw()
-        glPopMatrix()
-
+        GL.GLM.pushMatrix()
+        GL.GLM.translate(self.y, 0, self.x)
+        PowerUps.CRATE.drawGL3()
+        GL.GLM.popMatrix()
 
 class Call911(PowerUp):
     def __init__(self, game, player=None):

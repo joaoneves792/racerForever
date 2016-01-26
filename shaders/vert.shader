@@ -35,5 +35,5 @@ void main() {
 	}
 
 	normal_cameraspace = (View * Model * vec4(normal, 0)).xyz; // Only correct if ModelMatrix does not scale the model ! Use its inverse transpose if not.
-
+	//normal_cameraspace = (mat3x3(View * Model) * normal).xyz; //Possible fix for uniform scaling
 }

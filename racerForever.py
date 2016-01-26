@@ -104,16 +104,17 @@ class Game:
         glClearDepth(1)
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        
-        GL.GLM.perspective(25, Window.WIDTH/Window.HEIGHT, 0.1, 10000)
+
+        GL.GLM.perspective(25, Window.WIDTH/Window.HEIGHT, 0.1, 12000)
         GL.GLM.selectMatrix(MATRIX.VIEW)
         GL.GLM.rotate(180, 0, 1, 0)
         GL.GLM.translate(-RoadPositions.MIDDLE_LANE, -50, 0)
         GL.GLM.selectMatrix(MATRIX.MODEL)
         GL.GLM.loadIdentity()
-       
-        GL.Lights.setPosition(LIGHTS.LIGHT_0, RoadPositions.MIDDLE_LANE, 500, 0)
-        GL.Lights.setColor(LIGHTS.LIGHT_0, 255, 255, 204, 9000)
+
+        GL.Lights.enableLighting()
+        GL.Lights.setPosition(LIGHTS.LIGHT_0, RoadPositions.MIDDLE_LANE, 1500, 0)
+        GL.Lights.setColor(LIGHTS.LIGHT_0, 255, 255, 204, -0.005)
         GL.Lights.setCone(LIGHTS.LIGHT_0, 0, -1, 0, -180)
         GL.Lights.enable(LIGHTS.LIGHT_0)
 
@@ -440,112 +441,97 @@ class Game:
         
         self.road.draw()
 
-        # for npv in self.ai:
-           # npv.draw()
+        for npv in self.ai:
+            npv.draw()
        
-        # for item in self.dropped_items:
-        #     item.draw()
+        for item in self.dropped_items:
+            item.draw()
 
         # ParticleManager.draw_3d()
 
-        # self.draw_hud()
+        self.draw_hud()
         
         pygame.display.flip()
  
     def draw_hud(self): 
-        sun = False
-        lamps = False
-        if glIsEnabled(GL_LIGHT0):
-            sun = True
-        if glIsEnabled(GL_LIGHT1):
-            lamps = True
-        
+        GL.Lights.disableLighting()
+
         glDisable(GL_DEPTH_TEST)
         glDepthMask(GL_FALSE)
         # glDisable(GL_LIGHTING)
         # glDisable(GL_BLEND)
-        if sun:
-            glDisable(GL_LIGHT0)
-        if lamps:
-            glDisable(GL_LIGHT1)
-            glDisable(GL_LIGHT2)
-            glDisable(GL_LIGHT3)
-            glDisable(GL_LIGHT4)
+        #if sun:
+        #    glDisable(GL_LIGHT0)
+        #if lamps:
+        #    glDisable(GL_LIGHT1)
+        #    glDisable(GL_LIGHT2)
+        #    glDisable(GL_LIGHT3)
+        #    glDisable(GL_LIGHT4)
         
-        glEnable(GL_LIGHT7)
+        #glEnable(GL_LIGHT7)
         
-        glMatrixMode(GL_PROJECTION)
-        glPushMatrix()
-        glLoadIdentity()
-        glOrtho(0, Window.WIDTH, Window.HEIGHT, 0, -1, 1)
+        GL.GLM.selectMatrix(MATRIX.PROJECTION)
+        GL.GLM.pushMatrix()
+        GL.GLM.loadIdentity()
+        GL.GLM.otho(0, Window.WIDTH, Window.HEIGHT, 0, -1, 1)
 
-        glMatrixMode(GL_MODELVIEW)
-        glPushMatrix()
-        glLoadIdentity()
+        GL.GLM.selectMatrix(MATRIX.MODEL)
+        GL.GLM.pushMatrix()
+        GL.GLM.loadIdentity()
 
         glColor3f(0, 0, 0)
         for player in self.players:
-            glPushMatrix()
             color = (255, 255, 255, 255)
             if player.score <= 0:
                 color = (255, 0, 0, 255)
-            glPushMatrix()
-            glTranslatef(HUD.SCORE_HUD_POS_X[player.player_id], HUD.SCORE_HUD_POS_Y[player.player_id], 0)
+            GL.GLM.pushMatrix()
+            GL.GLM.translate(HUD.SCORE_HUD_POS_X[player.player_id], HUD.SCORE_HUD_POS_Y[player.player_id], 0)
             self.pointsHUD.drawGL3()
-            glPopMatrix()
+            GL.GLM.popMatrix()
             glDisable(GL_TEXTURE_2D)
             drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (20, 20, 20, 0), "SCORE: " + str(int(player.score)))
-            glPushMatrix()
-            glTranslatef(HUD.INVENTORY_X[player.player_id], Window.HEIGHT - 55, 0)
+            GL.GLM.pushMatrix()
+            GL.GLM.translate(HUD.INVENTORY_X[player.player_id], Window.HEIGHT - 55, 0)
             self.powerUpsHUD.drawGL3()
-            glPushMatrix()
-            glTranslatef(-10, 40, 0)
-            glRotatef(180, 1, 0, 0)
+            GL.GLM.pushMatrix()
+            GL.GLM.translate(-10, 40, 0)
+            GL.GLM.rotate(180, 1, 0, 0)
             for i in range(PowerUps.INVENTORY_SIZE):
-                glTranslatef(58, 0, 0)
+                GL.GLM.translate(58, 0, 0)
                 if i < len(player.inventory):
                     draw_rectangle(32, 32, player.inventory[i].icon)
                 else:
                     draw_rectangle(32, 32, PowerUps.EMPTY)
-            glPopMatrix()
-            glPopMatrix()
-            glPopMatrix()
-        
-        glPopMatrix()
-        
-        glMatrixMode(GL_PROJECTION)
-        glPopMatrix()
+            GL.GLM.popMatrix()
+            GL.GLM.popMatrix()
 
-        glPushMatrix()
-        glLoadIdentity()
-        # glOrtho(RoadPositions.REAR_LIMIT, RoadPositions.FORWARD_LIMIT, 0, RoadPositions.UPPER_LIMIT, -1, 1)
-        glOrtho(-Window.WIDTH//2, Window.WIDTH//2, 0, Window.HEIGHT, -1, 1)
-        glMatrixMode(GL_MODELVIEW)
-        glPushMatrix()
-        glLoadIdentity()
-        
-        ParticleManager.draw()
-        
-        glPopMatrix()
+        GL.GLM.popMatrix()
 
-        glMatrixMode(GL_PROJECTION)
-        glPopMatrix()
+        GL.GLM.selectMatrix(MATRIX.PROJECTION)
+        GL.GLM.popMatrix()
+
+        #glPushMatrix()
+        #glLoadIdentity()
+        ## glOrtho(RoadPositions.REAR_LIMIT, RoadPositions.FORWARD_LIMIT, 0, RoadPositions.UPPER_LIMIT, -1, 1)
+        #glOrtho(-Window.WIDTH//2, Window.WIDTH//2, 0, Window.HEIGHT, -1, 1)
+        #glMatrixMode(GL_MODELVIEW)
+        #glPushMatrix()
+        #glLoadIdentity()
+        
+        #ParticleManager.draw()
+        
+        #glPopMatrix()
+
+        #glMatrixMode(GL_PROJECTION)
+        #glPopMatrix()
 
         if self.paused:
             self.draw_paused_menu()
 
-        glMatrixMode(GL_MODELVIEW)
+        GL.GLM.selectMatrix(MATRIX.MODEL)
+
+        GL.Lights.enableLighting()
         glEnable(GL_DEPTH_TEST)
-        glEnable(GL_LIGHTING)
-        glDisable(GL_LIGHT7)
-        if sun:
-            glEnable(GL_LIGHT0)
-        if lamps:
-            glEnable(GL_LIGHT1)
-            glEnable(GL_LIGHT2)
-            glEnable(GL_LIGHT3)
-            glEnable(GL_LIGHT4)
-        
         glDepthMask(GL_TRUE)
         glEnable(GL_BLEND)
 

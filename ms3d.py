@@ -187,6 +187,9 @@ class GLM(_object):
     def perspective(self, fov_degrees, aspect_ratio, near, far):
         return _ms3d.GLM_perspective(self, fov_degrees, aspect_ratio, near, far)
 
+    def otho(self, left, right, bottom, top, near, far):
+        return _ms3d.GLM_otho(self, left, right, bottom, top, near, far)
+
     def loadIdentity(self):
         return _ms3d.GLM_loadIdentity(self)
 
@@ -195,6 +198,9 @@ class GLM(_object):
 
     def rotate(self, angle, x, y, z):
         return _ms3d.GLM_rotate(self, angle, x, y, z)
+
+    def scale(self, x, y, z):
+        return _ms3d.GLM_scale(self, x, y, z)
 
     def pushMatrix(self):
         return _ms3d.GLM_pushMatrix(self)
@@ -222,6 +228,12 @@ class Lights(_object):
             self.this = this
     __swig_destroy__ = _ms3d.delete_Lights
     __del__ = lambda self: None
+
+    def enableLighting(self):
+        return _ms3d.Lights_enableLighting(self)
+
+    def disableLighting(self):
+        return _ms3d.Lights_disableLighting(self)
 
     def enable(self, light):
         return _ms3d.Lights_enable(self, light)

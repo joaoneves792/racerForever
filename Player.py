@@ -1,8 +1,3 @@
-from OpenGL.GL import glTranslate, glRotate
-from OpenGL.raw.GL.VERSION.GL_1_0 import glLightfv, glMatrixMode, glLoadIdentity, glRotatef, glPushMatrix, glTranslatef, \
-    glPopMatrix, glScalef
-from OpenGL.raw.GL.VERSION.GL_1_1 import GL_LIGHT6, GL_POSITION, GL_PROJECTION, GL_MODELVIEW
-
 from OpenGLContext import GL
 import ParticleManager
 from Car import Car
@@ -131,7 +126,7 @@ class Player(Car):
         if self.vertical_position < RoadPositions.LOWER_LIMIT+self.height_offset:
             self.vertical_position = RoadPositions.LOWER_LIMIT + self.height_offset
 
-        glLightfv(GL_LIGHT6, GL_POSITION, (self.vertical_position, 15, self.horizontal_position+100, 1))
+        # glLightfv(GL_LIGHT6, GL_POSITION, (self.vertical_position, 15, self.horizontal_position+100, 1))
 
         if self.fire_phaser:
             if self.phaser_gaining_intensity:
@@ -165,6 +160,7 @@ class Player(Car):
         #glTranslate(-self.vertical_position, -30, -self.horizontal_position)
         #glMatrixMode(GL_MODELVIEW)
 
+
         GL.GLM.pushMatrix()
         if self.fire_phaser:
             w = (RoadPositions.COLLISION_HORIZON + abs(RoadPositions.REAR_LIMIT))
@@ -177,7 +173,7 @@ class Player(Car):
             GL.GLM.translate(0, 10, 0)
         if self.shrunk:
             GL.GLM.pushMatrix()
-            # glScalef(0.5, 1, 1)
+            GL.GLM.scale(0.5, 1, 1)
         self.vehicle.model.drawGL3()
         if self.hydraulics:
             GL.GLM.popMatrix()

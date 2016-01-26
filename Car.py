@@ -1,6 +1,3 @@
-from OpenGL.raw.GL.VERSION.GL_1_0 import glPushMatrix, glTranslatef, glRotatef, glPopMatrix, glDisable, glEnable
-from OpenGL.raw.GL.VERSION.GL_1_1 import GL_LIGHTING
-
 from OpenGLContext import GL
 from constants import Steering, RoadPositions, Speed
 from utils import box_collision, rotate_2d_vector

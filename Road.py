@@ -133,10 +133,10 @@ class Road:
                 self.road.drawGL3()
             GL.GLM.popMatrix()
 
-        # glPushMatrix()
-        # glScalef(10, 10, 10)
+        GL.GLM.pushMatrix()
+        GL.GLM.scale(10, 10, 10)
         self.sky.drawGL3()
-        # glPopMatrix()
+        GL.GLM.popMatrix()
 
     def advance(self, time_delta):
         for i in range(self.num_of_tiles):

@@ -14,9 +14,11 @@ uniform sampler2D texture_sampler;
 uniform mat4 Model;
 uniform mat4 View;
 uniform vec3 lightPosition_worldspace[MAX_LIGHTS];
-uniform vec4 lightCone[MAX_LIGHTS];
-uniform vec4 lightColor[MAX_LIGHTS];
+uniform vec4 lightCone[MAX_LIGHTS]; //x,y,z -> direction; w -> cutoffanglecos (if < 0 then emmits in all directions)
+uniform vec4 lightColor[MAX_LIGHTS]; // x,y,z -> color rgb; w -> intensity (if < 0 then does not decay) 
 uniform int lightsEnabled[MAX_LIGHTS];
+
+uniform int disableLighting;
 
 uniform vec4 ambient;
 uniform vec4 diffuse;
@@ -27,6 +29,12 @@ uniform float shininess;
 uniform float transparency;
 
 void main() {
+	if(disableLighting == 1){
+		out_color = texture(texture_sampler, texture_coord_from_vshader);
+		out_color.a -= transparency;
+		return;
+	}
+
 	//Material properties
 	vec3 diffuseCoef = diffuse.xyz / vec3(255, 255, 255);
 	vec3 matDiffuse = (texture(texture_sampler, texture_coord_from_vshader).rgb * diffuse.xyz);
@@ -54,8 +62,14 @@ void main() {
 				float cosAlpha = clamp( dot(E,R), 0,1);
 				float cosTheta = clamp( dot(n,l), 0,1);
 
-				light_color_sum += matDiffuse * lightColor[i].xyz * lightColor[i].w * cosTheta / (distance_to_light*distance_to_light) +
-					matSpecular * (shininess/4.0) * lightColor[i].xyz * lightColor[i].w * pow(cosAlpha, 5) / (distance_to_light*distance_to_light);
+				float decay;
+				if(lightColor[i].w <= 0)
+					decay = 1;
+				else
+					decay = (distance_to_light*distance_to_light);
+
+				light_color_sum += matDiffuse * lightColor[i].xyz * abs(lightColor[i].w) * cosTheta / decay +
+					matSpecular * (shininess/4.0) * lightColor[i].xyz * abs(lightColor[i].w) * pow(cosAlpha, 5) / decay;
 			}
 		}
 		
