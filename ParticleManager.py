@@ -1,4 +1,5 @@
 from OpenGL.GL import *
+from OpenGLContext import GL
 
 
 class Particles:
@@ -52,12 +53,12 @@ class Particle:
             self.y += self.speed_y * time_delta
 
     def draw(self):
-        glPushMatrix()
-        glTranslatef(self.x, self.y, 0)
-        glScalef(self.size/self.w, self.size/self.h, 1)
-        self.shape.draw()
-        glPopMatrix()
-       
+        GL.GLM.pushMatrix()
+        GL.GLM.translate(self.x, self.y, 0)
+        GL.GLM.scale(self.size/self.w, -self.size/self.h, 1)
+        self.shape.drawGL3()
+        GL.GLM.popMatrix()
+
 
 class Particle3D:
     def __init__(self):

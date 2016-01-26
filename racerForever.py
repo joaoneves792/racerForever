@@ -106,9 +106,6 @@ class Game:
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         GL.GLM.perspective(25, Window.WIDTH/Window.HEIGHT, 0.1, 12000)
-        GL.GLM.selectMatrix(MATRIX.VIEW)
-        GL.GLM.rotate(180, 0, 1, 0)
-        GL.GLM.translate(-RoadPositions.MIDDLE_LANE, -50, 0)
         GL.GLM.selectMatrix(MATRIX.MODEL)
         GL.GLM.loadIdentity()
 
@@ -435,7 +432,10 @@ class Game:
     def draw(self):
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        
+
+        #GL.GLM.selectMatrix(MATRIX.VIEW)
+        #GL.GLM.pushMatrix()
+        #GL.GLM.selectMatrix(MATRIX.MODEL)
         for player in self.players:
             player.draw()
         
@@ -449,6 +449,8 @@ class Game:
 
         # ParticleManager.draw_3d()
 
+        #GL.GLM.selectMatrix(MATRIX.VIEW)
+        #GL.GLM.popMatrix()
         self.draw_hud()
         
         pygame.display.flip()
@@ -458,57 +460,46 @@ class Game:
 
         glDisable(GL_DEPTH_TEST)
         glDepthMask(GL_FALSE)
-        # glDisable(GL_LIGHTING)
-        # glDisable(GL_BLEND)
-        #if sun:
-        #    glDisable(GL_LIGHT0)
-        #if lamps:
-        #    glDisable(GL_LIGHT1)
-        #    glDisable(GL_LIGHT2)
-        #    glDisable(GL_LIGHT3)
-        #    glDisable(GL_LIGHT4)
-        
-        #glEnable(GL_LIGHT7)
-        
+
         GL.GLM.selectMatrix(MATRIX.PROJECTION)
         GL.GLM.pushMatrix()
         GL.GLM.loadIdentity()
         GL.GLM.otho(0, Window.WIDTH, Window.HEIGHT, 0, -1, 1)
 
+        GL.GLM.selectMatrix(MATRIX.VIEW)
+        GL.GLM.loadIdentity()
+
         GL.GLM.selectMatrix(MATRIX.MODEL)
         GL.GLM.pushMatrix()
         GL.GLM.loadIdentity()
 
-        glColor3f(0, 0, 0)
         for player in self.players:
             color = (255, 255, 255, 255)
             if player.score <= 0:
                 color = (255, 0, 0, 255)
             GL.GLM.pushMatrix()
-            GL.GLM.translate(HUD.SCORE_HUD_POS_X[player.player_id], HUD.SCORE_HUD_POS_Y[player.player_id], 0)
+            GL.GLM.scale(1, -1, 1)
             self.pointsHUD.drawGL3()
             GL.GLM.popMatrix()
             glDisable(GL_TEXTURE_2D)
-            drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (20, 20, 20, 0), "SCORE: " + str(int(player.score)))
+            #glColor3f(0, 0, 0)
+            #drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (0, 0, 0, 1), "SCORE: " + str(int(player.score)))
             GL.GLM.pushMatrix()
-            GL.GLM.translate(HUD.INVENTORY_X[player.player_id], Window.HEIGHT - 55, 0)
+            GL.GLM.translate(0, Window.HEIGHT, 0)
+            GL.GLM.scale(1, -1, 1)
             self.powerUpsHUD.drawGL3()
             GL.GLM.pushMatrix()
             GL.GLM.translate(-10, 40, 0)
             GL.GLM.rotate(180, 1, 0, 0)
             for i in range(PowerUps.INVENTORY_SIZE):
                 GL.GLM.translate(58, 0, 0)
-                if i < len(player.inventory):
-                    draw_rectangle(32, 32, player.inventory[i].icon)
-                else:
-                    draw_rectangle(32, 32, PowerUps.EMPTY)
+                #if i < len(player.inventory):
+                    #draw_rectangle(32, 32, player.inventory[i].icon)
+                #else:
+                    #draw_rectangle(32, 32, PowerUps.EMPTY)
             GL.GLM.popMatrix()
             GL.GLM.popMatrix()
 
-        GL.GLM.popMatrix()
-
-        GL.GLM.selectMatrix(MATRIX.PROJECTION)
-        GL.GLM.popMatrix()
 
         #glPushMatrix()
         #glLoadIdentity()
@@ -517,9 +508,15 @@ class Game:
         #glMatrixMode(GL_MODELVIEW)
         #glPushMatrix()
         #glLoadIdentity()
-        
-        #ParticleManager.draw()
-        
+
+        ParticleManager.draw()
+
+        GL.GLM.popMatrix()
+        GL.GLM.selectMatrix(MATRIX.PROJECTION)
+        GL.GLM.popMatrix()
+
+
+
         #glPopMatrix()
 
         #glMatrixMode(GL_PROJECTION)
@@ -593,9 +590,9 @@ class Game:
         elif event.type == pygame.QUIT:
             pygame.quit()
             quit()
-        #elif event.type == pygame.MOUSEMOTION:
-        #    for i in range(len(self.players)):
-        #        self.players[i].update_mouse(pygame.mouse.get_rel())
+        elif event.type == pygame.MOUSEMOTION:
+            for i in range(len(self.players)):
+                self.players[i].update_mouse(pygame.mouse.get_rel())
 
     def on_key_press(self, key):
         if key == KeyboardKeys.KEY_ESC:

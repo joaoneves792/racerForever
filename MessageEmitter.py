@@ -1,5 +1,5 @@
 import ParticleManager
-from constants import RoadPositions
+from constants import Window
 
 
 class MessageEmitter(ParticleManager.ParticleEmitter):
@@ -13,14 +13,14 @@ class MessageEmitter(ParticleManager.ParticleEmitter):
 
 class HolyShit(MessageEmitter):
     def __init__(self, shape):
-        super(HolyShit, self).__init__(0, RoadPositions.RIGHT_LANE, shape)
+        super(HolyShit, self).__init__(Window.WIDTH/2, Window.HEIGHT/2, shape)
 
 
 class Mayhem(MessageEmitter):
     def __init__(self, shape):
-        super(Mayhem, self).__init__(0, RoadPositions.MIDDLE_LANE, shape)
+        super(Mayhem, self).__init__(Window.WIDTH/2, Window.HEIGHT/2-50, shape)
 
 
 class Annihilation(MessageEmitter):
     def __init__(self, shape):
-        super(Annihilation, self).__init__(0, RoadPositions.LEFT_LANE, shape)
+        super(Annihilation, self).__init__(Window.WIDTH/2, Window.HEIGHT/2-100, shape)

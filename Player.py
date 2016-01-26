@@ -4,6 +4,7 @@ from Car import Car
 from constants import HUD, Speed, RoadPositions, PowerUps, Window
 from PointsEmitter import Plus100Points, Minus100Points
 from utils import car_circle_collision, draw_3d_rectangle
+from ms3d import MATRIX
 
 
 class Player(Car):
@@ -153,6 +154,7 @@ class Player(Car):
         #glLoadIdentity()
         #gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 20400)
         # giuLookAt(self.vertical_position, 30, self.horizontal_position-150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
+
         #glTranslate(0, 0, -150)
         #glRotate(180, 0, 1, 0)
         #glRotatef(-self.camera_y_rot, 1, 0, 0)
@@ -160,6 +162,14 @@ class Player(Car):
         #glTranslate(-self.vertical_position, -30, -self.horizontal_position)
         #glMatrixMode(GL_MODELVIEW)
 
+        GL.GLM.selectMatrix(MATRIX.VIEW)
+        GL.GLM.loadIdentity()
+        GL.GLM.translate(0, 0, -150)
+        GL.GLM.rotate(180, 0, 1, 0)
+        GL.GLM.rotate(-self.camera_y_rot, 1, 0, 0)
+        GL.GLM.rotate(self.camera_x_rot, 0, 1, 0)
+        GL.GLM.translate(-self.vertical_position, -30, -self.horizontal_position)
+        GL.GLM.selectMatrix(MATRIX.MODEL)
 
         GL.GLM.pushMatrix()
         if self.fire_phaser:

@@ -5,8 +5,12 @@ class Window:
     # WIDTH = 1920
     # HEIGHT = 1080
     # FULLSCREEN = True
+
     WIDTH = 1024
     HEIGHT = 512
+
+    # WIDTH = 1440
+    # HEIGHT = 900
     FULLSCREEN = False
 
     VERSION = "v0.1"
@@ -15,7 +19,7 @@ class Window:
 class HUD:
     PLAYER2_DELTA_X = 400
     SCORE_HUD_POS_X = (0, PLAYER2_DELTA_X)
-    SCORE_HUD_POS_Y = (0, 0)
+    SCORE_HUD_POS_Y = (Window.HEIGHT, 0)
     SCORE_POS_X = (30, 30+PLAYER2_DELTA_X)
     SCORE_POS_Y = (45, 45)
     TIME_OUT_POS_X = (50, 50+PLAYER2_DELTA_X)
