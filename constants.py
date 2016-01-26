@@ -2,16 +2,16 @@ import pygame
 
 
 class Window:
-    WIDTH = 1920
-    HEIGHT = 1080
-    FULLSCREEN = True
+    # WIDTH = 1920
+    # HEIGHT = 1080
+    # FULLSCREEN = True
 
     #WIDTH = 1024
     #HEIGHT = 512
 
-    # WIDTH = 1440
-    # HEIGHT = 900
-    #FULLSCREEN = False
+    WIDTH = 1440
+    HEIGHT = 900
+    FULLSCREEN = False
 
     VERSION = "v0.1"
 

@@ -131,7 +131,7 @@ class Player(Car):
         if self.vertical_position < RoadPositions.LOWER_LIMIT+self.height_offset:
             self.vertical_position = RoadPositions.LOWER_LIMIT + self.height_offset
 
-        GL.Lights.setPosition(LIGHTS.LIGHT_9, self.vertical_position, 15, self.horizontal_position)
+        GL.Lights.setPosition(LIGHTS.LIGHT_9, self.vertical_position, 15, self.horizontal_position + 50)
 
         if self.fire_phaser:
             if self.phaser_gaining_intensity:

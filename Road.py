@@ -9,6 +9,8 @@ class Road:
     def __init__(self, z=0):
         self.road = ms3d("./Road/road6.ms3d")
         self.road.prepare(GL.Shader)
+        self.road_night = ms3d("./Road/road6_night.ms3d")
+        self.road_night.prepare(GL.Shader)
         self.road_lod = ms3d("./Road/road_lod.ms3d")
         self.road_lod.prepare(GL.Shader)
         self.sky = ms3d("./Road/sky.ms3d")
@@ -19,7 +21,7 @@ class Road:
         self.maximum_front_pos = ((self.num_of_tiles//2)-1)*self.length
         self.tile_delta = 0
         self.z = []
-        self.num_of_lights = 6
+        self.num_of_lights = 8
         self.tiles_to_lights_ratio = self.num_of_tiles//self.num_of_lights
         self.lights_offset = self.length/2
         self.lights_cutoff = 70
@@ -31,9 +33,7 @@ class Road:
         self.switch_lights_on = False
         self.sunrise = False
         self.sunset = False
-        self.time = 30000
-        # self.time = 43000
-        self.sun_angle = math.pi/2
+        self.sun_angle = 3*math.pi/4
 
         self.setup_lights()
 
@@ -43,7 +43,7 @@ class Road:
             GL.Lights.setColor(light, 255, 255, 204, 90)
             GL.Lights.setCone(light, 0, -1, 0, self.lights_cutoff)
 
-        GL.Lights.setColor(LIGHTS.LIGHT_9, 255, 255, 204, 200)
+        GL.Lights.setColor(LIGHTS.LIGHT_9, 255, 255, 204, 300)
         GL.Lights.setCone(LIGHTS.LIGHT_9, 0, -0.1, 1, 17)
 
         GL.Lights.setPosition(LIGHTS.LIGHT_0, RoadPositions.MIDDLE_LANE, 1500, 0)
@@ -102,7 +102,10 @@ class Road:
             if abs(z) > (self.num_of_lights*2*self.length):
                 self.road_lod.drawGL3()
             else:
-                self.road.drawGL3()
+                if self.lights:
+                    self.road_night.drawGL3()
+                else:
+                    self.road.drawGL3()
             GL.GLM.popMatrix()
 
         GL.GLM.pushMatrix()
@@ -122,17 +125,12 @@ class Road:
         else:
             time_delta /= 4
 
-        self.time += time_delta
-
         if self.sun_angle >= 2*math.pi:
             self.sun_angle = 0
         self.sun_angle += 0.000104719*time_delta
 
         self.sun_height = math.sin(self.sun_angle)
         self.sun_pos = math.cos(self.sun_angle)
-
-        if self.time >= 60000:
-            self.time = 0
 
         if self.lights and (math.radians(90) >= self.sun_angle >= math.radians(50)):
             self.switch_lights_off = True

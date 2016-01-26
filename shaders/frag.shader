@@ -36,7 +36,6 @@ void main() {
 	}
 
 	//Material properties
-	vec3 diffuseCoef = diffuse.xyz / vec3(255, 255, 255);
 	vec3 matDiffuse = (texture(texture_sampler, texture_coord_from_vshader).rgb * diffuse.xyz);
 	vec3 ambientCoef = ambient.xyz / vec3(255, 255, 255);
 	vec3 matAmbient = ambientCoef * matDiffuse;
@@ -66,7 +65,7 @@ void main() {
 				if(lightColor[i].w <= 0)
 					decay = 1;
 				else
-					decay = (distance_to_light*distance_to_light);
+					decay = (distance_to_light*distance_to_light/2);
 
 				light_color_sum += matDiffuse * lightColor[i].xyz * abs(lightColor[i].w) * cosTheta / decay +
 					matSpecular * (shininess/16.0) * lightColor[i].xyz * abs(lightColor[i].w) * pow(cosAlpha, 5) / decay;

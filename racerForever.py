@@ -43,12 +43,6 @@ class Game:
 
         self.road = Road()
         
-        # Setup the HUD light
-        # glLightfv(GL_LIGHT7, GL_AMBIENT, (1, 1, 1, 1))
-        # glLightfv(GL_LIGHT7, GL_DIFFUSE, (1, 1, 1, 1))
-        # glLightfv(GL_LIGHT7, GL_SPECULAR, (1, 1, 1, 1))
-        # glLightfv(GL_LIGHT7, GL_POSITION, (0, 0, 1, 0))
-        
         self.players = []
         self.last_update_timestamp = -1
 
@@ -61,10 +55,7 @@ class Game:
 
         Sounds.ACCEL.play(-1)
 
-        # self.players.append(Player(self.available_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.MAX_SPEED, 0))
         self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.PLAYER_SPEED, 0))
-        
-        # self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.RIGHT_LANE, Speed.MAX_SPEED, 1))
 
         while True:
             for event in pygame.event.get():
@@ -99,7 +90,7 @@ class Game:
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
         glEnable(GL_MULTISAMPLE)
 
-        # glEnable(GL_CULL_FACE)
+        glEnable(GL_CULL_FACE)
         
         glClearDepth(1)
         glClearColor(0, 0, 0, 0)
@@ -191,7 +182,8 @@ class Game:
         self.available_vehicles.append(load_vehicle("./Cars/NSX/NSXplay_optimized.ms3d", "./Cars/NSX/NSXWheel.ms3d", 4, "./Cars/NSX/NSXlod.ms3d"))
         self.available_vehicles.append(load_vehicle("./Cars/Skyline/skylineplay_optimized.ms3d", "./Cars/Skyline/skyline_wheel.ms3d", 4, "./Cars/Skyline/skylinelod.ms3d"))
         self.available_vehicles.append(load_vehicle("./Cars/LP570_S/LP570play_optimized.ms3d", "./Cars/LP570_S/LP570wheel.ms3d", 4, "./Cars/LP570_S/LP570lod.ms3d"))
-        
+
+
     def generate_emergency_vehicle(self, vertical_position):
         Sounds.SIREN.play()    
         self.ai.append(AI(self.emergency_vehicles[random.randrange(len(self.emergency_vehicles))], vertical_position, -20 * Speed.ONE_KMH))
@@ -429,9 +421,6 @@ class Game:
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-        #GL.GLM.selectMatrix(MATRIX.VIEW)
-        #GL.GLM.pushMatrix()
-        #GL.GLM.selectMatrix(MATRIX.MODEL)
         for player in self.players:
             player.draw()
         
@@ -445,8 +434,6 @@ class Game:
 
         # ParticleManager.draw_3d()
 
-        #GL.GLM.selectMatrix(MATRIX.VIEW)
-        #GL.GLM.popMatrix()
         self.draw_hud()
         
         pygame.display.flip()

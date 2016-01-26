@@ -10,7 +10,8 @@ class Car:
         REAR_LEFT = 2
         REAR_RIGHT = 3
 
-        def __init__(self, wheel_id, model, position):
+        def __init__(self, wheel_id, model, position, car):
+            self.car = car  # type: Car
             self.wheel_id = wheel_id
             self.model = model
             self.position = position
@@ -21,7 +22,8 @@ class Car:
             # Not realistic at all but who cares!!
             if self.rotateAngle >= 360:
                 self.rotateAngle = 0
-            self.rotateAngle += 15
+            if self.car.speed != 0:
+                self.rotateAngle += 15
 
         def draw(self):
             GL.GLM.pushMatrix()
@@ -59,7 +61,7 @@ class Car:
         self.skid_mark = None
 
         for i in range(vehicle.wheel_count):
-            self.wheels.append(self.Wheel(i, vehicle.wheel, vehicle.wheel_positions[i]))
+            self.wheels.append(self.Wheel(i, vehicle.wheel, vehicle.wheel_positions[i], self))
 
     def update(self, time_delta):
         self.front_circle = rotate_2d_vector(self.front_circle, self.rotation)
