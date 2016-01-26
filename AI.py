@@ -95,9 +95,9 @@ class AI(Car):  # AI - Non Player Vehicle
             glRotatef(self.capsized_angle, 1, 0, 0)
         glRotatef(self.rotation, 0, 1, 0)
         if abs(self.horizontal_position) > RoadPositions.LOD_DISTANCE:
-            self.vehicle.lod.draw()
+            self.vehicle.lod.drawGL3()
         else:
-            self.vehicle.model.draw()
+            self.vehicle.model.drawGL3()
         self.draw_wheels()
 
         glPopMatrix()

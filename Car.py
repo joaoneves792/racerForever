@@ -1,6 +1,7 @@
 from OpenGL.raw.GL.VERSION.GL_1_0 import glPushMatrix, glTranslatef, glRotatef, glPopMatrix, glDisable, glEnable
 from OpenGL.raw.GL.VERSION.GL_1_1 import GL_LIGHTING
 
+from OpenGLContext import GL
 from constants import Steering, RoadPositions, Speed
 from utils import box_collision, rotate_2d_vector
 
@@ -26,21 +27,21 @@ class Car:
             self.rotateAngle += 15
 
         def draw(self):
-            glPushMatrix()
-            glTranslatef(self.position[0], self.position[1], self.position[2])
+            GL.GLM.pushMatrix()
+            GL.GLM.translate(self.position[0], self.position[1], self.position[2])
             if self.wheel_id == self.FRONT_LEFT or self.wheel_id == self.REAR_LEFT:
-                glRotatef(180, 0, 1, 0)
+                GL.GLM.rotate(180, 0, 1, 0)
             if self.wheel_id == self.FRONT_LEFT or self.wheel_id == self.FRONT_RIGHT:
                 if self.steering == Steering.TURN_LEFT:
-                    glRotatef(25, 0, 1, 0)
+                    GL.GLM.rotate(25, 0, 1, 0)
                 elif self.steering == Steering.TURN_RIGHT:
-                    glRotatef(-25, 0, 1, 0)
-            glRotatef(self.rotateAngle, 1, 0, 0)
-            self.model.draw()
-            glPopMatrix()
+                    GL.GLM.rotate(-25, 0, 1, 0)
+            GL.GLM.rotate(self.rotateAngle, 1, 0, 0)
+            self.model.drawGL3()
+            GL.GLM.popMatrix()
 
     def __init__(self, vehicle, z, x, speed):
-        self.vehicle = vehicle
+        self.vehicle = vehicle  # type VehicleModel
         self.vertical_position = x
         self.horizontal_position = z
         self.height = self.vehicle.height  # TODO #cairo.ImageSurface.get_height(model)
@@ -74,16 +75,16 @@ class Car:
         if self.horizontal_position-self.width_offset > RoadPositions.FORWARD_LIMIT:
             pass
         if self.skid_mark is not None:
-            glPushMatrix()
-            glDisable(GL_LIGHTING)
-            glTranslatef(self.skid_marks_y, 0, self.skid_marks_x)
-            self.skid_mark.draw()
-            glEnable(GL_LIGHTING)
-            glPopMatrix()
-        glPushMatrix()
-        glTranslatef(self.vertical_position, 0, self.horizontal_position)
+            GL.GLM.pushMatrix()
+            # glDisable(GL_LIGHTING)
+            GL.GLM.translate(self.skid_marks_y, 0, self.skid_marks_x)
+            self.skid_mark.drawGL3()
+            #glEnable(GL_LIGHTING)
+            GL.GLM.popMatrix()
+        GL.GLM.pushMatrix()
+        GL.GLM.translate(self.vertical_position, 0, self.horizontal_position)
         self.draw_car()
-        glPopMatrix()
+        GL.GLM.popMatrix()
 
     def draw_wheels(self):
         for wheel in self.wheels:

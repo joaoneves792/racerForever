@@ -2,8 +2,9 @@ import random
 import pygame
 from OpenGL.GL import *
 
-from ms3d import ms3d, Tex
+from ms3d import ms3d, Tex, shader, Lights, GLM, MATRIX, LIGHTS
 
+from OpenGLContext import GL
 import ParticleManager
 from AI import AI
 from MessageEmitter import HolyShit, Mayhem, Annihilation
@@ -34,6 +35,7 @@ class Game:
 
         self.pointsHUD = None
         self.powerUpsHUD = None
+        
 
         self.init_display()
         self.draw_loading_screen()
@@ -42,10 +44,10 @@ class Game:
         self.road = Road()
         
         # Setup the HUD light
-        glLightfv(GL_LIGHT7, GL_AMBIENT, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT7, GL_DIFFUSE, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT7, GL_SPECULAR, (1, 1, 1, 1))
-        glLightfv(GL_LIGHT7, GL_POSITION, (0, 0, 1, 0))
+        # glLightfv(GL_LIGHT7, GL_AMBIENT, (1, 1, 1, 1))
+        # glLightfv(GL_LIGHT7, GL_DIFFUSE, (1, 1, 1, 1))
+        # glLightfv(GL_LIGHT7, GL_SPECULAR, (1, 1, 1, 1))
+        # glLightfv(GL_LIGHT7, GL_POSITION, (0, 0, 1, 0))
         
         self.players = []
         self.last_update_timestamp = -1
@@ -83,6 +85,11 @@ class Game:
         else:
             pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL | pygame.HWSURFACE)  # | pygame.FULLSCREEN)
 
+        GL.Shader = shader("./shaders/vert.shader", "./shaders/frag.shader")
+        GL.GLM = GLM(GL.Shader)
+        GL.Lights = Lights(GL.Shader)
+    
+
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
         glDepthMask(GL_TRUE)
@@ -90,21 +97,26 @@ class Game:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
         glEnable(GL_TEXTURE_2D)
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
-        # glEnable(GL_MULTISAMPLE)
+        glEnable(GL_MULTISAMPLE)
 
+        # glEnable(GL_CULL_FACE)
+        
         glClearDepth(1)
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
-        glMatrixMode(GL_PROJECTION)
-        # gluPerspective(90, Window.WIDTH/Window.HEIGHT, 1, 2400)
-        # gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 2400)
-        # gluLookAt(-200,450,0, RoadPositions.MIDDLE_LANE,0,0, 0,1,0)
-        # gluLookAt(RoadPositions.MIDDLE_LANE, 30, RoadPositions.REAR_LIMIT-100, RoadPositions.MIDDLE_LANE,30,0, 0,1,0)
-        # gluLookAt(RoadPositions.MIDDLE_LANE, 30, -150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
-        # gluLookAt(RoadPositions.MIDDLE_LANE+8, 18, -2.3, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
-        glMatrixMode(GL_MODELVIEW)
-        
+        GL.GLM.perspective(25, Window.WIDTH/Window.HEIGHT, 0.1, 10000)
+        GL.GLM.selectMatrix(MATRIX.VIEW)
+        GL.GLM.rotate(180, 0, 1, 0)
+        GL.GLM.translate(-RoadPositions.MIDDLE_LANE, -50, 0)
+        GL.GLM.selectMatrix(MATRIX.MODEL)
+        GL.GLM.loadIdentity()
+       
+        GL.Lights.setPosition(LIGHTS.LIGHT_0, RoadPositions.MIDDLE_LANE, 500, 0)
+        GL.Lights.setColor(LIGHTS.LIGHT_0, 255, 255, 204, 9000)
+        GL.Lights.setCone(LIGHTS.LIGHT_0, 0, -1, 0, -180)
+        GL.Lights.enable(LIGHTS.LIGHT_0)
+
     def load_resources(self):
         def fill_wheel_positions(vehicle, model):
             for i in range(vehicle.wheel_count):
@@ -112,8 +124,11 @@ class Game:
     
         def load_vehicle(car_model, wheel_model, num_wheels, lod="./Cars/RS4/RS4_LOD.ms3d"):
             ms3d_car = ms3d(car_model)
+            ms3d_car.prepare(GL.Shader)
             ms3d_lod = ms3d(lod)
+            ms3d_lod.prepare(GL.Shader)
             ms3d_wheel = ms3d(wheel_model)
+            ms3d_wheel.prepare(GL.Shader)
             vehicle = VehicleModel(ms3d_car, ms3d_lod, ms3d_wheel, num_wheels)
             fill_wheel_positions(vehicle, ms3d_car)
             return vehicle
@@ -130,23 +145,36 @@ class Game:
         Sounds.ANNIHILATION = pygame.mixer.Sound("./Sound/total2.wav")
 
         SkidMarks.SKID_LEFT = ms3d("./Road/skid_left.ms3d")
+        SkidMarks.SKID_LEFT.prepare(GL.Shader)
         SkidMarks.SKID_RIGHT = ms3d("./Road/skid_right.ms3d")
+        SkidMarks.SKID_RIGHT.prepare(GL.Shader)
         SkidMarks.SKID_STRAIGHT = ms3d("./Road/skid_straight.ms3d")
+        SkidMarks.SKID_STRAIGHT.prepare(GL.Shader)
 
         self.pointsHUD = ms3d("./HUD/pointsHUD.ms3d")
+        self.pointsHUD.prepare(GL.Shader)
         self.powerUpsHUD = ms3d("./HUD/powerupsHUD.ms3d")
+        self.powerUpsHUD.prepare(GL.Shader)
 
         ParticleManager.Particles.POINTS = ms3d("./HUD/pointsParticle.ms3d")
+        ParticleManager.Particles.POINTS.prepare(GL.Shader)
         ParticleManager.Particles.PLUS_100_POINTS = ms3d("./HUD/plus100Particle.ms3d")
+        ParticleManager.Particles.PLUS_100_POINTS.prepare(GL.Shader)
         ParticleManager.Particles.MINUS_100_POINTS = ms3d("./HUD/minus100Particle.ms3d")
+        ParticleManager.Particles.MINUS_100_POINTS.prepare(GL.Shader)
         ParticleManager.Particles.HOLY_SHIT = ms3d("./HUD/holy.ms3d")
+        ParticleManager.Particles.HOLY_SHIT.prepare(GL.Shader)
         ParticleManager.Particles.MAYHEM = ms3d("./HUD/mayhem.ms3d")
+        ParticleManager.Particles.MAYHEM.prepare(GL.Shader)
         ParticleManager.Particles.ANNIHILATION = ms3d("./HUD/annihilation.ms3d")
+        ParticleManager.Particles.ANNIHILATION.prepare(GL.Shader)
 
         ParticleManager.Particles.SMOKE = Tex("./smoke_particle.png").getTexture()
 
         PowerUps.CRATE = ms3d("./PowerUps/crate/crate.ms3d")
+        PowerUps.CRATE.prepare(GL.Shader)
         PowerUps.ENERGY_SHIELD = ms3d("./PowerUps/energy_shield.ms3d")
+        PowerUps.ENERGY_SHIELD.prepare(GL.Shader)
         PowerUps.PHASER_FIRE = Tex("./PowerUps/phaser_fire.png").getTexture()
         PowerUps.EMPTY = Tex("./PowerUps/empty.png").getTexture()
         PowerUps.CALL_911 = Tex("./PowerUps/911.png").getTexture()
@@ -356,53 +384,55 @@ class Game:
 
     @staticmethod
     def draw_loading_screen():
-        picture = Tex("./HUD/loading.png").getTexture()
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glMatrixMode(GL_PROJECTION)
-        glPushMatrix()
-        glLoadIdentity()
-        glOrtho(0, Window.WIDTH, 0, Window.HEIGHT, -1, 1)
-        glMatrixMode(GL_MODELVIEW)
+        pass
+
+        #picture = Tex("./HUD/loading.png").getTexture()
+        #glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        #glMatrixMode(GL_PROJECTION)
+        #glPushMatrix()
+        #glLoadIdentity()
+        #glOrtho(0, Window.WIDTH, 0, Window.HEIGHT, -1, 1)
+        #glMatrixMode(GL_MODELVIEW)
+       #
+       # glEnable(GL_TEXTURE_2D)
+       # glBindTexture(GL_TEXTURE_2D, picture)
+       # glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, 1))
+       # glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, 1))
+       # glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, 1))
+       # glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, 1))
+       # glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
+
+       # glBegin(GL_TRIANGLES)
+       # glNormal3f(0, 0, 1)
+       # glTexCoord2f(0, 1)
+       # glVertex3f(0, 0, 0)
+       # glNormal3f(0, 0, 1)
+       # glTexCoord2f(1, 1)
+       # glVertex3f(Window.WIDTH, 0, 0)
+       # glNormal3f(0, 0, 1)
+       # glTexCoord2f(0, 0)
+       # glVertex3f(0, Window.HEIGHT, 0)
+#
+#        glNormal3f(0, 0, 1)
+#        glTexCoord2f(1, 1)
+#        glVertex3f(Window.WIDTH, 0, 0)
+#        glNormal3f(0, 0, 1)
+#        glTexCoord2f(0, 0)
+#        glVertex3f(0, Window.HEIGHT, 0)
+#        glNormal3f(0, 0, 1)
+#        glTexCoord2f(1, 0)
+#        glVertex3f(Window.WIDTH, Window.HEIGHT, 0)
+#        glEnd()
         
-        glEnable(GL_TEXTURE_2D)
-        glBindTexture(GL_TEXTURE_2D, picture)
-        glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, 1))
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, 1))
-        glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, 1))
-        glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, 1))
-        glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
+#        glDisable(GL_TEXTURE_2D)
 
-        glBegin(GL_TRIANGLES)
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(0, 1)
-        glVertex3f(0, 0, 0)
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(1, 1)
-        glVertex3f(Window.WIDTH, 0, 0) 
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(0, 0)
-        glVertex3f(0, Window.HEIGHT, 0)
-
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(1, 1)
-        glVertex3f(Window.WIDTH, 0, 0)    
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(0, 0)
-        glVertex3f(0, Window.HEIGHT, 0)    
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(1, 0)
-        glVertex3f(Window.WIDTH, Window.HEIGHT, 0)    
-        glEnd()
-        
-        glDisable(GL_TEXTURE_2D)
-
-        glMatrixMode(GL_PROJECTION)
-        glPopMatrix()
-        glMatrixMode(GL_MODELVIEW)
-        pygame.display.flip()
+#        glMatrixMode(GL_PROJECTION)
+#        glPopMatrix()
+#        glMatrixMode(GL_MODELVIEW)
+#        pygame.display.flip()
 
     def draw(self):
-        
+        glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         
         for player in self.players:
@@ -410,15 +440,15 @@ class Game:
         
         self.road.draw()
 
-        for npv in self.ai:
-            npv.draw()
+        # for npv in self.ai:
+           # npv.draw()
        
-        for item in self.dropped_items:
-            item.draw()
+        # for item in self.dropped_items:
+        #     item.draw()
 
-        ParticleManager.draw_3d()
+        # ParticleManager.draw_3d()
 
-        self.draw_hud()
+        # self.draw_hud()
         
         pygame.display.flip()
  
@@ -461,13 +491,13 @@ class Game:
                 color = (255, 0, 0, 255)
             glPushMatrix()
             glTranslatef(HUD.SCORE_HUD_POS_X[player.player_id], HUD.SCORE_HUD_POS_Y[player.player_id], 0)
-            self.pointsHUD.draw()
+            self.pointsHUD.drawGL3()
             glPopMatrix()
             glDisable(GL_TEXTURE_2D)
             drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (20, 20, 20, 0), "SCORE: " + str(int(player.score)))
             glPushMatrix()
             glTranslatef(HUD.INVENTORY_X[player.player_id], Window.HEIGHT - 55, 0)
-            self.powerUpsHUD.draw()
+            self.powerUpsHUD.drawGL3()
             glPushMatrix()
             glTranslatef(-10, 40, 0)
             glRotatef(180, 1, 0, 0)
@@ -577,9 +607,9 @@ class Game:
         elif event.type == pygame.QUIT:
             pygame.quit()
             quit()
-        elif event.type == pygame.MOUSEMOTION:
-            for i in range(len(self.players)):
-                self.players[i].update_mouse(pygame.mouse.get_rel())
+        #elif event.type == pygame.MOUSEMOTION:
+        #    for i in range(len(self.players)):
+        #        self.players[i].update_mouse(pygame.mouse.get_rel())
 
     def on_key_press(self, key):
         if key == KeyboardKeys.KEY_ESC:

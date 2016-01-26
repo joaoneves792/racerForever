@@ -2,8 +2,8 @@ from OpenGL.GL import glTranslate, glRotate
 from OpenGL.raw.GL.VERSION.GL_1_0 import glLightfv, glMatrixMode, glLoadIdentity, glRotatef, glPushMatrix, glTranslatef, \
     glPopMatrix, glScalef
 from OpenGL.raw.GL.VERSION.GL_1_1 import GL_LIGHT6, GL_POSITION, GL_PROJECTION, GL_MODELVIEW
-from OpenGL.raw.GLU import gluPerspective
 
+from OpenGLContext import GL
 import ParticleManager
 from Car import Car
 from constants import HUD, Speed, RoadPositions, PowerUps, Window
@@ -154,40 +154,39 @@ class Player(Car):
 
     def draw_car(self):
 
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 20400)
+        #glMatrixMode(GL_PROJECTION)
+        #glLoadIdentity()
+        #gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 20400)
         # giuLookAt(self.vertical_position, 30, self.horizontal_position-150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
-        glTranslate(0, 0, -150)
-        glRotate(180, 0, 1, 0)
-        glRotatef(-self.camera_y_rot, 1, 0, 0)
-        glRotatef(self.camera_x_rot, 0, 1, 0)
-        glTranslate(-self.vertical_position, -30, -self.horizontal_position)
-        glMatrixMode(GL_MODELVIEW)
+        #glTranslate(0, 0, -150)
+        #glRotate(180, 0, 1, 0)
+        #glRotatef(-self.camera_y_rot, 1, 0, 0)
+        #glRotatef(self.camera_x_rot, 0, 1, 0)
+        #glTranslate(-self.vertical_position, -30, -self.horizontal_position)
+        #glMatrixMode(GL_MODELVIEW)
 
-        glPushMatrix()
+        GL.GLM.pushMatrix()
         if self.fire_phaser:
             w = (RoadPositions.COLLISION_HORIZON + abs(RoadPositions.REAR_LIMIT))
-            glPushMatrix()
-            glTranslatef(0, 1, w/2)
+            GL.GLM.pushMatrix()
+            GL.GLM.translate(0, 1, w/2)
             draw_3d_rectangle(w, self.height, PowerUps.PHASER_FIRE, self.phaser_alpha)
-            glPopMatrix()
+            GL.GLM.popMatrix()
         if self.hydraulics:
-            glPushMatrix()
-            glTranslatef(0, 10, 0)
+            GL.GLM.pushMatrix()
+            GL.GLM.translate(0, 10, 0)
         if self.shrunk:
-            glPushMatrix()
-            glScalef(0.5, 1, 1)
-        self.vehicle.model.draw()
+            GL.GLM.pushMatrix()
+            # glScalef(0.5, 1, 1)
+        self.vehicle.model.drawGL3()
         if self.hydraulics:
-            glPopMatrix()
+            GL.GLM.popMatrix()
         self.draw_wheels()
         if self.shrunk:
-            glPopMatrix()
+            GL.GLM.popMatrix()
         if self.shield:
-            PowerUps.ENERGY_SHIELD.draw()
-        glPopMatrix()
-
+            PowerUps.ENERGY_SHIELD.drawGL3()
+        GL.GLM.popMatrix()
         # self.draw_power_up_timer(cr)
 
     def update_mouse(self, movement):
