@@ -1,16 +1,17 @@
 import math
 
 import pygame
-from OpenGL.raw.GL.VERSION.GL_1_0 import glRasterPos2i, glDrawPixels
-from OpenGL.raw.GL.VERSION.GL_1_1 import GL_RGBA, GL_UNSIGNED_BYTE
+
+from ms3d import Tex
 
 
-def drawText(x, y, rgba_color, bg_color, textString):
+def text_to_texture(rgba_color, bg_color, textString):
     font = pygame.font.Font(None, 30)
     textSurface = font.render(textString, True, rgba_color, bg_color)
     textData = pygame.image.tostring(textSurface, "RGBA", True)
-    glRasterPos2i(x, y)
-    glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
+    # return Tex(textData, textSurface.get_height, textSurface.get_width, True)
+    # glRasterPos2i(x, y)
+    # glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
 
 
 def box_collision(box1_x, box1_y, box1_w, box1_h, box2_x, box2_y, box2_w, box2_h):

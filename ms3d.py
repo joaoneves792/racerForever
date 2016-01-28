@@ -108,6 +108,9 @@ class shader(_object):
 
     def getShader(self):
         return _ms3d.shader_getShader(self)
+
+    def use(self):
+        return _ms3d.shader_use(self)
 shader_swigregister = _ms3d.shader_swigregister
 shader_swigregister(shader)
 
@@ -118,8 +121,8 @@ class ms3d(_object):
     __getattr__ = lambda self, name: _swig_getattr(self, ms3d, name)
     __repr__ = _swig_repr
 
-    def __init__(self, filename, overrideAmbient=False, overrideSpecular=False, overrideDiffuse=False, overrideEmissive=False):
-        this = _ms3d.new_ms3d(filename, overrideAmbient, overrideSpecular, overrideDiffuse, overrideEmissive)
+    def __init__(self, *args):
+        this = _ms3d.new_ms3d(*args)
         try:
             self.this.append(this)
         except Exception:
@@ -133,6 +136,12 @@ class ms3d(_object):
     def drawGL3(self):
         return _ms3d.ms3d_drawGL3(self)
 
+    def createRectangle(self, width, height, texture):
+        return _ms3d.ms3d_createRectangle(self, width, height, texture)
+
+    def changeRectangleTexture(self, texture):
+        return _ms3d.ms3d_changeRectangleTexture(self, texture)
+
     def prepare(self, shader):
         return _ms3d.ms3d_prepare(self, shader)
 
@@ -141,8 +150,15 @@ class ms3d(_object):
 
     def changeTexture(self, groupName, textureFile):
         return _ms3d.ms3d_changeTexture(self, groupName, textureFile)
+    __swig_getmethods__["initGlew"] = lambda x: _ms3d.ms3d_initGlew
+    if _newclass:
+        initGlew = staticmethod(_ms3d.ms3d_initGlew)
 ms3d_swigregister = _ms3d.ms3d_swigregister
 ms3d_swigregister(ms3d)
+
+def ms3d_initGlew():
+    return _ms3d.ms3d_initGlew()
+ms3d_initGlew = _ms3d.ms3d_initGlew
 
 class Tex(_object):
     __swig_setmethods__ = {}

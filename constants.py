@@ -1,17 +1,19 @@
 import pygame
 
+from ms3d import ms3d
+
 
 class Window:
-    # WIDTH = 1920
-    # HEIGHT = 1080
-    # FULLSCREEN = True
+    WIDTH = 1920
+    HEIGHT = 1080
+    FULLSCREEN = True
 
-    #WIDTH = 1024
-    #HEIGHT = 512
+    # WIDTH = 1024
+    # HEIGHT = 512
 
-    WIDTH = 1440
-    HEIGHT = 900
-    FULLSCREEN = False
+    # WIDTH = 1440
+    # HEIGHT = 900
+    # FULLSCREEN = False
 
     VERSION = "v0.1"
 
@@ -28,7 +30,10 @@ class HUD:
     POINTS100_X = (-200, 200+PLAYER2_DELTA_X)
     POINTS100_SPEED_DIRECTION = (1, -1)
     POINTS_HUD = None
+    POWERUPS_HUD = None
     INVENTORY_HUD = None
+    PAUSED_MENU = None
+    PAUSED_MENU_RECTANGLE = None  # type: ms3d
 
 
 class KeyboardKeys:
@@ -108,13 +113,14 @@ class Sounds:
 
 
 class PowerUps:
-    TIME_OUT = 10000  # in miliseconds
+    TIME_OUT = 10000  # in milliseconds
     INVENTORY_SIZE = 5
     SIZE = 50
+    INVENTORY_ICON_RECTANGLE = None  # type: ms3d
     EMPTY = None
-    CRATE = None
+    CRATE = None  # type: ms3d
     SHIELD = None
-    ENERGY_SHIELD = None
+    ENERGY_SHIELD = None  # type: ms3d
     HYDRAULICS = None
     CALL_911 = None
     SHRINK = None

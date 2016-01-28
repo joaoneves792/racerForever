@@ -15,7 +15,7 @@ from SmokeEmitter import SmokeEmitter
 from Truck import Truck
 from VehicleModel import VehicleModel
 from constants import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps
-from utils import car_circle_collision, drawText, draw_rectangle, box_collision
+from utils import car_circle_collision, box_collision, text_to_texture
 
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
 
@@ -33,13 +33,16 @@ class Game:
         self.emergency_vehicles = []
         self.available_player_vehicles = []
 
-        self.pointsHUD = None
-        self.powerUpsHUD = None
-        
-
         self.init_display()
         self.draw_loading_screen()
         self.load_resources()
+
+        GL.GLM.selectMatrix(MATRIX.PROJECTION)
+        GL.GLM.perspective(25, Window.WIDTH/Window.HEIGHT, 1, 15000)
+        GL.GLM.selectMatrix(MATRIX.MODEL)
+        GL.GLM.loadIdentity()
+
+        GL.Lights.enableLighting()
 
         self.road = Road()
         
@@ -76,10 +79,12 @@ class Game:
         else:
             pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL | pygame.HWSURFACE)  # | pygame.FULLSCREEN)
 
+        ms3d.initGlew()  # VERY FUCKING IMPORTANT TO DO THIS HERE!!!!
+
         GL.Shader = shader("./shaders/vert.shader", "./shaders/frag.shader")
+        GL.Shader.use()
         GL.GLM = GLM(GL.Shader)
         GL.Lights = Lights(GL.Shader)
-    
 
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
@@ -95,12 +100,6 @@ class Game:
         glClearDepth(1)
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-        GL.GLM.perspective(25, Window.WIDTH/Window.HEIGHT, 1, 15000)
-        GL.GLM.selectMatrix(MATRIX.MODEL)
-        GL.GLM.loadIdentity()
-
-        GL.Lights.enableLighting()
 
     def load_resources(self):
         def fill_wheel_positions(vehicle, model):
@@ -136,10 +135,14 @@ class Game:
         SkidMarks.SKID_STRAIGHT = ms3d("./Road/skid_straight.ms3d")
         SkidMarks.SKID_STRAIGHT.prepare(GL.Shader)
 
-        self.pointsHUD = ms3d("./HUD/pointsHUD.ms3d")
-        self.pointsHUD.prepare(GL.Shader)
-        self.powerUpsHUD = ms3d("./HUD/powerupsHUD.ms3d")
-        self.powerUpsHUD.prepare(GL.Shader)
+        HUD.POINTS_HUD = ms3d("./HUD/pointsHUD.ms3d")
+        HUD.POINTS_HUD.prepare(GL.Shader)
+        HUD.POWERUPS_HUD = ms3d("./HUD/powerupsHUD.ms3d")
+        HUD.POWERUPS_HUD.prepare(GL.Shader)
+        HUD.PAUSED_MENU = Tex("./HUD/paused.png").getTexture()
+        HUD.PAUSED_MENU_RECTANGLE = ms3d()
+        HUD.PAUSED_MENU_RECTANGLE.createRectangle(512, 256, HUD.PAUSED_MENU)
+        HUD.PAUSED_MENU_RECTANGLE.prepare(GL.Shader)
 
         ParticleManager.Particles.POINTS = ms3d("./HUD/pointsParticle.ms3d")
         ParticleManager.Particles.POINTS.prepare(GL.Shader)
@@ -167,6 +170,9 @@ class Game:
         PowerUps.PHASER = Tex("./PowerUps/phaser.png").getTexture()
         PowerUps.SHIELD = Tex("./PowerUps/shield.png").getTexture()
         PowerUps.SHRINK = Tex("./PowerUps/shrink.png").getTexture()
+        PowerUps.INVENTORY_ICON_RECTANGLE = ms3d()
+        PowerUps.INVENTORY_ICON_RECTANGLE.createRectangle(32, 32, PowerUps.EMPTY)
+        PowerUps.INVENTORY_ICON_RECTANGLE.prepare(GL.Shader)
 
         self.available_player_vehicles.append(load_vehicle("./Cars/Gallardo/gallardo_play_optimized.ms3d", "./Cars/Gallardo/gallardoWheel.ms3d", 4))
 
@@ -182,7 +188,6 @@ class Game:
         self.available_vehicles.append(load_vehicle("./Cars/NSX/NSXplay_optimized.ms3d", "./Cars/NSX/NSXWheel.ms3d", 4, "./Cars/NSX/NSXlod.ms3d"))
         self.available_vehicles.append(load_vehicle("./Cars/Skyline/skylineplay_optimized.ms3d", "./Cars/Skyline/skyline_wheel.ms3d", 4, "./Cars/Skyline/skylinelod.ms3d"))
         self.available_vehicles.append(load_vehicle("./Cars/LP570_S/LP570play_optimized.ms3d", "./Cars/LP570_S/LP570wheel.ms3d", 4, "./Cars/LP570_S/LP570lod.ms3d"))
-
 
     def generate_emergency_vehicle(self, vertical_position):
         Sounds.SIREN.play()    
@@ -370,52 +375,22 @@ class Game:
 
     @staticmethod
     def draw_loading_screen():
-        pass
+        picture = Tex("./HUD/loading.png").getTexture()
+        rectangle = ms3d()
+        rectangle.createRectangle(Window.WIDTH, Window.HEIGHT, picture)
+        rectangle.prepare(GL.Shader)
 
-        #picture = Tex("./HUD/loading.png").getTexture()
-        #glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        #glMatrixMode(GL_PROJECTION)
-        #glPushMatrix()
-        #glLoadIdentity()
-        #glOrtho(0, Window.WIDTH, 0, Window.HEIGHT, -1, 1)
-        #glMatrixMode(GL_MODELVIEW)
-       #
-       # glEnable(GL_TEXTURE_2D)
-       # glBindTexture(GL_TEXTURE_2D, picture)
-       # glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, 1))
-       # glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, 1))
-       # glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, 1))
-       # glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, 1))
-       # glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
+        glClearColor(0, 0, 0, 0)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        GL.GLM.selectMatrix(MATRIX.PROJECTION)
+        GL.GLM.loadIdentity()
+        GL.GLM.otho(0, Window.WIDTH, 0, Window.HEIGHT, 1, -1)
+        GL.GLM.selectMatrix(MATRIX.MODEL)
+        GL.Lights.disableLighting()
 
-       # glBegin(GL_TRIANGLES)
-       # glNormal3f(0, 0, 1)
-       # glTexCoord2f(0, 1)
-       # glVertex3f(0, 0, 0)
-       # glNormal3f(0, 0, 1)
-       # glTexCoord2f(1, 1)
-       # glVertex3f(Window.WIDTH, 0, 0)
-       # glNormal3f(0, 0, 1)
-       # glTexCoord2f(0, 0)
-       # glVertex3f(0, Window.HEIGHT, 0)
-#
-#        glNormal3f(0, 0, 1)
-#        glTexCoord2f(1, 1)
-#        glVertex3f(Window.WIDTH, 0, 0)
-#        glNormal3f(0, 0, 1)
-#        glTexCoord2f(0, 0)
-#        glVertex3f(0, Window.HEIGHT, 0)
-#        glNormal3f(0, 0, 1)
-#        glTexCoord2f(1, 0)
-#        glVertex3f(Window.WIDTH, Window.HEIGHT, 0)
-#        glEnd()
-        
-#        glDisable(GL_TEXTURE_2D)
+        rectangle.drawGL3()
 
-#        glMatrixMode(GL_PROJECTION)
-#        glPopMatrix()
-#        glMatrixMode(GL_MODELVIEW)
-#        pygame.display.flip()
+        pygame.display.flip()
 
     def draw(self):
         glClearColor(0, 0, 0, 0)
@@ -462,7 +437,7 @@ class Game:
                 color = (255, 0, 0, 255)
             GL.GLM.pushMatrix()
             GL.GLM.scale(1, -1, 1)
-            self.pointsHUD.drawGL3()
+            HUD.POINTS_HUD.drawGL3()
             GL.GLM.popMatrix()
             glDisable(GL_TEXTURE_2D)
             #glColor3f(0, 0, 0)
@@ -470,40 +445,26 @@ class Game:
             GL.GLM.pushMatrix()
             GL.GLM.translate(0, Window.HEIGHT, 0)
             GL.GLM.scale(1, -1, 1)
-            self.powerUpsHUD.drawGL3()
+            HUD.POWERUPS_HUD.drawGL3()
             GL.GLM.pushMatrix()
-            GL.GLM.translate(-10, 40, 0)
-            GL.GLM.rotate(180, 1, 0, 0)
+            GL.GLM.translate(-10, 10, 0)
+            # GL.GLM.rotate(180, 1, 0, 0)
             for i in range(PowerUps.INVENTORY_SIZE):
                 GL.GLM.translate(58, 0, 0)
-                #if i < len(player.inventory):
-                    #draw_rectangle(32, 32, player.inventory[i].icon)
-                #else:
-                    #draw_rectangle(32, 32, PowerUps.EMPTY)
+                if i < len(player.inventory):
+                    PowerUps.INVENTORY_ICON_RECTANGLE.changeRectangleTexture(player.inventory[i].icon)
+                    PowerUps.INVENTORY_ICON_RECTANGLE.drawGL3()
+                else:
+                    PowerUps.INVENTORY_ICON_RECTANGLE.changeRectangleTexture(PowerUps.EMPTY)
+                    PowerUps.INVENTORY_ICON_RECTANGLE.drawGL3()
             GL.GLM.popMatrix()
             GL.GLM.popMatrix()
-
-
-        #glPushMatrix()
-        #glLoadIdentity()
-        ## glOrtho(RoadPositions.REAR_LIMIT, RoadPositions.FORWARD_LIMIT, 0, RoadPositions.UPPER_LIMIT, -1, 1)
-        #glOrtho(-Window.WIDTH//2, Window.WIDTH//2, 0, Window.HEIGHT, -1, 1)
-        #glMatrixMode(GL_MODELVIEW)
-        #glPushMatrix()
-        #glLoadIdentity()
 
         ParticleManager.draw()
 
         GL.GLM.popMatrix()
         GL.GLM.selectMatrix(MATRIX.PROJECTION)
         GL.GLM.popMatrix()
-
-
-
-        #glPopMatrix()
-
-        #glMatrixMode(GL_PROJECTION)
-        #glPopMatrix()
 
         if self.paused:
             self.draw_paused_menu()
@@ -517,53 +478,20 @@ class Game:
 
     @staticmethod
     def draw_paused_menu():
-        picture = Tex("./HUD/paused.png").getTexture()
-        glMatrixMode(GL_PROJECTION)
-        glPushMatrix()
-        glLoadIdentity()
-        glOrtho(0, Window.WIDTH, 0, Window.HEIGHT, -1, 1)
-        glMatrixMode(GL_MODELVIEW)
+        GL.GLM.selectMatrix(MATRIX.PROJECTION)
+        GL.GLM.pushMatrix()
+        GL.GLM.loadIdentity()
+        GL.GLM.otho(0, Window.WIDTH, 0, Window.HEIGHT, -1, 1)
+        GL.GLM.selectMatrix(MATRIX.MODEL)
 
-        glPushMatrix()
+        GL.GLM.pushMatrix()
+        GL.GLM.translate(Window.WIDTH/2-256, Window.HEIGHT/2-128, 0)
+        HUD.PAUSED_MENU_RECTANGLE.drawGL3()
+        GL.GLM.popMatrix()
 
-        glTranslatef(Window.WIDTH/2-256, Window.HEIGHT/2-128, 0)
-
-        glEnable(GL_TEXTURE_2D)
-        glBindTexture(GL_TEXTURE_2D, picture)
-        glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, 1))
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, 1))
-        glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, 1))
-        glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, 1))
-        glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
-
-        glBegin(GL_TRIANGLES)
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(0, 1)
-        glVertex3f(0, 0, 0)
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(1, 1)
-        glVertex3f(512, 0, 0) 
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(0, 0)
-        glVertex3f(0, 256, 0)
-
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(1, 1)
-        glVertex3f(512, 0, 0)    
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(0, 0)
-        glVertex3f(0, 256, 0)    
-        glNormal3f(0, 0, 1)
-        glTexCoord2f(1, 0)
-        glVertex3f(512, 256, 0)    
-        glEnd()
-        
-        glDisable(GL_TEXTURE_2D)
-        glPopMatrix()
-
-        glMatrixMode(GL_PROJECTION)
-        glPopMatrix()
-        glMatrixMode(GL_MODELVIEW)
+        GL.GLM.selectMatrix(MATRIX.PROJECTION)
+        GL.GLM.popMatrix()
+        GL.GLM.selectMatrix(MATRIX.MODEL)
 
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
