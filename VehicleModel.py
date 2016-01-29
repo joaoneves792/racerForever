@@ -27,3 +27,6 @@ class VehicleModel:
         self.rear_circle.append(0)
         self.front_circle.append(+self.width_offset - self.radius)
         self.front_circle.append(0)
+
+    def testDraw(self):
+        self.model.drawGL3()

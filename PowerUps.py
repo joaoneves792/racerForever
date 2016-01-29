@@ -1,5 +1,5 @@
 from OpenGLContext import GL
-from constants import PowerUps, Speed, RoadPositions
+from singletons import PowerUps, Speed, RoadPositions
 
 
 class PowerUp:

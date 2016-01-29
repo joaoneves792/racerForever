@@ -1,7 +1,7 @@
 import random
 
 import ParticleManager
-from constants import Speed
+from singletons import Speed
 
 
 class SmokeEmitter(ParticleManager.ParticleEmitter3D):

@@ -2,7 +2,7 @@ import math
 
 from ms3d import ms3d, LIGHTS
 from OpenGLContext import GL
-from constants import RoadPositions, Speed
+from singletons import RoadPositions, Speed, LightPositions
 
 
 class Road:
@@ -13,6 +13,8 @@ class Road:
         self.road_night.prepare(GL.Shader)
         self.road_lod = ms3d("./Road/road_lod.ms3d")
         self.road_lod.prepare(GL.Shader)
+        self.road_shadows = ms3d("./Road/road_shadows.ms3d")
+        self.road_shadows.prepare(GL.Shader)
         self.sky = ms3d("./Road/sky.ms3d")
         self.sky.prepare(GL.Shader)
         self.length = 600  # calculated by measuring it in milkshape (see comment at beginning of file!)
@@ -33,7 +35,8 @@ class Road:
         self.switch_lights_on = False
         self.sunrise = False
         self.sunset = False
-        self.sun_angle = 3*math.pi/4
+        #self.sun_angle = 3*math.pi/4
+        self.sun_angle = math.pi/2
 
         self.setup_lights()
 
@@ -47,7 +50,7 @@ class Road:
         GL.Lights.setCone(LIGHTS.LIGHT_9, 0, -0.1, 1, 17)
 
         GL.Lights.setPosition(LIGHTS.LIGHT_0, RoadPositions.MIDDLE_LANE, 1500, 0)
-        GL.Lights.setColor(LIGHTS.LIGHT_0, 255, 255, 204, -0.005)
+        GL.Lights.setColor(LIGHTS.LIGHT_0, 255, 255, 204, -50)
         GL.Lights.setCone(LIGHTS.LIGHT_0, 0, -1, 0, -180)
 
         GL.Lights.enable(LIGHTS.LIGHT_0)
@@ -58,7 +61,7 @@ class Road:
             GL.Lights.enable(LIGHTS.LIGHT_0)
             self.sunrise = False
             self.sun = True
-#
+
         if self.sunset:
             GL.Lights.disable(LIGHTS.LIGHT_0)
             self.sunset = False
@@ -70,6 +73,7 @@ class Road:
             GL.Lights.enable(LIGHTS.LIGHT_9)
             self.switch_lights_on = False
             self.lights = True
+            LightPositions.LAMPS = True
 
         if self.switch_lights_off:
             for light in range(LIGHTS.LIGHT_1, LIGHTS.LIGHT_1+self.num_of_lights):
@@ -77,6 +81,7 @@ class Road:
             GL.Lights.disable(LIGHTS.LIGHT_9)
             self.switch_lights_off = False
             self.lights = False
+            LightPositions.LAMPS = False
 
         intensity = 0
         if self.lights:
@@ -88,13 +93,15 @@ class Road:
 
                 # Magic...
                 tile_index = (l+half+((delta//nlights)+(1 if l < (delta % nlights) else 0))*nlights) % self.num_of_tiles
-                GL.Lights.setPosition(light, RoadPositions.LEFT_LANE, 100, self.z[tile_index]+self.lights_offset)
+                GL.Lights.setPosition(light, LightPositions.LAMP_X, LightPositions.LAMP_Y, self.z[tile_index]+self.lights_offset)
 
         if self.sun:
             sin = math.sin(self.sun_angle)
             color = (min(6*sin*255, 255), min(2*sin*255, 255), min(1*sin*255, 255), intensity)
             GL.Lights.setColor(LIGHTS.LIGHT_0, color[0], color[1], color[2], -0.005)
-            GL.Lights.setPosition(LIGHTS.LIGHT_0, RoadPositions.MIDDLE_LANE, 100*self.sun_height, self.length*self.sun_pos)
+            LightPositions.SUN_Y = 100*self.sun_height
+            LightPositions.SUN_Z = self.length*self.sun_pos
+            GL.Lights.setPosition(LIGHTS.LIGHT_0, LightPositions.SUN_X, LightPositions.SUN_Y, LightPositions.SUN_Z)
 
         for z in self.z:
             GL.GLM.pushMatrix()
@@ -112,6 +119,13 @@ class Road:
         GL.GLM.scale(12, 12, 12)
         self.sky.drawGL3()
         GL.GLM.popMatrix()
+
+    def draw_shadow_pass(self):
+        for z in self.z:
+            GL.GLM.pushMatrix()
+            GL.GLM.translate(0, 0, z)
+            self.road_shadows.drawGL3()
+            GL.GLM.popMatrix()
 
     def advance(self, time_delta):
         for i in range(self.num_of_tiles):
@@ -132,7 +146,7 @@ class Road:
         self.sun_height = math.sin(self.sun_angle)
         self.sun_pos = math.cos(self.sun_angle)
 
-        if self.lights and (math.radians(90) >= self.sun_angle >= math.radians(50)):
+        if self.lights and (math.radians(90) >= self.sun_angle >= math.radians(60)):
             self.switch_lights_off = True
 
         if not self.lights and self.sun_angle >= math.radians(140):

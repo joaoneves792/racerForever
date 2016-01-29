@@ -181,6 +181,15 @@ class Tex(_object):
 Tex_swigregister = _ms3d.Tex_swigregister
 Tex_swigregister(Tex)
 
+
+_ms3d.MODEL_swigconstant(_ms3d)
+MODEL = _ms3d.MODEL
+
+_ms3d.VIEW_swigconstant(_ms3d)
+VIEW = _ms3d.VIEW
+
+_ms3d.PROJECTION_swigconstant(_ms3d)
+PROJECTION = _ms3d.PROJECTION
 class GLM(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, GLM, name, value)
@@ -206,6 +215,9 @@ class GLM(_object):
     def otho(self, left, right, bottom, top, near, far):
         return _ms3d.GLM_otho(self, left, right, bottom, top, near, far)
 
+    def lookAt(self, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ):
+        return _ms3d.GLM_lookAt(self, eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)
+
     def loadIdentity(self):
         return _ms3d.GLM_loadIdentity(self)
 
@@ -223,6 +235,12 @@ class GLM(_object):
 
     def popMatrix(self):
         return _ms3d.GLM_popMatrix(self)
+
+    def changeShader(self, newShader):
+        return _ms3d.GLM_changeShader(self, newShader)
+
+    def getMVP(self):
+        return _ms3d.GLM_getMVP(self)
 GLM_swigregister = _ms3d.GLM_swigregister
 GLM_swigregister(GLM)
 
@@ -267,6 +285,39 @@ class Lights(_object):
         return _ms3d.Lights_setCone(self, light, direction_x, direction_y, direction_z, angle)
 Lights_swigregister = _ms3d.Lights_swigregister
 Lights_swigregister(Lights)
+
+
+_ms3d.SHADOW_MAP_SIZE_swigconstant(_ms3d)
+SHADOW_MAP_SIZE = _ms3d.SHADOW_MAP_SIZE
+class Shadows(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Shadows, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Shadows, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, glm, normalShader, shadowMapShader, window_width, window_height, shadow_map_width, shadow_map_height):
+        this = _ms3d.new_Shadows(glm, normalShader, shadowMapShader, window_width, window_height, shadow_map_width, shadow_map_height)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _ms3d.delete_Shadows
+    __del__ = lambda self: None
+
+    def prepareToMapDepth(self, lightPosX, lightPosY, lightPosZ):
+        return _ms3d.Shadows_prepareToMapDepth(self, lightPosX, lightPosY, lightPosZ)
+
+    def changeOrthoBox(self, left, right, bottom, top, near, far):
+        return _ms3d.Shadows_changeOrthoBox(self, left, right, bottom, top, near, far)
+
+    def returnToNormalDrawing(self):
+        return _ms3d.Shadows_returnToNormalDrawing(self)
+
+    def getShadowTexture(self):
+        return _ms3d.Shadows_getShadowTexture(self)
+Shadows_swigregister = _ms3d.Shadows_swigregister
+Shadows_swigregister(Shadows)
 
 # This file is compatible with both classic and new-style classes.
 

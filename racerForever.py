@@ -2,7 +2,7 @@ import random
 import pygame
 from OpenGL.GL import *
 
-from ms3d import ms3d, Tex, shader, Lights, GLM, MATRIX, LIGHTS
+from ms3d import ms3d, Tex, shader, Lights, GLM, Shadows, MATRIX
 
 from OpenGLContext import GL
 import ParticleManager
@@ -14,7 +14,7 @@ from Road import Road
 from SmokeEmitter import SmokeEmitter
 from Truck import Truck
 from VehicleModel import VehicleModel
-from constants import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps
+from singletons import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps, LightPositions
 from utils import car_circle_collision, box_collision, text_to_texture
 
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
@@ -82,9 +82,12 @@ class Game:
         ms3d.initGlew()  # VERY FUCKING IMPORTANT TO DO THIS HERE!!!!
 
         GL.Shader = shader("./shaders/vert.shader", "./shaders/frag.shader")
+        GL.Depth_shader = shader("./shaders/shadow_vert.shader", "./shaders/shadow_frag.shader")
         GL.Shader.use()
         GL.GLM = GLM(GL.Shader)
         GL.Lights = Lights(GL.Shader)
+        GL.Shadows = Shadows(GL.GLM, GL.Shader, GL.Depth_shader, Window.WIDTH, Window.HEIGHT, 8192, 8192)
+        GL.Shadows.changeOrthoBox(-2000, 2000, -2000, 2000, -1000, 1000)
 
         glEnable(GL_DEPTH_TEST)
         glDepthFunc(GL_LEQUAL)
@@ -238,6 +241,8 @@ class Game:
 
         if self.paused:
             self.last_update_timestamp = current_time
+            for player in self.players:
+                player.update_camera()
             return       
         
         self.road.advance(time_delta)
@@ -393,9 +398,25 @@ class Game:
         pygame.display.flip()
 
     def draw(self):
-        glClearColor(0, 0, 0, 0)
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
+        GL.Depth_shader.use()
+        if LightPositions.LAMPS:
+            GL.Shadows.prepareToMapDepth(50, LightPositions.LAMP_Y, 0)
+        else:
+            GL.Shadows.prepareToMapDepth(-LightPositions.SUN_X, LightPositions.SUN_Y, LightPositions.SUN_Z)
+        for player in self.players:
+            player.draw()
+
+        self.road.draw_shadow_pass()
+
+        for npv in self.ai:
+            npv.draw()
+
+        for item in self.dropped_items:
+            item.draw()
+
+        GL.Shader.use()
+        GL.Shadows.returnToNormalDrawing()
         for player in self.players:
             player.draw()
         
@@ -408,16 +429,15 @@ class Game:
             item.draw()
 
         # ParticleManager.draw_3d()
-
         self.draw_hud()
-        
+
         pygame.display.flip()
  
     def draw_hud(self): 
         GL.Lights.disableLighting()
 
-        glDisable(GL_DEPTH_TEST)
-        glDepthMask(GL_FALSE)
+        # glDisable(GL_DEPTH_TEST)
+        # glDepthMask(GL_FALSE)
 
         GL.GLM.selectMatrix(MATRIX.PROJECTION)
         GL.GLM.pushMatrix()
@@ -439,15 +459,15 @@ class Game:
             GL.GLM.scale(1, -1, 1)
             HUD.POINTS_HUD.drawGL3()
             GL.GLM.popMatrix()
-            glDisable(GL_TEXTURE_2D)
-            #glColor3f(0, 0, 0)
-            #drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (0, 0, 0, 1), "SCORE: " + str(int(player.score)))
+            # glDisable(GL_TEXTURE_2D)
+            # glColor3f(0, 0, 0)
+            # drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (0, 0, 0, 1), "SCORE: " + str(int(player.score)))
             GL.GLM.pushMatrix()
             GL.GLM.translate(0, Window.HEIGHT, 0)
             GL.GLM.scale(1, -1, 1)
             HUD.POWERUPS_HUD.drawGL3()
             GL.GLM.pushMatrix()
-            GL.GLM.translate(-10, 10, 0)
+            GL.GLM.translate(-10, 10, 0.5)
             # GL.GLM.rotate(180, 1, 0, 0)
             for i in range(PowerUps.INVENTORY_SIZE):
                 GL.GLM.translate(58, 0, 0)
@@ -472,9 +492,9 @@ class Game:
         GL.GLM.selectMatrix(MATRIX.MODEL)
 
         GL.Lights.enableLighting()
-        glEnable(GL_DEPTH_TEST)
-        glDepthMask(GL_TRUE)
-        glEnable(GL_BLEND)
+        # glEnable(GL_DEPTH_TEST)
+        # glDepthMask(GL_TRUE)
+        # glEnable(GL_BLEND)
 
     @staticmethod
     def draw_paused_menu():

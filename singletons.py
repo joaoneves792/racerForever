@@ -11,9 +11,9 @@ class Window:
     # WIDTH = 1024
     # HEIGHT = 512
 
-    # WIDTH = 1440
-    # HEIGHT = 900
-    # FULLSCREEN = False
+    #WIDTH = 1440
+    #HEIGHT = 900
+    #FULLSCREEN = False
 
     VERSION = "v0.1"
 
@@ -126,3 +126,12 @@ class PowerUps:
     SHRINK = None
     PHASER_FIRE = None
     PHASER = None
+
+
+class LightPositions:
+    LAMP_X = RoadPositions.LEFT_LANE
+    LAMP_Y = 100
+    SUN_X = RoadPositions.RIGHT_LANE
+    SUN_Y = 0
+    SUN_Z = 0
+    LAMPS = False

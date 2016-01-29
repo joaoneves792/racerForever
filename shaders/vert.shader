@@ -11,18 +11,23 @@ out vec2 texture_coord_from_vshader;
 out vec3 normal_cameraspace;
 out vec3 eyeDirection_cameraspace;
 out vec3 lightDirection_cameraspace[MAX_LIGHTS];
+out vec4 ShadowCoord;
 
 uniform mat4 Model;
 uniform mat4 View;
 uniform mat4 Projection;
+uniform mat4 depthBiasMVP;
 uniform vec3 lightPosition_worldspace[MAX_LIGHTS];
 uniform int lightsEnabled[MAX_LIGHTS];
 
 void main() {
+	position_worldspace = (Model * position).xyz;
+	ShadowCoord = depthBiasMVP * Model * position;
+	
 	gl_Position = Projection * View * Model * position;
 	texture_coord_from_vshader = texture_coord;
+	
 
-	position_worldspace = (Model * position).xyz;
 
 	vec3 vertexPosition_cameraspace = (View * Model * position).xyz;
 	eyeDirection_cameraspace = vec3(0,0,0) - vertexPosition_cameraspace;

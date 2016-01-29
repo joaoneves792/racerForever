@@ -1,7 +1,7 @@
 import random
 
 from AI import AI
-from constants import RoadPositions
+from singletons import RoadPositions
 from PowerUps import Call911, Hydraulics, Shield, Shrink, Phaser
 
 

@@ -3,7 +3,7 @@ import random
 
 from OpenGLContext import GL
 from Car import Car
-from constants import RoadPositions, Sounds, Speed, SkidMarks
+from singletons import RoadPositions, Sounds, Speed, SkidMarks
 from utils import car_circle_collision
 
 

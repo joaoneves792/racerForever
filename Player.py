@@ -1,7 +1,7 @@
 from OpenGLContext import GL
 import ParticleManager
 from Car import Car
-from constants import HUD, Speed, RoadPositions, PowerUps, Window
+from singletons import HUD, Speed, RoadPositions, PowerUps, Window
 from PointsEmitter import Plus100Points, Minus100Points
 from utils import car_circle_collision, draw_3d_rectangle
 from ms3d import MATRIX, LIGHTS
@@ -151,6 +151,18 @@ class Player(Car):
         if self.powerUpTimeOut <= 0:
             self.disablePowerUps()
             self.powerUpTimeOut = 0
+        self.update_camera()
+
+    def update_camera(self):
+        # Update the camera
+        GL.GLM.selectMatrix(MATRIX.VIEW)
+        GL.GLM.loadIdentity()
+        GL.GLM.translate(0, 0, -150)
+        GL.GLM.rotate(180, 0, 1, 0)
+        GL.GLM.rotate(-self.camera_y_rot, 1, 0, 0)
+        GL.GLM.rotate(self.camera_x_rot, 0, 1, 0)
+        GL.GLM.translate(-self.vertical_position, -30, -self.horizontal_position)
+        GL.GLM.selectMatrix(MATRIX.MODEL)
 
     def draw_car(self):
 
@@ -166,14 +178,6 @@ class Player(Car):
         #glTranslate(-self.vertical_position, -30, -self.horizontal_position)
         #glMatrixMode(GL_MODELVIEW)
 
-        GL.GLM.selectMatrix(MATRIX.VIEW)
-        GL.GLM.loadIdentity()
-        GL.GLM.translate(0, 0, -150)
-        GL.GLM.rotate(180, 0, 1, 0)
-        GL.GLM.rotate(-self.camera_y_rot, 1, 0, 0)
-        GL.GLM.rotate(self.camera_x_rot, 0, 1, 0)
-        GL.GLM.translate(-self.vertical_position, -30, -self.horizontal_position)
-        GL.GLM.selectMatrix(MATRIX.MODEL)
 
         GL.GLM.pushMatrix()
         if self.fire_phaser:

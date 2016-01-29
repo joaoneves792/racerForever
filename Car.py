@@ -1,5 +1,5 @@
 from OpenGLContext import GL
-from constants import Steering, RoadPositions, Speed
+from singletons import Steering, RoadPositions, Speed
 from utils import box_collision, rotate_2d_vector
 
 

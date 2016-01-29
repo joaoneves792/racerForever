@@ -1,7 +1,7 @@
 import random
 
 import ParticleManager
-from constants import Speed, Window
+from singletons import Speed, Window
 
 
 class PointsEmitter(ParticleManager.ParticleEmitter):

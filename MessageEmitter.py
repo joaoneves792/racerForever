@@ -1,5 +1,5 @@
 import ParticleManager
-from constants import Window
+from singletons import Window
 
 
 class MessageEmitter(ParticleManager.ParticleEmitter):
