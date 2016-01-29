@@ -1,3 +1,8 @@
+#! /bin/python3
+
+import sys
+sys.path.append('./libs')
+
 import random
 import pygame
 from OpenGL.GL import *
