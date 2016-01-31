@@ -316,6 +316,9 @@ class Shadows(_object):
 
     def getShadowTexture(self):
         return _ms3d.Shadows_getShadowTexture(self)
+
+    def setShadowType(self, type):
+        return _ms3d.Shadows_setShadowType(self, type)
 Shadows_swigregister = _ms3d.Shadows_swigregister
 Shadows_swigregister(Shadows)
 

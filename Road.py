@@ -35,7 +35,8 @@ class Road:
         self.switch_lights_on = False
         self.sunrise = False
         self.sunset = False
-        #self.sun_angle = 3*math.pi/4
+        # self.sun_angle = math.radians(61)
+        # self.sun_angle = 3*math.pi/4
         self.sun_angle = math.pi/2
 
         self.setup_lights()

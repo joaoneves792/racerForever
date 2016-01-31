@@ -1,6 +1,6 @@
-from OpenGL.GL import *
-from OpenGLContext import GL
 
+from OpenGLContext import GL
+from ms3d import ms3d, Tex
 
 class Particles:
 
@@ -10,7 +10,8 @@ class Particles:
     HOLY_SHIT = None 
     MAYHEM = None
     ANNIHILATION = None
-    SMOKE = 0
+    SMOKE = None  # type ms3d
+    SMOKETEX = None  # type Tex
     MAX_EMMITTERS = 20 
     POOLED_PARTICLES = 120
     MAX_EMMITTERS3D = 6
@@ -68,15 +69,15 @@ class Particle3D:
         self.accel_y = 0
         self.accel_z = 0
         self.texture = 0
-        self.set_properties(0,0,0, 0, 0, 0, 0,0,0,0,0,0, 0, False)
+        self.set_properties(0,0,0, 0, 0, 0, 0,0,0,0,0,0,False)
 
-    def set_properties(self, x, y, z, life, angle, speed_x, speed_y, speed_z, accel_x, accel_y, accel_z, size, texture, deflate):
+    def set_properties(self, x, y, z, life, angle, speed_x, speed_y, speed_z, accel_x, accel_y, accel_z, shape, deflate):
         self.z = z
         self.speed_z = speed_z
         self.accel_x = accel_x
         self.accel_y = accel_y
         self.accel_z = accel_z
-        self.texture = texture
+        self.shape = shape
         self.x = x
         self.y = y
         self.life = life
@@ -84,8 +85,8 @@ class Particle3D:
         self.angle = angle
         self.speed_x = speed_x
         self.speed_y = speed_y
-        self.size = size
-        self.original_size = size
+        self.size = 1
+        self.original_size = 1
         self.alpha = 1
         self.deflate = deflate
 
@@ -111,41 +112,11 @@ class Particle3D:
         self.z += self.speed_z*time_delta
 
     def draw(self):
-        glEnable(GL_TEXTURE_2D)
-        glBindTexture(GL_TEXTURE_2D, self.texture)
-        glMaterialfv(GL_FRONT, GL_AMBIENT, (1, 1, 1, self.alpha))
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, (1, 1, 1, self.alpha))
-        glMaterialfv(GL_FRONT, GL_SPECULAR, (1, 1, 1, self.alpha))
-        glMaterialfv(GL_FRONT, GL_EMISSION, (0.5, 0.5, 0.5, self.alpha))
-        glMaterialfv(GL_FRONT, GL_SHININESS, 0.0)
-
-        glPushMatrix()
-        glTranslatef(self.y, self.z, self.x)
-
-        glBegin(GL_TRIANGLES)
-        glNormal3f(0,1, 0)
-        glTexCoord2f(0, 0)
-        glVertex3f(0, 0, 0)
-        glNormal3f(0, 1, 0)
-        glTexCoord2f(1, 0)
-        glVertex3f(self.size, 0, 0) 
-        glNormal3f(0, 1, 0)
-        glTexCoord2f(0, 1)
-        glVertex3f(0, 0, self.size)
-
-        glNormal3f(0, 1, 0)
-        glTexCoord2f(1, 0)
-        glVertex3f(self.size, 0, 0)    
-        glNormal3f(0, 1, 0)
-        glTexCoord2f(0, 1)
-        glVertex3f(0, 0, self.size)    
-        glNormal3f(0, 1, 0)
-        glTexCoord2f(1, 1)
-        glVertex3f(self.size, 0, self.size)    
-        glEnd()
-        
-        glPopMatrix()
-        glDisable(GL_TEXTURE_2D)
+        GL.GLM.pushMatrix()
+        GL.GLM.translate(self.x, self.y, self.z)
+        GL.GLM.scale(self.size, self.size, self.size)
+        self.shape.drawGL3()
+        GL.GLM.popMatrix()
 
 
 class ParticlePool:

@@ -79,6 +79,7 @@ class Game:
         # pygame.display.gl_set_attribute(pygame.GL_STENCIL_SIZE, 4)
         pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, 1)
         pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, 8)
+
         if Window.FULLSCREEN:
             pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL | pygame.HWSURFACE | pygame.FULLSCREEN)
         else:
@@ -165,7 +166,8 @@ class Game:
         ParticleManager.Particles.ANNIHILATION = ms3d("./HUD/annihilation.ms3d")
         ParticleManager.Particles.ANNIHILATION.prepare(GL.Shader)
 
-        ParticleManager.Particles.SMOKE = Tex("./smoke_particle.png").getTexture()
+        ParticleManager.Particles.SMOKE = ms3d("./smoke.ms3d")
+        ParticleManager.Particles.SMOKE.prepare(GL.Shader)
 
         PowerUps.CRATE = ms3d("./PowerUps/crate/crate.ms3d")
         PowerUps.CRATE.prepare(GL.Shader)
@@ -295,13 +297,13 @@ class Game:
                     Sounds.BRAKE.play()
                     if not npv.crashed:
                         ParticleManager.add_new_3d_emitter(
-                            SmokeEmitter(npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
+                            SmokeEmitter(npv.vertical_position, 20, npv.horizontal_position, -npv.speed ))
                         npv.crashed = True
                 if player.fire_phaser:
                     if npv.horizontal_position > player.horizontal_position:
                         if self.check_collision_box(player.horizontal_position, player.vertical_position, RoadPositions.COLLISION_HORIZON, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
                             ParticleManager.add_new_3d_emitter(
-                                SmokeEmitter(npv.horizontal_position, npv.vertical_position, -npv.speed, 0))
+                                SmokeEmitter(npv.vertical_position, 20, npv.horizontal_position, -npv.speed))
                             self.ai.remove(npv)
         
         # (between non-players themselves)
@@ -312,15 +314,15 @@ class Game:
                     self.apply_collision_forces(self.ai[i], self.ai[j], impact_vector)
                     if not self.ai[i].crashed:
                         ParticleManager.add_new_3d_emitter(
-                            SmokeEmitter(self.ai[i].horizontal_position, self.ai[i].vertical_position, -self.ai[i].speed, 0))
+                            SmokeEmitter(self.ai[i].vertical_position, 20, self.ai[i].horizontal_position, -self.ai[i].speed))
                     if not self.ai[j].crashed:
                         ParticleManager.add_new_3d_emitter(
-                            SmokeEmitter(self.ai[j].horizontal_position, self.ai[j].vertical_position, -self.ai[j].speed, 0))
+                            SmokeEmitter(self.ai[i].vertical_position, 20, self.ai[i].horizontal_position, -self.ai[i].speed))
                         Sounds.CRASH.play()
                         Sounds.BRAKE.play()
                     self.ai[i].crashed = True
                     self.ai[j].crashed = True
-        
+
         # between players
         for i in range(len(self.players) - 1):
             for j in range(i+1, len(self.players)):
@@ -403,22 +405,30 @@ class Game:
         pygame.display.flip()
 
     def draw(self):
-
         GL.Depth_shader.use()
         if LightPositions.LAMPS:
             GL.Shadows.prepareToMapDepth(50, LightPositions.LAMP_Y, 0)
+            GL.Shadows.changeOrthoBox(-2000, 100, -500, 0, -200, 0)
         else:
             GL.Shadows.prepareToMapDepth(-LightPositions.SUN_X, LightPositions.SUN_Y, LightPositions.SUN_Z)
+            GL.Shadows.changeOrthoBox(-2000, 2000, -2000, 2000, -1000, 1000)
+
+        GL.GLM.selectMatrix(MATRIX.MODEL)
+        GL.GLM.pushMatrix()
+        #if not LightPositions.LAMPS:
+        GL.GLM.translate(0, -6, 0)
         for player in self.players:
             player.draw()
-
-        self.road.draw_shadow_pass()
 
         for npv in self.ai:
             npv.draw()
 
         for item in self.dropped_items:
             item.draw()
+
+        self.road.draw_shadow_pass()
+
+        GL.GLM.popMatrix()
 
         GL.Shader.use()
         GL.Shadows.returnToNormalDrawing()
@@ -433,11 +443,11 @@ class Game:
         for item in self.dropped_items:
             item.draw()
 
-        # ParticleManager.draw_3d()
+        ParticleManager.draw_3d()
         self.draw_hud()
 
         pygame.display.flip()
- 
+
     def draw_hud(self): 
         GL.Lights.disableLighting()
 

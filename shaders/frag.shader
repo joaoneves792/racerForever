@@ -15,6 +15,7 @@ uniform sampler2D texture_sampler;
 uniform sampler2DShadow shadowMap;
 uniform mat4 Model;
 uniform mat4 View;
+uniform mat4 Projection;
 uniform vec3 lightPosition_worldspace[MAX_LIGHTS];
 uniform vec4 lightCone[MAX_LIGHTS]; //x,y,z -> direction; w -> cutoffanglecos (if < 0 then emmits in all directions)
 uniform vec4 lightColor[MAX_LIGHTS]; // x,y,z -> color rgb; w -> intensity (if < 0 then does not decay) 
@@ -97,11 +98,11 @@ void main() {
 	}
 	//Shadows:
 	float bias = 0.009;
-	for (int i=0; i<3; i++){
-		visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[i]/500, (ShadowCoord.z-bias)/ ShadowCoord.w) ) );
+	for (int i=0; i<6; i++){
+		visibility -= 0.2*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[i]/2000, (ShadowCoord.z-bias)/ ShadowCoord.w) ) );
 	}
 
-
+	
 	out_color.rgb =matAmbient + emissive.xyz + visibility*light_color_sum;
 	out_color.a = texture(texture_sampler, texture_coord_from_vshader).a - transparency;
 }
