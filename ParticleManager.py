@@ -69,6 +69,7 @@ class Particle3D:
         self.accel_y = 0
         self.accel_z = 0
         self.texture = 0
+        self.shape = None  # type ms3d
         self.set_properties(0,0,0, 0, 0, 0, 0,0,0,0,0,0,False)
 
     def set_properties(self, x, y, z, life, angle, speed_x, speed_y, speed_z, accel_x, accel_y, accel_z, shape, deflate):
@@ -77,7 +78,7 @@ class Particle3D:
         self.accel_x = accel_x
         self.accel_y = accel_y
         self.accel_z = accel_z
-        self.shape = shape
+        self.shape = shape  # type ms3d
         self.x = x
         self.y = y
         self.life = life
@@ -91,9 +92,9 @@ class Particle3D:
         self.deflate = deflate
 
     def update(self, time_delta):
-        if self.z <= 0:
-            self.life = 0
-            return
+        # if self.z <= 0:
+        #     self.life = 0
+        #    return
         self.life -= time_delta
         if self.life < 0:
             return
@@ -102,7 +103,7 @@ class Particle3D:
             self.size = self.original_size * age_ratio if age_ratio > 0.5 else self.size
         else:
             self.size = self.original_size / age_ratio if age_ratio > 0.5 else self.size
-        self.alpha = age_ratio
+        self.alpha = 1-age_ratio
 
         self.speed_x += self.accel_x*time_delta
         self.speed_y += self.accel_y*time_delta
@@ -113,8 +114,9 @@ class Particle3D:
 
     def draw(self):
         GL.GLM.pushMatrix()
-        GL.GLM.translate(self.x, self.y, self.z)
+        GL.GLM.billboard(self.x, self.y, self.z)
         GL.GLM.scale(self.size, self.size, self.size)
+        self.shape.changeMaterialTransparency("0", self.alpha)
         self.shape.drawGL3()
         GL.GLM.popMatrix()
 
@@ -254,7 +256,10 @@ class ParticleEmitter3D():
     def draw(self):
         if self.done:
             return
-        self.particles.sort(key=(lambda p: p.z)) 
+        if self.particles[0].z > 0:
+            self.particles.sort(key=lambda p: p.z, reverse=True)
+        else:
+            self.particles.sort(key=lambda p: p.z, reverse=False)
         for particle in self.particles:
             if particle.life > 0:
                 particle.draw()

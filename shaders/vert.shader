@@ -15,7 +15,7 @@ out vec4 ShadowCoord;
 
 uniform mat4 Model;
 uniform mat4 View;
-uniform mat4 Projection;
+uniform mat4 MVP;
 uniform mat4 depthBiasMVP;
 uniform vec3 lightPosition_worldspace[MAX_LIGHTS];
 uniform int lightsEnabled[MAX_LIGHTS];
@@ -24,7 +24,7 @@ void main() {
 	position_worldspace = (Model * position).xyz;
 	ShadowCoord = depthBiasMVP * Model * position;
 	
-	gl_Position = Projection * View * Model * position;
+	gl_Position = MVP * position;
 	texture_coord_from_vshader = texture_coord;
 	
 

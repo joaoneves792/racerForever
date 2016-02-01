@@ -303,7 +303,7 @@ class Game:
                     if npv.horizontal_position > player.horizontal_position:
                         if self.check_collision_box(player.horizontal_position, player.vertical_position, RoadPositions.COLLISION_HORIZON, player.height_offset, npv.horizontal_position, npv.vertical_position, npv.width_offset, npv.height_offset):
                             ParticleManager.add_new_3d_emitter(
-                                SmokeEmitter(npv.vertical_position, 20, npv.horizontal_position, -npv.speed))
+                                SmokeEmitter(npv.vertical_position, 20, npv.horizontal_position, 0)) # -npv.speed))
                             self.ai.remove(npv)
         
         # (between non-players themselves)
@@ -405,6 +405,8 @@ class Game:
         pygame.display.flip()
 
     def draw(self):
+
+        # Do a shadow pass first
         GL.Depth_shader.use()
         if LightPositions.LAMPS:
             GL.Shadows.prepareToMapDepth(50, LightPositions.LAMP_Y, 0)
@@ -415,21 +417,19 @@ class Game:
 
         GL.GLM.selectMatrix(MATRIX.MODEL)
         GL.GLM.pushMatrix()
-        #if not LightPositions.LAMPS:
-        GL.GLM.translate(0, -6, 0)
+        GL.GLM.translate(0, -5, 0)  # try to compensate for peter panning
+
         for player in self.players:
             player.draw()
-
         for npv in self.ai:
             npv.draw()
-
         for item in self.dropped_items:
             item.draw()
-
         self.road.draw_shadow_pass()
 
         GL.GLM.popMatrix()
 
+        # Now do the actual drawing
         GL.Shader.use()
         GL.Shadows.returnToNormalDrawing()
         for player in self.players:
@@ -443,8 +443,11 @@ class Game:
         for item in self.dropped_items:
             item.draw()
 
+        GL.Lights.disableLighting()
+
         ParticleManager.draw_3d()
         self.draw_hud()
+        GL.Lights.enableLighting()
 
         pygame.display.flip()
 
@@ -467,9 +470,9 @@ class Game:
         GL.GLM.loadIdentity()
 
         for player in self.players:
-            color = (255, 255, 255, 255)
-            if player.score <= 0:
-                color = (255, 0, 0, 255)
+            # color = (255, 255, 255, 255)
+            # if player.score <= 0:
+            #    color = (255, 0, 0, 255)
             GL.GLM.pushMatrix()
             GL.GLM.scale(1, -1, 1)
             HUD.POINTS_HUD.drawGL3()

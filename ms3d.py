@@ -150,6 +150,12 @@ class ms3d(_object):
 
     def changeTexture(self, groupName, textureFile):
         return _ms3d.ms3d_changeTexture(self, groupName, textureFile)
+
+    def changeMaterialEmissive(self, name, red, green, blue):
+        return _ms3d.ms3d_changeMaterialEmissive(self, name, red, green, blue)
+
+    def changeMaterialTransparency(self, name, alpha):
+        return _ms3d.ms3d_changeMaterialTransparency(self, name, alpha)
     __swig_getmethods__["initGlew"] = lambda x: _ms3d.ms3d_initGlew
     if _newclass:
         initGlew = staticmethod(_ms3d.ms3d_initGlew)
@@ -229,6 +235,9 @@ class GLM(_object):
 
     def scale(self, x, y, z):
         return _ms3d.GLM_scale(self, x, y, z)
+
+    def billboard(self, x, y, z):
+        return _ms3d.GLM_billboard(self, x, y, z)
 
     def pushMatrix(self):
         return _ms3d.GLM_pushMatrix(self)
