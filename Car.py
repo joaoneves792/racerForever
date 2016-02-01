@@ -1,6 +1,7 @@
 from OpenGLContext import GL
 from singletons import Steering, RoadPositions, Speed
 from utils import box_collision, rotate_2d_vector
+from VehicleModel import VehicleModel
 
 
 class Car:
@@ -40,7 +41,7 @@ class Car:
             GL.GLM.popMatrix()
 
     def __init__(self, vehicle, z, x, speed):
-        self.vehicle = vehicle  # type VehicleModel
+        self.vehicle = vehicle  # type: VehicleModel
         self.vertical_position = x
         self.horizontal_position = z
         self.height = self.vehicle.height  # TODO #cairo.ImageSurface.get_height(model)

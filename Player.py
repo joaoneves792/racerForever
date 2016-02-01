@@ -1,9 +1,9 @@
 from OpenGLContext import GL
 import ParticleManager
 from Car import Car
-from singletons import HUD, Speed, RoadPositions, PowerUps, Window
+from singletons import HUD, Speed, RoadPositions, PowerUps
 from PointsEmitter import Plus100Points, Minus100Points
-from utils import car_circle_collision, draw_3d_rectangle
+from utils import car_circle_collision
 from ms3d import MATRIX, LIGHTS
 
 
@@ -166,26 +166,16 @@ class Player(Car):
 
     def draw_car(self):
 
-        #glMatrixMode(GL_PROJECTION)
-        #glLoadIdentity()
-        #gluPerspective(25, Window.WIDTH/Window.HEIGHT, 1, 20400)
-        # giuLookAt(self.vertical_position, 30, self.horizontal_position-150, RoadPositions.MIDDLE_LANE,30,RoadPositions.BEYOND_HORIZON, 0,1,0)
-
-        #glTranslate(0, 0, -150)
-        #glRotate(180, 0, 1, 0)
-        #glRotatef(-self.camera_y_rot, 1, 0, 0)
-        #glRotatef(self.camera_x_rot, 0, 1, 0)
-        #glTranslate(-self.vertical_position, -30, -self.horizontal_position)
-        #glMatrixMode(GL_MODELVIEW)
-
-
         GL.GLM.pushMatrix()
         if self.fire_phaser:
-            w = (RoadPositions.COLLISION_HORIZON + abs(RoadPositions.REAR_LIMIT))
+            GL.Lights.disableLighting()
             GL.GLM.pushMatrix()
-            GL.GLM.translate(0, 1, w/2)
-            draw_3d_rectangle(w, self.height, PowerUps.PHASER_FIRE, self.phaser_alpha)
+            GL.GLM.translate(-12.5, 5, 2500)
+            GL.GLM.rotate(-90, 1, 0, 0)
+            PowerUps.PHASER_RECTANGLE.changeMaterialTransparency("1", 1-self.phaser_alpha)
+            PowerUps.PHASER_RECTANGLE.drawGL3()
             GL.GLM.popMatrix()
+            GL.Lights.enableLighting()
         if self.hydraulics:
             GL.GLM.pushMatrix()
             GL.GLM.translate(0, 10, 0)
@@ -202,6 +192,12 @@ class Player(Car):
             PowerUps.ENERGY_SHIELD.drawGL3()
         GL.GLM.popMatrix()
         # self.draw_power_up_timer(cr)
+
+    def draw_shadow_pass(self):
+        GL.GLM.pushMatrix()
+        GL.GLM.translate(self.vertical_position, 0, self.horizontal_position)
+        self.vehicle.model.drawGL3()
+        GL.GLM.popMatrix()
 
     def update_mouse(self, movement):
         self.camera_x_rot += 0.3*movement[0]

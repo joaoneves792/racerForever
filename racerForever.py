@@ -22,6 +22,8 @@ from VehicleModel import VehicleModel
 from singletons import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps, LightPositions
 from utils import car_circle_collision, box_collision, text_to_texture
 
+from PowerUps import Phaser
+
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
 
 
@@ -64,6 +66,11 @@ class Game:
         Sounds.ACCEL.play(-1)
 
         self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.PLAYER_SPEED, 0))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
+        self.players[0].addPowerUp(Phaser(self, self.players[0]))
 
         while True:
             for event in pygame.event.get():
@@ -183,6 +190,9 @@ class Game:
         PowerUps.INVENTORY_ICON_RECTANGLE = ms3d()
         PowerUps.INVENTORY_ICON_RECTANGLE.createRectangle(32, 32, PowerUps.EMPTY)
         PowerUps.INVENTORY_ICON_RECTANGLE.prepare(GL.Shader)
+        PowerUps.PHASER_RECTANGLE = ms3d()
+        PowerUps.PHASER_RECTANGLE.createRectangle(25, 2500, PowerUps.PHASER_FIRE)
+        PowerUps.PHASER_RECTANGLE.prepare(GL.Shader)
 
         self.available_player_vehicles.append(load_vehicle("./Cars/Gallardo/gallardo_play_optimized.ms3d", "./Cars/Gallardo/gallardoWheel.ms3d", 4))
 
@@ -420,7 +430,7 @@ class Game:
         GL.GLM.translate(0, -5, 0)  # try to compensate for peter panning
 
         for player in self.players:
-            player.draw()
+            player.draw_shadow_pass()
         for npv in self.ai:
             npv.draw()
         for item in self.dropped_items:
@@ -432,10 +442,11 @@ class Game:
         # Now do the actual drawing
         GL.Shader.use()
         GL.Shadows.returnToNormalDrawing()
+
+        self.road.draw()
+
         for player in self.players:
             player.draw()
-        
-        self.road.draw()
 
         for npv in self.ai:
             npv.draw()

@@ -126,6 +126,7 @@ class PowerUps:
     SHRINK = None
     PHASER_FIRE = None
     PHASER = None
+    PHASER_RECTANGLE = None  # type: ms3d
 
 
 class LightPositions:
