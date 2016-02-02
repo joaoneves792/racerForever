@@ -1,7 +1,6 @@
 import math
 
 import pygame
-
 from ms3d import Tex
 
 
@@ -9,6 +8,10 @@ def text_to_texture(rgba_color, bg_color, textString):
     font = pygame.font.Font(None, 30)
     textSurface = font.render(textString, True, rgba_color, bg_color)
     textData = pygame.image.tostring(textSurface, "RGBA", True)
+    texture = Tex("./smoke_particle.png").genTexture(textData, 200, 100)
+
+
+
     # return Tex(textData, textSurface.get_height, textSurface.get_width, True)
     # glRasterPos2i(x, y)
     # glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)

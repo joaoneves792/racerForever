@@ -2,12 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4bfe82bf-447b-46ed-bd7d-42f84230ca5a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/PowerUps/phaser_fire.png" afterPath="$PROJECT_DIR$/PowerUps/phaser_fire.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cars/Skyline/skylinelod.ms3d" afterPath="$PROJECT_DIR$/Cars/Skyline/skylinelod.ms3d" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Cars/charger/charger_lod.ms3d" afterPath="$PROJECT_DIR$/Cars/charger/charger_lod.ms3d" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_ms3d.so" afterPath="$PROJECT_DIR$/_ms3d.so" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Car.py" afterPath="$PROJECT_DIR$/Car.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Player.py" afterPath="$PROJECT_DIR$/Player.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SmokeEmitter.py" afterPath="$PROJECT_DIR$/SmokeEmitter.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ms3d.py" afterPath="$PROJECT_DIR$/ms3d.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/racerForever.py" afterPath="$PROJECT_DIR$/racerForever.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/singletons.py" afterPath="$PROJECT_DIR$/singletons.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utils.py" afterPath="$PROJECT_DIR$/utils.py" />
     </list>
     <ignored path="racerForever.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,32 +35,43 @@
         <entry file="file://$PROJECT_DIR$/racerForever.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="193" column="55" selection-start-line="193" selection-start-column="55" selection-end-line="193" selection-end-column="55" />
+              <caret line="486" column="13" selection-start-line="486" selection-start-column="13" selection-end-line="486" selection-end-column="13" />
               <folding>
-                <element signature="e#2334#3959#0" expanded="false" />
-                <element signature="e#4285#4667#0" expanded="false" />
-                <element signature="e#9947#10110#0" expanded="false" />
-                <element signature="e#10154#11036#0" expanded="false" />
-                <element signature="e#11123#11431#0" expanded="false" />
-                <element signature="e#11552#11854#0" expanded="false" />
-                <element signature="e#11887#18231#0" expanded="false" />
-                <element signature="e#18322#18735#0" expanded="false" />
-                <element signature="e#18794#19347#0" expanded="false" />
-                <element signature="e#19378#20682#0" expanded="false" />
-                <element signature="e#20717#22859#0" expanded="false" />
-                <element signature="e#22915#23401#0" expanded="false" />
-                <element signature="e#23447#23852#0" expanded="false" />
-                <element signature="e#23895#24915#0" expanded="false" />
-                <element signature="e#24964#25525#0" expanded="false" />
+                <element signature="e#1975#3600#0" expanded="false" />
+                <element signature="e#3926#4308#0" expanded="false" />
+                <element signature="e#9588#9751#0" expanded="false" />
+                <element signature="e#9795#10677#0" expanded="false" />
+                <element signature="e#10764#11072#0" expanded="false" />
+                <element signature="e#11193#11495#0" expanded="false" />
+                <element signature="e#11528#17872#0" expanded="false" />
+                <element signature="e#17963#18376#0" expanded="false" />
+                <element signature="e#18435#18988#0" expanded="false" />
+                <element signature="e#19019#20323#0" expanded="false" />
+                <element signature="e#22626#23112#0" expanded="false" />
+                <element signature="e#23158#23563#0" expanded="false" />
+                <element signature="e#23606#24626#0" expanded="false" />
+                <element signature="e#24675#25236#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Player.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.22288261">
+              <caret line="10" column="71" selection-start-line="10" selection-start-column="71" selection-end-line="10" selection-end-column="71" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Player.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33135214">
+            <state vertical-scroll-proportion="0.0">
               <caret line="200" column="0" selection-start-line="200" selection-start-column="0" selection-end-line="200" selection-end-column="0" />
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
@@ -70,11 +84,21 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="SmokeEmitter.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SmokeEmitter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="singletons.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/singletons.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="127" column="16" selection-start-line="127" selection-start-column="16" selection-end-line="127" selection-end-column="16" />
+              <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -86,7 +110,7 @@
         <entry file="file://$PROJECT_DIR$/ParticleManager.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="107" column="32" selection-start-line="107" selection-start-column="32" selection-end-line="107" selection-end-column="32" />
+              <caret line="153" column="47" selection-start-line="153" selection-start-column="47" selection-end-line="153" selection-end-column="47" />
               <folding>
                 <element signature="e#1#29#0" expanded="true" />
               </folding>
@@ -106,7 +130,6 @@
         <option value="$PROJECT_DIR$/AI.py" />
         <option value="$PROJECT_DIR$/PointsEmitter.py" />
         <option value="$PROJECT_DIR$/MessageEmitter.py" />
-        <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/constants.py" />
         <option value="$PROJECT_DIR$/OpenGLContext.py" />
         <option value="$PROJECT_DIR$/shaders/frag_temp.shader" />
@@ -114,13 +137,14 @@
         <option value="$PROJECT_DIR$/VehicleModel.py" />
         <option value="$PROJECT_DIR$/Road.py" />
         <option value="$PROJECT_DIR$/shaders/frag.shader" />
-        <option value="$PROJECT_DIR$/SmokeEmitter.py" />
         <option value="$PROJECT_DIR$/PowerUps.py" />
-        <option value="$PROJECT_DIR$/singletons.py" />
         <option value="$PROJECT_DIR$/ParticleManager.py" />
         <option value="$PROJECT_DIR$/Car.py" />
-        <option value="$PROJECT_DIR$/racerForever.py" />
         <option value="$PROJECT_DIR$/Player.py" />
+        <option value="$PROJECT_DIR$/SmokeEmitter.py" />
+        <option value="$PROJECT_DIR$/utils.py" />
+        <option value="$PROJECT_DIR$/singletons.py" />
+        <option value="$PROJECT_DIR$/racerForever.py" />
       </list>
     </option>
   </component>
@@ -155,6 +179,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -175,7 +200,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -359,14 +383,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="31" width="1920" height="1020" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.134375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24406047" sideWeight="0.5125" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24406047" sideWeight="0.51458335" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24406047" sideWeight="0.4875" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24406047" sideWeight="0.48541668" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -393,7 +417,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="16" />
+      <option name="time" value="17" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -413,21 +437,20 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#2334#3959#0" expanded="false" />
-            <element signature="e#4285#4667#0" expanded="false" />
-            <element signature="e#9947#10110#0" expanded="false" />
-            <element signature="e#10154#11036#0" expanded="false" />
-            <element signature="e#11123#11431#0" expanded="false" />
-            <element signature="e#11552#11854#0" expanded="false" />
-            <element signature="e#11887#18231#0" expanded="false" />
-            <element signature="e#18322#18735#0" expanded="false" />
-            <element signature="e#18794#19347#0" expanded="false" />
-            <element signature="e#19378#20682#0" expanded="false" />
-            <element signature="e#20717#22859#0" expanded="false" />
-            <element signature="e#22915#23401#0" expanded="false" />
-            <element signature="e#23447#23852#0" expanded="false" />
-            <element signature="e#23895#24915#0" expanded="false" />
-            <element signature="e#24964#25525#0" expanded="false" />
+            <element signature="e#1975#3600#0" expanded="false" />
+            <element signature="e#3926#4308#0" expanded="false" />
+            <element signature="e#9588#9751#0" expanded="false" />
+            <element signature="e#9795#10677#0" expanded="false" />
+            <element signature="e#10764#11072#0" expanded="false" />
+            <element signature="e#11193#11495#0" expanded="false" />
+            <element signature="e#11528#17872#0" expanded="false" />
+            <element signature="e#17963#18376#0" expanded="false" />
+            <element signature="e#18435#18988#0" expanded="false" />
+            <element signature="e#19019#20323#0" expanded="false" />
+            <element signature="e#22626#23112#0" expanded="false" />
+            <element signature="e#23158#23563#0" expanded="false" />
+            <element signature="e#23606#24626#0" expanded="false" />
+            <element signature="e#24675#25236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -492,21 +515,20 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="438" column="20" selection-start-line="438" selection-start-column="20" selection-end-line="438" selection-end-column="20" />
           <folding>
-            <element signature="e#2334#3959#0" expanded="false" />
-            <element signature="e#4285#4667#0" expanded="false" />
-            <element signature="e#9947#10110#0" expanded="false" />
-            <element signature="e#10154#11036#0" expanded="false" />
-            <element signature="e#11123#11431#0" expanded="false" />
-            <element signature="e#11552#11854#0" expanded="false" />
-            <element signature="e#11887#18231#0" expanded="false" />
-            <element signature="e#18322#18735#0" expanded="false" />
-            <element signature="e#18794#19347#0" expanded="false" />
-            <element signature="e#19378#20682#0" expanded="false" />
-            <element signature="e#20717#22859#0" expanded="false" />
-            <element signature="e#22915#23401#0" expanded="false" />
-            <element signature="e#23447#23852#0" expanded="false" />
-            <element signature="e#23895#24915#0" expanded="false" />
-            <element signature="e#24964#25525#0" expanded="false" />
+            <element signature="e#1975#3600#0" expanded="false" />
+            <element signature="e#3926#4308#0" expanded="false" />
+            <element signature="e#9588#9751#0" expanded="false" />
+            <element signature="e#9795#10677#0" expanded="false" />
+            <element signature="e#10764#11072#0" expanded="false" />
+            <element signature="e#11193#11495#0" expanded="false" />
+            <element signature="e#11528#17872#0" expanded="false" />
+            <element signature="e#17963#18376#0" expanded="false" />
+            <element signature="e#18435#18988#0" expanded="false" />
+            <element signature="e#19019#20323#0" expanded="false" />
+            <element signature="e#22626#23112#0" expanded="false" />
+            <element signature="e#23158#23563#0" expanded="false" />
+            <element signature="e#23606#24626#0" expanded="false" />
+            <element signature="e#24675#25236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -578,21 +600,20 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#2334#3959#0" expanded="false" />
-            <element signature="e#4285#4667#0" expanded="false" />
-            <element signature="e#9947#10110#0" expanded="false" />
-            <element signature="e#10154#11036#0" expanded="false" />
-            <element signature="e#11123#11431#0" expanded="false" />
-            <element signature="e#11552#11854#0" expanded="false" />
-            <element signature="e#11887#18231#0" expanded="false" />
-            <element signature="e#18322#18735#0" expanded="false" />
-            <element signature="e#18794#19347#0" expanded="false" />
-            <element signature="e#19378#20682#0" expanded="false" />
-            <element signature="e#20717#22859#0" expanded="false" />
-            <element signature="e#22915#23401#0" expanded="false" />
-            <element signature="e#23447#23852#0" expanded="false" />
-            <element signature="e#23895#24915#0" expanded="false" />
-            <element signature="e#24964#25525#0" expanded="false" />
+            <element signature="e#1975#3600#0" expanded="false" />
+            <element signature="e#3926#4308#0" expanded="false" />
+            <element signature="e#9588#9751#0" expanded="false" />
+            <element signature="e#9795#10677#0" expanded="false" />
+            <element signature="e#10764#11072#0" expanded="false" />
+            <element signature="e#11193#11495#0" expanded="false" />
+            <element signature="e#11528#17872#0" expanded="false" />
+            <element signature="e#17963#18376#0" expanded="false" />
+            <element signature="e#18435#18988#0" expanded="false" />
+            <element signature="e#19019#20323#0" expanded="false" />
+            <element signature="e#22626#23112#0" expanded="false" />
+            <element signature="e#23158#23563#0" expanded="false" />
+            <element signature="e#23606#24626#0" expanded="false" />
+            <element signature="e#24675#25236#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -703,13 +724,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shaders/shadow_frag.shader">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -759,17 +773,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="97" column="25" selection-start-line="97" selection-start-column="25" selection-end-line="97" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SmokeEmitter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="8" column="89" selection-start-line="8" selection-start-column="89" selection-end-line="8" selection-end-column="89" />
-          <folding>
-            <element signature="e#0#13#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -777,27 +780,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/singletons.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="127" column="16" selection-start-line="127" selection-start-column="16" selection-end-line="127" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ParticleManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="107" column="32" selection-start-line="107" selection-start-column="32" selection-end-line="107" selection-end-column="32" />
-          <folding>
-            <element signature="e#1#29#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -811,33 +793,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/racerForever.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="193" column="55" selection-start-line="193" selection-start-column="55" selection-end-line="193" selection-end-column="55" />
-          <folding>
-            <element signature="e#2334#3959#0" expanded="false" />
-            <element signature="e#4285#4667#0" expanded="false" />
-            <element signature="e#9947#10110#0" expanded="false" />
-            <element signature="e#10154#11036#0" expanded="false" />
-            <element signature="e#11123#11431#0" expanded="false" />
-            <element signature="e#11552#11854#0" expanded="false" />
-            <element signature="e#11887#18231#0" expanded="false" />
-            <element signature="e#18322#18735#0" expanded="false" />
-            <element signature="e#18794#19347#0" expanded="false" />
-            <element signature="e#19378#20682#0" expanded="false" />
-            <element signature="e#20717#22859#0" expanded="false" />
-            <element signature="e#22915#23401#0" expanded="false" />
-            <element signature="e#23447#23852#0" expanded="false" />
-            <element signature="e#23895#24915#0" expanded="false" />
-            <element signature="e#24964#25525#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Player.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33135214">
+        <state vertical-scroll-proportion="0.0">
           <caret line="200" column="0" selection-start-line="200" selection-start-column="0" selection-end-line="200" selection-end-column="0" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
@@ -845,6 +803,67 @@
             <element signature="e#1546#6872#0" expanded="false" />
             <element signature="e#6911#7299#0" expanded="false" />
             <element signature="e#7334#8252#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SmokeEmitter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="61" selection-start-line="12" selection-start-column="61" selection-end-line="12" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ParticleManager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="153" column="47" selection-start-line="153" selection-start-column="47" selection-end-line="153" selection-end-column="47" />
+          <folding>
+            <element signature="e#1#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/singletons.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/racerForever.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="486" column="13" selection-start-line="486" selection-start-column="13" selection-end-line="486" selection-end-column="13" />
+          <folding>
+            <element signature="e#1975#3600#0" expanded="false" />
+            <element signature="e#3926#4308#0" expanded="false" />
+            <element signature="e#9588#9751#0" expanded="false" />
+            <element signature="e#9795#10677#0" expanded="false" />
+            <element signature="e#10764#11072#0" expanded="false" />
+            <element signature="e#11193#11495#0" expanded="false" />
+            <element signature="e#11528#17872#0" expanded="false" />
+            <element signature="e#17963#18376#0" expanded="false" />
+            <element signature="e#18435#18988#0" expanded="false" />
+            <element signature="e#19019#20323#0" expanded="false" />
+            <element signature="e#22626#23112#0" expanded="false" />
+            <element signature="e#23158#23563#0" expanded="false" />
+            <element signature="e#23606#24626#0" expanded="false" />
+            <element signature="e#24675#25236#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22288261">
+          <caret line="10" column="71" selection-start-line="10" selection-start-column="71" selection-end-line="10" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>

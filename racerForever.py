@@ -22,8 +22,6 @@ from VehicleModel import VehicleModel
 from singletons import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps, LightPositions
 from utils import car_circle_collision, box_collision, text_to_texture
 
-from PowerUps import Phaser
-
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
 
 
@@ -66,11 +64,6 @@ class Game:
         Sounds.ACCEL.play(-1)
 
         self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.PLAYER_SPEED, 0))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
-        self.players[0].addPowerUp(Phaser(self, self.players[0]))
 
         while True:
             for event in pygame.event.get():
@@ -208,6 +201,7 @@ class Game:
         self.available_vehicles.append(load_vehicle("./Cars/NSX/NSXplay_optimized.ms3d", "./Cars/NSX/NSXWheel.ms3d", 4, "./Cars/NSX/NSXlod.ms3d"))
         self.available_vehicles.append(load_vehicle("./Cars/Skyline/skylineplay_optimized.ms3d", "./Cars/Skyline/skyline_wheel.ms3d", 4, "./Cars/Skyline/skylinelod.ms3d"))
         self.available_vehicles.append(load_vehicle("./Cars/LP570_S/LP570play_optimized.ms3d", "./Cars/LP570_S/LP570wheel.ms3d", 4, "./Cars/LP570_S/LP570lod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/SL65/sl65play_optimized.ms3d", "./Cars/SL65/sl65Wheel.ms3d", 4, "./Cars/SL65/sl65Lod.ms3d"))
 
     def generate_emergency_vehicle(self, vertical_position):
         Sounds.SIREN.play()    
@@ -481,9 +475,9 @@ class Game:
         GL.GLM.loadIdentity()
 
         for player in self.players:
-            # color = (255, 255, 255, 255)
-            # if player.score <= 0:
-            #    color = (255, 0, 0, 255)
+            color = (255, 255, 255, 255)
+            if player.score <= 0:
+                color = (255, 0, 0, 255)
             GL.GLM.pushMatrix()
             GL.GLM.scale(1, -1, 1)
             HUD.POINTS_HUD.drawGL3()
@@ -491,6 +485,7 @@ class Game:
             # glDisable(GL_TEXTURE_2D)
             # glColor3f(0, 0, 0)
             # drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (0, 0, 0, 1), "SCORE: " + str(int(player.score)))
+            # text_to_texture(color, (0, 0, 0, 0), str(int(player.score)))
             GL.GLM.pushMatrix()
             GL.GLM.translate(0, Window.HEIGHT, 0)
             GL.GLM.scale(1, -1, 1)

@@ -182,6 +182,9 @@ class Tex(_object):
 
     def getTexture(self):
         return _ms3d.Tex_getTexture(self)
+
+    def genTexture(self, data, width, height):
+        return _ms3d.Tex_genTexture(self, data, width, height)
     __swig_destroy__ = _ms3d.delete_Tex
     __del__ = lambda self: None
 Tex_swigregister = _ms3d.Tex_swigregister
