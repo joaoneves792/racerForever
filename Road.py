@@ -7,9 +7,9 @@ from singletons import RoadPositions, Speed, LightPositions
 
 class Road:
     def __init__(self, z=0):
-        self.road = ms3d("./Road/road6.ms3d")
+        self.road = ms3d("./Road/road7.ms3d")
         self.road.prepare(GL.Shader)
-        self.road_night = ms3d("./Road/road6_night.ms3d")
+        self.road_night = ms3d("./Road/road7_night.ms3d")
         self.road_night.prepare(GL.Shader)
         self.road_lod = ms3d("./Road/road_lod.ms3d")
         self.road_lod.prepare(GL.Shader)
