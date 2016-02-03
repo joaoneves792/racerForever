@@ -2,9 +2,9 @@
 
 #define MAX_LIGHTS 10
 
-in vec4 position;
-in vec2 texture_coord;
-in vec3 normal;
+layout(location = 0) in vec4 position;
+layout(location = 1) in vec2 texture_coord;
+layout(location = 2) in vec3 normal;
 
 out vec3 position_worldspace;
 out vec2 texture_coord_from_vshader;
