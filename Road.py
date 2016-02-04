@@ -17,6 +17,7 @@ class Road:
         self.road_shadows.prepare(GL.Shader)
         self.sky = ms3d("./Road/sky.ms3d")
         self.sky.prepare(GL.Shader)
+        self.skyRotation = 0
         self.length = 600  # calculated by measuring it in milkshape (see comment at beginning of file!)
         self.num_of_tiles = 32  # Needs to be a pair number!!
         self.maximum_rear_pos = ((-(self.num_of_tiles//2))-1)*self.length
@@ -118,6 +119,7 @@ class Road:
 
         GL.GLM.pushMatrix()
         GL.GLM.scale(12, 12, 12)
+        GL.GLM.rotate(self.skyRotation, 0, 1, 0)
         self.sky.drawGL3()
         GL.GLM.popMatrix()
 
@@ -134,6 +136,10 @@ class Road:
                 self.z[i] = self.maximum_front_pos - (self.maximum_rear_pos-self.z[i])  # Dont forget the correction factor because of big time_deltas
                 self.tile_delta = (self.tile_delta + 1) % self.num_of_tiles
             self.z[i] -= time_delta * Speed.PLAYER_SPEED
+
+        self.skyRotation += 0.0005*time_delta
+        if self.skyRotation >= 360:
+            self.skyRotation = 0
 
         if self.lights:
             time_delta *= 2
