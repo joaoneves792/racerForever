@@ -204,6 +204,7 @@ class Game:
         self.available_vehicles.append(load_vehicle("./Cars/SL65/sl65play_optimized.ms3d", "./Cars/SL65/sl65Wheel.ms3d", 4, "./Cars/SL65/sl65Lod.ms3d"))
         self.available_vehicles.append(load_vehicle("./Cars/F430Scuderia/F430Soptimized.ms3d", "./Cars/F430Scuderia/F430Wheel.ms3d", 4, "./Cars/F430Scuderia/F430lod.ms3d"))
         self.available_vehicles.append(load_vehicle("./Cars/GT3RS/GT3RSoptimized.ms3d", "./Cars/GT3RS/GT3RSWheel.ms3d", 4, "./Cars/GT3RS/GT3RSlod.ms3d"))
+        self.available_vehicles.append(load_vehicle("./Cars/2010Mustang/Mustangoptimized.ms3d", "./Cars/2010Mustang/MustangWheel.ms3d", 4, "./Cars/2010Mustang/MustangLod.ms3d"))
 
     def generate_emergency_vehicle(self, vertical_position):
         Sounds.SIREN.play()    
