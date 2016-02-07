@@ -334,6 +334,27 @@ class Shadows(_object):
 Shadows_swigregister = _ms3d.Shadows_swigregister
 Shadows_swigregister(Shadows)
 
+class Text(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, Text, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, Text, name)
+    __repr__ = _swig_repr
+
+    def __init__(self, bitmapFont, width, height, rows, columns, fontSize, vertSpacing, horizSpacing):
+        this = _ms3d.new_Text(bitmapFont, width, height, rows, columns, fontSize, vertSpacing, horizSpacing)
+        try:
+            self.this.append(this)
+        except Exception:
+            self.this = this
+    __swig_destroy__ = _ms3d.delete_Text
+    __del__ = lambda self: None
+
+    def drawTextLine(self, text, size):
+        return _ms3d.Text_drawTextLine(self, text, size)
+Text_swigregister = _ms3d.Text_swigregister
+Text_swigregister(Text)
+
 # This file is compatible with both classic and new-style classes.
 
 

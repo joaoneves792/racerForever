@@ -47,6 +47,11 @@ vec2 poissonDisk[16] = vec2[](
    vec2( 0.14383161, -0.14100790 ) 
 );
 
+/*float rand(vec2 co){
+	    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}*/
+
+
 void main() {
 	if(disableLighting == 1){
 		out_color = texture(texture_sampler, texture_coord_from_vshader);
@@ -95,8 +100,9 @@ void main() {
 	}
 	//Shadows:
 	float bias = 0.008;
-	for (int i=0; i<6; i++){
-		visibility -= 0.15*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[i]/2000, (ShadowCoord.z-bias)/ ShadowCoord.w) ) );
+	for (int i=0; i<8; i++){
+		//int random = int(rand(position_worldspace.xy)*99)%6;
+		visibility -= 0.1*(1.0-texture( shadowMap, vec3(ShadowCoord.xy + poissonDisk[i]/4000, (ShadowCoord.z-bias)/ ShadowCoord.w) ) );
 	}
 
 	

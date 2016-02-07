@@ -1,19 +1,19 @@
 import pygame
 
-from ms3d import ms3d
+from ms3d import ms3d, Text
 
 
 class Window:
-    WIDTH = 1920
-    HEIGHT = 1080
-    FULLSCREEN = True
+    # WIDTH = 1920
+    # HEIGHT = 1080
+    # FULLSCREEN = True
 
     # WIDTH = 1024
     # HEIGHT = 512
 
-    #WIDTH = 1440
-    #HEIGHT = 900
-    #FULLSCREEN = False
+    WIDTH = 1440
+    HEIGHT = 900
+    FULLSCREEN = False
 
     VERSION = "v0.1"
 
@@ -34,6 +34,8 @@ class HUD:
     INVENTORY_HUD = None
     PAUSED_MENU = None
     PAUSED_MENU_RECTANGLE = None  # type: ms3d
+    UBUNTU_MONO_WHITE = None  # type: Text
+    UBUNTU_MONO_RED = None  # type: Text
 
 
 class KeyboardKeys:

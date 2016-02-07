@@ -7,7 +7,7 @@ import random
 import pygame
 from OpenGL.GL import *
 
-from ms3d import ms3d, Tex, shader, Lights, GLM, Shadows, MATRIX
+from ms3d import ms3d, Tex, shader, Lights, GLM, Shadows, Text, MATRIX
 
 from OpenGLContext import GL
 import ParticleManager
@@ -21,6 +21,8 @@ from Truck import Truck
 from VehicleModel import VehicleModel
 from singletons import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps, LightPositions
 from utils import car_circle_collision, box_collision, text_to_texture
+
+from PowerUps import Phaser
 
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
 
@@ -64,6 +66,8 @@ class Game:
         Sounds.ACCEL.play(-1)
 
         self.players.append(Player(self.available_player_vehicles[0], 0, RoadPositions.MIDDLE_LANE, Speed.PLAYER_SPEED, 0))
+
+        # self.players[0].addPowerUp(Phaser(self, self.players[0]))
 
         while True:
             for event in pygame.event.get():
@@ -152,6 +156,8 @@ class Game:
         HUD.PAUSED_MENU_RECTANGLE = ms3d()
         HUD.PAUSED_MENU_RECTANGLE.createRectangle(512, 256, HUD.PAUSED_MENU)
         HUD.PAUSED_MENU_RECTANGLE.prepare(GL.Shader)
+        HUD.UBUNTU_MONO_WHITE = Text("./HUD/font.png", 512, 512, 8, 8, 40, 24, 44)
+        HUD.UBUNTU_MONO_RED = Text("./HUD/font_red.png", 512, 512, 8, 8, 40, 24, 44)
 
         ParticleManager.Particles.POINTS = ms3d("./HUD/pointsParticle.ms3d")
         ParticleManager.Particles.POINTS.prepare(GL.Shader)
@@ -462,9 +468,6 @@ class Game:
     def draw_hud(self): 
         GL.Lights.disableLighting()
 
-        # glDisable(GL_DEPTH_TEST)
-        # glDepthMask(GL_FALSE)
-
         GL.GLM.selectMatrix(MATRIX.PROJECTION)
         GL.GLM.pushMatrix()
         GL.GLM.loadIdentity()
@@ -478,24 +481,33 @@ class Game:
         GL.GLM.loadIdentity()
 
         for player in self.players:
-            color = (255, 255, 255, 255)
-            if player.score <= 0:
-                color = (255, 0, 0, 255)
             GL.GLM.pushMatrix()
             GL.GLM.scale(1, -1, 1)
             HUD.POINTS_HUD.drawGL3()
             GL.GLM.popMatrix()
-            # glDisable(GL_TEXTURE_2D)
-            # glColor3f(0, 0, 0)
-            # drawText(HUD.SCORE_POS_X[player.player_id], HUD.SCORE_POS_Y[player.player_id], color, (0, 0, 0, 1), "SCORE: " + str(int(player.score)))
-            # text_to_texture(color, (0, 0, 0, 0), str(int(player.score)))
+
+            GL.GLM.pushMatrix()
+            GL.GLM.translate(30, 45, 0.5)
+            GL.GLM.scale(1, -1, 1)
+            if player.score >= 0:
+                HUD.UBUNTU_MONO_WHITE.drawTextLine("SCORE:" + str(int(player.score)), 24)
+            else:
+                HUD.UBUNTU_MONO_RED.drawTextLine("SCORE:" + str(int(player.score)), 24)
+            GL.GLM.popMatrix()
+
             GL.GLM.pushMatrix()
             GL.GLM.translate(0, Window.HEIGHT, 0)
             GL.GLM.scale(1, -1, 1)
             HUD.POWERUPS_HUD.drawGL3()
+
+            if player.powerUpTimeOut > 0:
+                GL.GLM.pushMatrix()
+                GL.GLM.translate(30, 53, 0.5)
+                HUD.UBUNTU_MONO_RED.drawTextLine("0:" + str(int(player.powerUpTimeOut/1000)), 24)
+                GL.GLM.popMatrix()
+
             GL.GLM.pushMatrix()
             GL.GLM.translate(-10, 10, 0.5)
-            # GL.GLM.rotate(180, 1, 0, 0)
             for i in range(PowerUps.INVENTORY_SIZE):
                 GL.GLM.translate(58, 0, 0)
                 if i < len(player.inventory):
@@ -505,6 +517,7 @@ class Game:
                     PowerUps.INVENTORY_ICON_RECTANGLE.changeRectangleTexture(PowerUps.EMPTY)
                     PowerUps.INVENTORY_ICON_RECTANGLE.drawGL3()
             GL.GLM.popMatrix()
+
             GL.GLM.popMatrix()
 
         ParticleManager.draw()
@@ -519,9 +532,6 @@ class Game:
         GL.GLM.selectMatrix(MATRIX.MODEL)
 
         GL.Lights.enableLighting()
-        # glEnable(GL_DEPTH_TEST)
-        # glDepthMask(GL_TRUE)
-        # glEnable(GL_BLEND)
 
     @staticmethod
     def draw_paused_menu():
