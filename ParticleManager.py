@@ -22,13 +22,14 @@ class Particles:
 
 class Particle:
     def __init__(self, x=0, y=0, life=0, angle=0, speed_x=0, speed_y=0, size=0, shape=None, deflate=True, w=Particles.WIDTH, h=Particles.HEIGHT):
-        self.set_properties(x, y, life, angle, speed_x, speed_y, size, shape, deflate)
+        self.set_properties(x, y, 0, life, angle, speed_x, speed_y, size, shape, deflate)
         self.w = w
         self.h = h
 
-    def set_properties(self, x, y, life, angle, speed_x, speed_y, size, shape, deflate):
+    def set_properties(self, x, y, z, life, angle, speed_x, speed_y, size, shape, deflate):
         self.x = x
         self.y = y
+        self.z = z
         self.life = life
         self.original_life = life
         self.angle = angle
@@ -48,15 +49,16 @@ class Particle:
                 self.size = self.original_size * age_ratio if age_ratio > 0.5 else self.size
             else:
                 self.size = self.original_size / age_ratio if age_ratio > 0.5 else self.size
-            self.alpha = age_ratio
+            self.alpha = 1-age_ratio
 
             self.x += self.speed_x * time_delta
             self.y += self.speed_y * time_delta
 
     def draw(self):
         GL.GLM.pushMatrix()
-        GL.GLM.translate(self.x, self.y, 0)
+        GL.GLM.translate(self.x, self.y, self.z)
         GL.GLM.scale(self.size/self.w, -self.size/self.h, 1)
+        self.shape.changeMaterialTransparency("0", self.alpha)
         self.shape.drawGL3()
         GL.GLM.popMatrix()
 

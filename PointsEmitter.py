@@ -9,8 +9,11 @@ class PointsEmitter(ParticleManager.ParticleEmitter):
         super(PointsEmitter, self).__init__(x, y, speed_x, speed_y, size, shape, num_of_particles, 0.1)
 
     def set_particles(self):
+        z = 0
+        z_increment = 1/len(self.particles)
         for particle in self.particles:
-            particle.set_properties(self.x, self.y, 1700, 0, self.speed_x + random.randrange(-5, 5) * Speed.ONE_KMH, self.speed_y + random.randrange(-5, 5) * Speed.ONE_KMH, self.size, self.shape, True)
+            z += z_increment
+            particle.set_properties(self.x, self.y, z, 1700, 0, self.speed_x + random.randrange(-5, 5) * Speed.ONE_KMH, self.speed_y + random.randrange(-5, 5) * Speed.ONE_KMH, self.size, self.shape, True)
 
 
 class Minus10Points(PointsEmitter):
@@ -18,8 +21,11 @@ class Minus10Points(PointsEmitter):
         super(Minus10Points, self).__init__(Window.WIDTH/2, Window.HEIGHT/2, speed_x, speed_y, size, shape, 0.01, num_of_particles)
 
     def set_particles(self):
+        z = 0
+        z_increment = 1/len(self.particles)
         for particle in self.particles:
-            particle.set_properties(self.x, self.y, 1200, 0, self.speed_x + random.randrange(-5, 5) * Speed.ONE_KMH, self.speed_y + random.randrange(-5, 5) * Speed.ONE_KMH, self.size, self.shape, True)
+            z += z_increment
+            particle.set_properties(self.x + random.randrange(-5, 5), self.y + random.randrange(-5, 5), z, 1200, 0, self.speed_x + random.randrange(-10, 10) * Speed.ONE_KMH, self.speed_y + random.randrange(-10, 10) * Speed.ONE_KMH, self.size, self.shape, True)
 
 
 class Plus100Points(PointsEmitter):

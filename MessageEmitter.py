@@ -8,7 +8,7 @@ class MessageEmitter(ParticleManager.ParticleEmitter):
 
     def set_particles(self):
         for particle in self.particles:
-            particle.set_properties(self.x, self.y, 1500, 0, self.speed_x, self.speed_y,  self.size, self.shape, True)
+            particle.set_properties(self.x, self.y, 0, 2000, 0, self.speed_x, self.speed_y,  self.size, self.shape, True)
 
 
 class HolyShit(MessageEmitter):

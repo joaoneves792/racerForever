@@ -302,7 +302,7 @@ class Game:
                     if not player.shield:
                         if not npv.crashed:
                             ParticleManager.add_new_emitter(
-                                Minus10Points(player.horizontal_position, player.vertical_position, -0.3, -0.2, size=100, shape=ParticleManager.Particles.POINTS))
+                                Minus10Points(player.horizontal_position, player.vertical_position, -0.3, -0.2, size=250, shape=ParticleManager.Particles.POINTS))
                             player.score -= 60
                     Sounds.CRASH.stop()
                     Sounds.CRASH.play()
