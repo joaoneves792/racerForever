@@ -12,7 +12,6 @@ class Menu(Gtk.Window):
     def __init__(self):
         Gtk.Window.__init__(self, title="RACER Forever")
 
-
         self.grid = Gtk.Grid()
         self.grid.set_orientation(Gtk.Orientation.VERTICAL)
         self.add(self.grid)
@@ -35,7 +34,7 @@ class Menu(Gtk.Window):
         self.box.pack_end(play, False, False, 0)
         play.connect("clicked", self.play_game)
 
-        self.resize(1024, 768)
+        self.resize(800, 600)
 
     def play_game(self, widget):
         global __play__
