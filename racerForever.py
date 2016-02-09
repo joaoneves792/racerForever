@@ -1,7 +1,5 @@
 #! /bin/python3
 
-import sys
-sys.path.append('./libs')
 
 import random
 import pygame
@@ -32,6 +30,7 @@ class Game:
     def __init__(self):
         pygame.init()
         pygame.display.init()
+        pygame.display.set_caption("RACER Forever")
 
         pygame.mixer.init()
 
@@ -600,4 +599,4 @@ class Game:
             elif key == KeyboardKeys.KEY_DOWN[i]:
                 self.players[i].release_brakes = True
 
-game = Game()
+# game = Game()
