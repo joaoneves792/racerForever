@@ -183,9 +183,9 @@ class Player(Car):
         self.vehicle.model.drawGL3()
         GL.GLM.popMatrix()
 
-    def update_mouse(self, movement):
-        self.camera_x_rot += 0.3*movement[0]
-        self.camera_y_rot += 0.3*movement[1]
+    def update_mouse(self, movement, ratio):
+        self.camera_x_rot += ratio*movement[0]
+        self.camera_y_rot += ratio*movement[1]
         if self.camera_y_rot < 0:
             self.camera_y_rot = 0
         if self.camera_y_rot > 180:

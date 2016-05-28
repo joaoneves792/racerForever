@@ -68,6 +68,8 @@ class Game:
         # self.players[0].addPowerUp(Phaser(self, self.players[0]))
 
         if Controller.ENABLED:
+            self.last_camera_x = 0
+            self.last_camera_y = 0
             self.xboxCont = XboxController(self.handle_xbox_controller, deadzone=30, scale=100, invertYAxis=True)
             self.xboxCont.start()
 
@@ -75,6 +77,10 @@ class Game:
             if not Controller.ENABLED:
                 for event in pygame.event.get():
                     self.handle_events(event)
+            if Controller.ENABLED:
+                x_square_ratio = ((abs(self.last_camera_x)*abs(self.last_camera_x))/10000)
+                y_square_ratio = ((abs(self.last_camera_y)*abs(self.last_camera_y))/10000)
+                self.players[0].update_mouse((self.last_camera_x*x_square_ratio, self.last_camera_y*y_square_ratio), 0.06)
             self.update()
             self.draw()
 
@@ -581,6 +587,11 @@ class Game:
                     self.players[0].apply_left = -(value/100)
                     self.players[0].apply_right = 0
 
+        if control_id == XboxController.XboxControls.RTHUMBX:
+            self.last_camera_x = value
+        if control_id == XboxController.XboxControls.RTHUMBY:
+            self.last_camera_y = value
+
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             self.on_key_press(event.key)
@@ -591,7 +602,7 @@ class Game:
             quit()
         elif event.type == pygame.MOUSEMOTION:
             for i in range(len(self.players)):
-                self.players[i].update_mouse(pygame.mouse.get_rel())
+                self.players[i].update_mouse(pygame.mouse.get_rel(), 0.3)
 
     def on_key_press(self, key):
         if key == KeyboardKeys.KEY_ESC:
