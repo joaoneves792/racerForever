@@ -5,23 +5,19 @@ from singletons import HUD, Speed, RoadPositions, PowerUps
 from PointsEmitter import Plus100Points, Minus100Points
 from utils import car_circle_collision
 from ms3d import MATRIX, LIGHTS
+from threading import Lock
 
 
 class Player(Car):
     def __init__(self, model, z, x, speed, player_id):
         super(Player, self).__init__(model, z, x, speed)
         self.player_id = player_id
+        self.input_lock = Lock()
         self.draw_rotation = False
-        self.left = False
-        self.right = False
-        self.apply_throttle = False
-        self.apply_brakes = False
-        self.apply_left = False
-        self.apply_right = False
-        self.release_throttle = False
-        self.release_brakes = False
-        self.release_left = False
-        self.release_right = False
+        self.apply_throttle = 0
+        self.apply_brakes = 0
+        self.apply_left = 0
+        self.apply_right = 0
         self.braking = False
         self.throttling = False
         self.crash_handler = None
@@ -55,48 +51,36 @@ class Player(Car):
             ParticleManager.add_new_emitter(Plus100Points(HUD.POINTS100_X[self.player_id], HUD.POINTS100_SPEED_DIRECTION[self.player_id] * Speed.PLAYER_SPEED - 10 * Speed.ONE_KMH))
 
         # Adjust postition to user input
-        if self.apply_left:
-            self.lateral_speed += Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
-            self.apply_left = False
-            self.left = True
-        if self.apply_right:
-            self.lateral_speed -= Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
-            self.apply_right = False
-            self.right = True
-        if self.release_left:
-            # self.lateral_speed -= Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
+        with self.input_lock:
+            # Reset the speeds
             self.lateral_speed = 0
-            self.release_left = False
-            self.left = False
-        if self.release_right:
-            # self.lateral_speed += Speed.PLAYER_LATERAL_SPEED if not self.shrunk else Speed.PLAYER_LATERAL_SPEED_SHRUNK
-            self.lateral_speed = 0
-            self.release_right = False
-            self.right = False
+            Speed.PLAYER_SPEED = Speed.BASE_PLAYER_SPEED
 
-        if self.apply_throttle:
-            Speed.PLAYER_SPEED += Speed.PLAYER_ACCELERATE_SPEED
-            # self.speed += Speed.PLAYER_ACCELERATE_SPEED
-            self.apply_throttle = False
-            self.throttling = True
+            # Turn left
+            if not self.shrunk:
+                self.lateral_speed += Speed.PLAYER_LATERAL_SPEED*self.apply_left
+            else:
+                self.lateral_speed += Speed.PLAYER_LATERAL_SPEED_SHRUNK*self.apply_left
 
-        if self.apply_brakes:
-            Speed.PLAYER_SPEED -= Speed.PLAYER_BRAKE_SPEED
-            # self.speed -= Speed.PLAYER_BRAKE_SPEED
-            self.apply_brakes = False
-            self.braking = True
+            # Turn right
+            if not self.shrunk:
+                self.lateral_speed -= Speed.PLAYER_LATERAL_SPEED*self.apply_right
+            else:
+                self.lateral_speed -= Speed.PLAYER_LATERAL_SPEED_SHRUNK*self.apply_right
 
-        if self.release_throttle:
-            Speed.PLAYER_SPEED -= Speed.PLAYER_ACCELERATE_SPEED
-            # self.speed -= Speed.PLAYER_ACCELERATE_SPEED
-            self.release_throttle = False
-            self.throttling = False
+            # Throttle
+            Speed.PLAYER_SPEED += Speed.PLAYER_ACCELERATE_SPEED*self.apply_throttle
+            if self.apply_throttle > 0.05:
+                self.throttling = True
+            else:
+                self.throttling = False
 
-        if self.release_brakes:
-            Speed.PLAYER_SPEED += Speed.PLAYER_BRAKE_SPEED
-            # self.speed += Speed.PLAYER_BRAKE_SPEED
-            self.release_brakes = False
-            self.braking = False
+            # Brakes
+            Speed.PLAYER_SPEED -= Speed.PLAYER_BRAKE_SPEED*self.apply_brakes
+            if self.apply_brakes > 0.05:
+                self.braking = True
+            else:
+                self.braking = False
 
         if self.speed < Speed.PLAYER_SPEED and not self.braking:
             if self.throttling:

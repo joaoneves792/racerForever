@@ -52,6 +52,10 @@ class KeyboardKeys:
     KEY_TO_NUM = (KEY_ONE[0] - 1, KEY_ONE[1] - 1)
 
 
+class Controller:
+    ENABLED = False
+    FORCE_FEEDBACK = True
+
 class RoadPositions:
     WIDTH = 400
     LEFT_LANE = 280
@@ -76,6 +80,7 @@ class Speed:
     KMH_TO_GLMIL = KMH_TO_MS*MS_TO_GLMIL
     ONE_KMH = KMH_TO_GLMIL
     NORMAL_KMH = 120
+    BASE_PLAYER_SPEED = NORMAL_KMH * ONE_KMH
     PLAYER_SPEED = NORMAL_KMH * ONE_KMH
     NORMAL_SPEED = NORMAL_KMH * ONE_KMH
     BASE_CRASH_SPEED_DECREASE = (10*ONE_KMH)

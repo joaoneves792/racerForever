@@ -298,9 +298,6 @@ class Lights(_object):
 Lights_swigregister = _ms3d.Lights_swigregister
 Lights_swigregister(Lights)
 
-
-_ms3d.SHADOW_MAP_SIZE_swigconstant(_ms3d)
-SHADOW_MAP_SIZE = _ms3d.SHADOW_MAP_SIZE
 class Shadows(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, Shadows, name, value)

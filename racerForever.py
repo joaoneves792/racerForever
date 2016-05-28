@@ -5,6 +5,7 @@ import random
 import pygame
 from OpenGL.GL import *
 
+from XboxController import XboxController
 from ms3d import ms3d, Tex, shader, Lights, GLM, Shadows, Text, MATRIX
 
 from OpenGLContext import GL
@@ -17,10 +18,8 @@ from Road import Road
 from SmokeEmitter import SmokeEmitter
 from Truck import Truck
 from VehicleModel import VehicleModel
-from singletons import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps, LightPositions
+from singletons import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps, LightPositions, Controller
 from utils import car_circle_collision, box_collision, text_to_texture
-
-from PowerUps import Phaser
 
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
 
@@ -68,9 +67,14 @@ class Game:
 
         # self.players[0].addPowerUp(Phaser(self, self.players[0]))
 
+        if Controller.ENABLED:
+            self.xboxCont = XboxController(self.handle_xbox_controller, deadzone=30, scale=100, invertYAxis=True)
+            self.xboxCont.start()
+
         while True:
-            for event in pygame.event.get():
-                self.handle_events(event)
+            if not Controller.ENABLED:
+                for event in pygame.event.get():
+                    self.handle_events(event)
             self.update()
             self.draw()
 
@@ -549,6 +553,26 @@ class Game:
         GL.GLM.popMatrix()
         GL.GLM.selectMatrix(MATRIX.MODEL)
 
+    def handle_xbox_controller(self, control_id, value):
+        if control_id == XboxController.XboxControls.START and value == 1:
+            if self.paused:
+                pygame.mixer.unpause()
+            else:
+                pygame.mixer.pause()
+            self.paused = not self.paused
+
+        if control_id == XboxController.XboxControls.Y and value == 1 and self.paused:
+            self.xboxCont.stop()
+            pygame.quit()
+            quit()
+
+        with self.players[0].input_lock:
+            if control_id == XboxController.XboxControls.RTRIGGER:
+                if value > -90:
+                    self.players[0].apply_throttle = True
+                else:
+                    self.players[0].release_throttle = True
+
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:
             self.on_key_press(event.key)
@@ -574,29 +598,29 @@ class Game:
        
         for i in range(len(self.players)):
             if key == KeyboardKeys.KEY_LEFT[i]:
-                self.players[i].apply_left = True
+                self.players[i].apply_left = 1
                 self.players[i].steer(Steering.TURN_LEFT)
             elif key == KeyboardKeys.KEY_RIGHT[i]:
-                self.players[i].apply_right = True
+                self.players[i].apply_right = 1
                 self.players[i].steer(Steering.TURN_RIGHT)
             elif key == KeyboardKeys.KEY_UP[i]:
-                self.players[i].apply_throttle = True
+                self.players[i].apply_throttle = 1
             elif key == KeyboardKeys.KEY_DOWN[i]:
-                self.players[i].apply_brakes = True
+                self.players[i].apply_brakes = 1
             elif KeyboardKeys.KEY_ONE[i] <= key <= KeyboardKeys.KEY_FIVE[i]:
                 self.players[i].usePowerUp(key - KeyboardKeys.KEY_TO_NUM[i])
     
     def on_key_release(self, key):
         for i in range(len(self.players)):
             if key == KeyboardKeys.KEY_LEFT[i]:
-                self.players[i].release_left = True
+                self.players[i].apply_left = 0
                 self.players[i].steer(Steering.CENTERED)
             elif key == KeyboardKeys.KEY_RIGHT[i]:
-                self.players[i].release_right = True
+                self.players[i].apply_right = 0
                 self.players[i].steer(Steering.CENTERED)
             elif key == KeyboardKeys.KEY_UP[i]:
-                self.players[i].release_throttle = True 
+                self.players[i].apply_throttle = 0
             elif key == KeyboardKeys.KEY_DOWN[i]:
-                self.players[i].release_brakes = True
+                self.players[i].apply_brakes = 0
 
 # game = Game()
