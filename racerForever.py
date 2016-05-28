@@ -568,10 +568,18 @@ class Game:
 
         with self.players[0].input_lock:
             if control_id == XboxController.XboxControls.RTRIGGER:
-                if value > -90:
-                    self.players[0].apply_throttle = True
+                self.players[0].apply_throttle = (value + 100)/200
+                self.players[0].apply_brakes = 0
+            if control_id == XboxController.XboxControls.LTRIGGER:
+                self.players[0].apply_brakes = value/100
+                self.players[0].apply_throtle = 0
+            if control_id == XboxController.XboxControls.LTHUMBX:
+                if value > 0:
+                    self.players[0].apply_right = value/100
+                    self.players[0].apply_left = 0
                 else:
-                    self.players[0].release_throttle = True
+                    self.players[0].apply_left = -(value/100)
+                    self.players[0].apply_right = 0
 
     def handle_events(self, event):
         if event.type == pygame.KEYDOWN:

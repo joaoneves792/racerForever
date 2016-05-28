@@ -53,7 +53,7 @@ class KeyboardKeys:
 
 
 class Controller:
-    ENABLED = False
+    ENABLED = True
     FORCE_FEEDBACK = True
 
 class RoadPositions:
