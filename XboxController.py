@@ -124,7 +124,8 @@ class XboxController(threading.Thread):
                  joystickNo = 0,
                  deadzone = 0.1,
                  scale = 1,
-                 invertYAxis = False):
+                 invertYAxis = False,
+                 pygameEventCallBack = None):
 
         #setup threading
         threading.Thread.__init__(self)
@@ -132,6 +133,7 @@ class XboxController(threading.Thread):
         #persist values
         self.running = False
         self.controllerCallBack = controllerCallBack
+        self.pygameEventCallBack = pygameEventCallBack
         self.joystickNo = joystickNo
         self.lowerDeadzone = deadzone * -1
         self.upperDeadzone = deadzone
@@ -305,6 +307,9 @@ class XboxController(threading.Thread):
                         #update control value
                         self.updateControlValue(self.BUTTONCONTROLMAP[event.button],
                                                 self._sortOutButtonValue(event.type))
+                else:
+                    if self.pygameEventCallBack != None:
+                        self.pygameEventCallBack(event)
         
     #stops the controller
     def stop(self):

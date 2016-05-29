@@ -20,6 +20,7 @@ from Truck import Truck
 from VehicleModel import VehicleModel
 from singletons import Window, HUD, KeyboardKeys, RoadPositions, Speed, Steering, SkidMarks, Sounds, PowerUps, LightPositions, Controller
 from utils import car_circle_collision, box_collision, text_to_texture
+import FF
 
 # 11 MS3D Unit = 1 meter = 20 OpenGL units
 
@@ -70,8 +71,11 @@ class Game:
         if Controller.ENABLED:
             self.last_camera_x = 0
             self.last_camera_y = 0
-            self.xboxCont = XboxController(self.handle_xbox_controller, deadzone=30, scale=100, invertYAxis=True)
+            self.xboxCont = XboxController(self.handle_xbox_controller, deadzone=30, scale=100, invertYAxis=True, pygameEventCallBack=self.handle_events)
             self.xboxCont.start()
+            if Controller.FORCE_FEEDBACK:
+                self.FF = FF.FF()
+                self.FF.play_idle()
 
         while True:
             if not Controller.ENABLED:
@@ -569,6 +573,8 @@ class Game:
 
         if control_id == XboxController.XboxControls.Y and value == 1 and self.paused:
             self.xboxCont.stop()
+            if Controller.FORCE_FEEDBACK:
+                self.FF.shutdown()
             pygame.quit()
             quit()
 
@@ -576,9 +582,19 @@ class Game:
             if control_id == XboxController.XboxControls.RTRIGGER:
                 self.players[0].apply_throttle = (value + 100)/200
                 self.players[0].apply_brakes = 0
+                if Controller.FORCE_FEEDBACK:
+                    if value > 10:
+                        self.FF.play_throttle()
+                    else:
+                        self.FF.stop_throttle()
             if control_id == XboxController.XboxControls.LTRIGGER:
                 self.players[0].apply_brakes = value/100
                 self.players[0].apply_throtle = 0
+                if Controller.FORCE_FEEDBACK:
+                    if value > 10:
+                        self.FF.play_brakes()
+                    else:
+                        self.FF.stop_brakes()
             if control_id == XboxController.XboxControls.LTHUMBX:
                 if value > 0:
                     self.players[0].apply_right = value/100
@@ -598,6 +614,8 @@ class Game:
         elif event.type == pygame.KEYUP:
             self.on_key_release(event.key)
         elif event.type == pygame.QUIT:
+            if Controller.ENABLED and Controller.FORCE_FEEDBACK:
+                self.FF.shutdown()
             pygame.quit()
             quit()
         elif event.type == pygame.MOUSEMOTION:
